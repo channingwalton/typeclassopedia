@@ -28,6 +28,7 @@ trait Monads extends StandardMonads {
   // enrich a value of M[T] with operations 
   implicit class MonadOps[M[_]: Monad, T](value: M[T]) {
     def flatMap[B](f: T ⇒ M[B]): M[B] = implicitly[Monad[M]].flatMap(value, f)
+    def >>=[B](f: T ⇒ M[B]): M[B] = flatMap(f)
   }
 
   // wrap a simple type in a Monad M, if an implicit Monad[M] is available
