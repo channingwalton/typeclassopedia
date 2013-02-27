@@ -17,5 +17,3 @@ libraryDependencies ++= Seq (
 unmanagedSourceDirectories in Compile := Seq(file("src/main/scala") )
 
 unmanagedSourceDirectories in Test := Seq(file("src/test/scala") )
-
-com.github.aselab.scalastyle.ScalaStylePlugin.Settings
