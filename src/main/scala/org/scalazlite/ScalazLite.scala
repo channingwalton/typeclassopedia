@@ -1,7 +1,6 @@
 package org.scalazlite
 
-object ScalazLite {
-  import Applicative._
+object ScalazLite extends Applicatives {
   import Functor._
   import Monad._
 }
