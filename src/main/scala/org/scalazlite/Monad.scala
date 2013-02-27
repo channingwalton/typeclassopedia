@@ -11,18 +11,19 @@ trait Monad[M[_]] {
 /**
  *   Monad implementations for standard types.
  */
-trait Monads {
+trait StandardMonads {
   implicit object OptionMonad extends Monad[Option] {
     def pure[A](a: ⇒ A) = Some(a)
     def flatMap[A, B](ma: Option[A], f: A ⇒ Option[B]) = ma flatMap f
   }
+
 }
 
 /**
  *   Implicits to help working with Monads.
  *   This is imported by ScalazLite so that all you need to import is ScalazLite._
  */
-object Monad extends Monads {
+trait Monads extends StandardMonads {
 
   // enrich a value of M[T] with operations 
   implicit class MonadOps[M[_]: Monad, T](value: M[T]) {
