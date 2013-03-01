@@ -22,7 +22,7 @@ trait Monads {
   }
 
   // wrap a simple type in a Monad M, if an implicit Monad[M] is available
-  implicit class ValueOps[T](value: T) {
+  implicit class MonadValueOps[T](value: T) {
     def pure[M[_]](implicit M: Monad[M]): M[T] = M.pure(value)
   }
 }

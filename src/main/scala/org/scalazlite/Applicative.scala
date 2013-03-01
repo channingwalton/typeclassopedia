@@ -8,7 +8,7 @@ trait Applicative[M[_]] extends Functor[M] {
 }
 
 /**
- *   Implicits to help working with Applicatives.
+ *   Implicits to help working with Applicative.
  *   This is imported by ScalazLite so that all you need to import is ScalazLite._
  */
 trait Applicatives {
