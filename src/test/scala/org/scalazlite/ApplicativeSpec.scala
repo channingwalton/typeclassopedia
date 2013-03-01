@@ -16,10 +16,6 @@ class ApplicativeSpec extends FlatSpec {
   }
 
   it should "support new Applicatives" in {
-    case class Blub[T](v: T)
-    implicit object BlubApplicative extends Applicative[Blub] {
-      def <*>[A, B](ma: Blub[A], f: Blub[A ⇒ B]): Blub[B] = Blub(f.v(ma.v))
-    }
     Blub(1) <*> Blub((_: Int) + 1) === Blub(2)
   }
 

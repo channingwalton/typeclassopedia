@@ -3,25 +3,24 @@ package org.scalazlite
 /**
  * The concept of an applicative
  */
-trait Applicative[M[_]] {
+trait Applicative[M[_]] extends Functor[M] {
   def <*>[A, B](m: M[A], f: M[A ⇒ B]): M[B]
-}
-
-/**
- * Applicative implementations for standard types
- */
-trait StandardApplicatives {
-  implicit object OptionApplicative extends Applicative[Option] {
-    def <*>[A, B](ma: Option[A], f: Option[A ⇒ B]): Option[B] = for (m ← ma; g ← f) yield g(m)
-  }
 }
 
 /**
  *   Implicits to help working with Applicatives.
  *   This is imported by ScalazLite so that all you need to import is ScalazLite._
  */
-trait Applicatives extends StandardApplicatives {
+trait Applicatives {
   implicit class ApplicativeOps[M[_]: Applicative, T](value: M[T]) {
     def <*>[B](f: M[T ⇒ B]): M[B] = implicitly[Applicative[M]] <*> (value, f)
+    def |@|[A](a: M[A]) = new ApplicativeBuilder(value, a)
+  }
+
+  class ApplicativeBuilder[M[_]: Applicative, A, B](a: M[A], b: M[B]) {
+    def apply[C](f: (A, B) ⇒ C): M[C] = {
+      val fc = f.curried
+      b <*> (implicitly[Functor[M]].map(a, fc))
+    }
   }
 }

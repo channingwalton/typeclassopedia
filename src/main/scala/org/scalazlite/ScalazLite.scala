@@ -4,3 +4,4 @@ object ScalazLite
   extends Applicatives
   with Functors
   with Monads
+  with Implementations

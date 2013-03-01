@@ -12,12 +12,6 @@ class MonadSpec extends FlatSpec {
   }
 
   it should "support new monads" in {
-    case class Blub[T](v: T)
-    implicit object BlubMonad extends Monad[Blub] {
-      def pure[A](a: ⇒ A) = Blub(a)
-      def flatMap[A, B](ma: Blub[A], f: A ⇒ Blub[B]) = f(ma.v)
-    }
-
     (Blub(1) >>= (x ⇒ Blub(x + 1))) === Blub(2)
   }
 }
