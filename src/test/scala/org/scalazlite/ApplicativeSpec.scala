@@ -19,4 +19,7 @@ class ApplicativeSpec extends FlatSpec {
     Blub(1) <*> Blub((_: Int) + 1) === Blub(2)
   }
 
+  it should "support |@|" in {
+    (Blub(1) |@| Blub(2))(_ + _) === Blub(3)
+  }
 }

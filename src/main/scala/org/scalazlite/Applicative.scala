@@ -18,9 +18,6 @@ trait Applicatives {
   }
 
   class ApplicativeBuilder[M[_]: Applicative, A, B](a: M[A], b: M[B]) {
-    def apply[C](f: (A, B) ⇒ C): M[C] = {
-      val fc = f.curried
-      b <*> (implicitly[Functor[M]].map(a, fc))
-    }
+    def apply[C](f: (A, B) ⇒ C): M[C] = b <*> (implicitly[Functor[M]].map(a, f.curried))
   }
 }
