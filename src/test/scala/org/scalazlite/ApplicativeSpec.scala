@@ -21,5 +21,6 @@ class ApplicativeSpec extends FlatSpec {
 
   it should "support |@|" in {
     (Blub(1) |@| Blub(2))(_ + _) === Blub(3)
+    (Blub(1) |@| Blub(2) |@| Blub(3))(_ + _ + _) === Blub(6)
   }
 }
