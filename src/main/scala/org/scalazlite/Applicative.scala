@@ -1,7 +1,7 @@
 package org.scalazlite
 
 /**
- * The concept of an applicative
+ * The concept of an applicative functor.
  */
 trait Applicative[M[_]] extends Functor[M] {
   def <*>[A, B](m: M[A], f: M[A ⇒ B]): M[B]
