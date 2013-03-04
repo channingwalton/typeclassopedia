@@ -14,6 +14,19 @@ trait Applicative[M[_]] extends Functor[M] {
 trait Applicatives {
   implicit class ApplicativeOps[M[_]: Applicative, T](value: M[T]) {
     def <*>[B](f: M[T ⇒ B]): M[B] = implicitly[Applicative[M]] <*> (value, f)
+
+    /**
+     * This method simplifies working with applicatives.
+     * For example, instead of
+     * {{{
+     * val addInts = ( (a:Int, b:Int, c:Int) => a + b + c ).curried
+     * val sum = x <*> (y <*> (z map addInts))
+     * }}}
+     * do
+     * {{{
+     * (x |@| y |@| z) {_ + _ + _}
+     * }}}
+     */
     def |@|[A](a: M[A]) = new ApplicativeBuilder(value, a)
   }
 
