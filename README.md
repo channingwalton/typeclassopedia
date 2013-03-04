@@ -11,6 +11,7 @@ Further Reading
 * [Advanced Types](http://twitter.github.com/scala_school/advanced-types.html) - particularly the section on *Higher-kinded types & ad-hoc polymorphism*
 * [Typeclassopedia](http://typeclassopedia.bitbucket.org) (use arrow keys)
 * [Learning Scalaz](http://eed3si9n.com/learning-scalaz-day1)
+* [Small (scala) examples](http://www.casualmiracles.com/category/small-examples/) by me
 
 Books
 -------
