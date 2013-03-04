@@ -2,7 +2,7 @@ package org.scalazlite
 
 /**
  *   The concept of a Functor.
- *   A functor is something that uses a simple function A ⇒ B and applies it to some F[A] yield an F[B].
+ *   A functor is something that uses a simple function A ⇒ B and applies it to some F[A] to yield an F[B].
  *   You will be know this as the map method on collection types and Option.
  */
 trait Functor[F[_]] {
