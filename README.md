@@ -9,7 +9,7 @@ Further Reading
 -------------------
 * [Type Basics](http://twitter.github.com/scala_school/type-basics.html)
 * [Advanced Types](http://twitter.github.com/scala_school/advanced-types.html) - particularly the section on *Higher-kinded types & ad-hoc polymorphism*
-* [Typeclassopedia](http://www.haskell.org/haskellwiki/Typeclassopedia)
+* [Typeclassopedia](http://typeclassopedia.bitbucket.org) (use arrow keys)
 * [Learning Scalaz](http://eed3si9n.com/learning-scalaz-day1)
 
 Books
