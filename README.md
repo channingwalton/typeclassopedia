@@ -1,4 +1,4 @@
-scalaz-lite
+Typeclassopedia
 ===========
 
 My tinkering to understand scalaz and the typeclassopedia.
