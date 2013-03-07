@@ -13,7 +13,7 @@ trait Applicative[M[_]] extends Functor[M] {
  */
 trait Applicatives {
   implicit class ApplicativeOps[M[_]: Applicative, T](value: M[T]) {
-    def <*>[B](f: M[T ⇒ B]): M[B] = implicitly[Applicative[M]] <*> (value, f)
+    final def <*>[B](f: M[T ⇒ B]): M[B] = implicitly[Applicative[M]] <*> (value, f)
 
     /**
      * This method simplifies working with applicatives.
@@ -27,7 +27,7 @@ trait Applicatives {
      * (x |@| y |@| z) {_ + _ + _}
      * }}}
      */
-    def |@|[A](a: M[A]) = new ApplicativeBuilder(value, a)
+    final def |@|[A](a: M[A]) = new ApplicativeBuilder(value, a)
   }
 
   class ApplicativeBuilder[M[_]: Applicative, A, B](a: M[A], b: M[B]) {
