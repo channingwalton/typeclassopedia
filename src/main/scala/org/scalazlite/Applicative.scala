@@ -12,6 +12,7 @@ trait Applicative[M[_]] extends Functor[M] {
  *   This is imported by ScalazLite so that all you need to import is ScalazLite._
  */
 trait Applicatives {
+
   implicit class ApplicativeOps[M[_]: Applicative, T](value: M[T]) {
     final def <*>[B](f: M[T ⇒ B]): M[B] = implicitly[Applicative[M]] <*> (value, f)
 

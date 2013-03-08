@@ -1,4 +1,4 @@
-name := "scalaz-lite"
+name := "typeclassopedia"
 
 version := "1.0"
 

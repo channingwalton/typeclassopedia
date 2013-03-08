@@ -22,6 +22,9 @@ trait Implementations {
     def append(a1: Int, a2: Int): Int = a1 + a2
   }
 
+  implicit object SemigroupString extends Semigroup[String] {
+    def append(a1: String, a2: String): String = a1 + a2
+  }
   implicit class OptionExtras[T](t: T) {
     def some: Option[T] = Some(t)
   }

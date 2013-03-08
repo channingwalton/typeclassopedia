@@ -6,6 +6,7 @@ final case class Success[E, A](a: A) extends Validation[E, A]
 final case class Failure[E, A](e: E) extends Validation[E, A]
 
 trait Validations {
+
   implicit def ValidationApplicative[L: Semigroup]: Applicative[({ type l[a] = Validation[L, a] })#l] = new Applicative[({ type l[a] = Validation[L, a] })#l] {
     def <*>[A, B](m: Validation[L, A], f: Validation[L, A ⇒ B]): Validation[L, B] = (m, f) match {
       case (Success(a), Success(f))   ⇒ Success(f(a))
