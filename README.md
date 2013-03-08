@@ -6,6 +6,8 @@ My tinkering to understand scalaz and the typeclassopedia.
 I suggest you start with Functor as it is the simplest class to study, then Applicative, Monad and Semigroup. 
 But before you do any of that, you need to understand [typeclasses in scala](http://www.casualmiracles.com/2012/05/03/a-small-example-of-the-typeclass-pattern-in-scala/).
 
+The tests serve as examples of use.
+
 Further Reading
 -------------------
 * [Type Basics](http://twitter.github.com/scala_school/type-basics.html)
