@@ -1,7 +1,7 @@
 package org.typeclassopedia
 
 import org.scalatest.FlatSpec
-import ScalazLite._
+import Typeclassopedia._
 
 class ValidationSpec extends FlatSpec with Validations {
 
@@ -13,11 +13,10 @@ class ValidationSpec extends FlatSpec with Validations {
     val e: StringValidation[Int] = Failure("no.")
     val f: StringValidation[Int ⇒ Int] = Success(2*)
 
-    (v <*> f) === Success(6)
+    (v <*> f) === Success(7)
     (e <*> f) === Failure("no.")
 
     ((v |@| v) { _ - _ }) === Success(0)
     ((e |@| e |@| v) { _ + _ + _ }) === Failure("no.no.")
   }
-
 }

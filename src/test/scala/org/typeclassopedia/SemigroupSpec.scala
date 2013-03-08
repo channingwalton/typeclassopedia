@@ -1,7 +1,7 @@
 package org.typeclassopedia
 
 import org.scalatest._
-import ScalazLite._
+import Typeclassopedia._
 
 class SemigroupSpec extends FlatSpec {
 

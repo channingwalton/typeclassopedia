@@ -21,7 +21,7 @@ trait Functor[F[_]] {
 
 /**
  *   Implicits to help working with Functors.
- *   This is imported by ScalazLite so that all you need to import is ScalazLite._
+ *   This is imported by Typeclassopedia so that all you need to import is Typeclassopedia._
  */
 trait Functors {
 

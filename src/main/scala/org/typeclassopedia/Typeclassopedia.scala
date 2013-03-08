@@ -1,6 +1,6 @@
 package org.typeclassopedia
 
-object ScalazLite
+object Typeclassopedia
   extends Applicatives
   with Functors
   with Monads
