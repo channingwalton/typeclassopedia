@@ -5,9 +5,7 @@ import Typeclassopedia._
 
 class SemigroupSpec extends FlatSpec {
 
-  "Append" should "append ints" in {
-    assert((1 |+| 2) === 3)
-  }
+  "Append" should "append ints" in assert((1 |+| 2) === 3)
 
   it should "append options" in {
     assert((1.some |+| 2.some) === 3.some)
