@@ -5,18 +5,15 @@ import Typeclassopedia._
 
 class ValidationSpec extends FlatSpec with Validations {
 
-  "Validation" should "be an applicative" in {
-    type StringValidation[S] = Validation[String, S]
-    implicitly[Applicative[StringValidation]] // it lives!
+  type StringValidation[S] = Validation[String, S]
+  implicitly[Applicative[StringValidation]] // it lives!
 
-    val v: StringValidation[Int] = Success(3)
-    val e: StringValidation[Int] = Failure("no.")
-    val f: StringValidation[Int ⇒ Int] = Success(2*)
+  val v: StringValidation[Int] = Success(3)
+  val e: StringValidation[Int] = Failure("no.")
+  val f: StringValidation[Int ⇒ Int] = Success(2*)
 
-    (v <*> f) === Success(7)
-    (e <*> f) === Failure("no.")
-
-    ((v |@| v) { _ - _ }) === Success(0)
-    ((e |@| e |@| v) { _ + _ + _ }) === Failure("no.no.")
-  }
+  "Validation" should "be an applicative" in assert((v <*> f) === Success(6))
+  it should "deal with failure" in assert((e <*> f) === Failure("no."))
+  it should "use an applicative builder to apply a function" in assert(((v |@| v) { _ - _ }) === Success(0))
+  it should "use an applicative builder and accumulate failure" in assert(((e |@| e |@| v) { _ + _ + _ }) === Failure("no.no."))
 }
