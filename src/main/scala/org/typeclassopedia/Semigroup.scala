@@ -1,4 +1,4 @@
-package org.scalazlite
+package org.typeclassopedia
 
 /**
  * A semigroup provides an associative operation (like + for numbers).

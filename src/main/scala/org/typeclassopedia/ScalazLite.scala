@@ -1,4 +1,4 @@
-package org.scalazlite
+package org.typeclassopedia
 
 object ScalazLite
   extends Applicatives

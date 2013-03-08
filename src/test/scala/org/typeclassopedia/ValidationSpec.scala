@@ -1,7 +1,6 @@
-package org.scalazlite
+package org.typeclassopedia
 
 import org.scalatest.FlatSpec
-
 import ScalazLite._
 
 class ValidationSpec extends FlatSpec with Validations {

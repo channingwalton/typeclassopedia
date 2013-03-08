@@ -1,4 +1,4 @@
-package org.scalazlite
+package org.typeclassopedia
 
 /**
  *   The concept of a Monad

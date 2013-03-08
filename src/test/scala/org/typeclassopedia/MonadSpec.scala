@@ -1,4 +1,4 @@
-package org.scalazlite
+package org.typeclassopedia
 
 import org.scalatest._
 import ScalazLite._
