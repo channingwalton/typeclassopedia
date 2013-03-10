@@ -1,4 +1,7 @@
-package org.typeclassopedia
+package org.typeclassopedia.extras
+
+import org.typeclassopedia.Applicative
+import org.typeclassopedia.Semigroup
 
 /**
  * Validation is not part of the typeclassopedia but I added it because … I could.

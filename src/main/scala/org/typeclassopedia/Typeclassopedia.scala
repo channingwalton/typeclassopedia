@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import org.typeclassopedia.extras.Validations
+
 object Typeclassopedia
   extends Applicatives
   with Functors

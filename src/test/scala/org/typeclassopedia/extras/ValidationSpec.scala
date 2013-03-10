@@ -1,9 +1,10 @@
-package org.typeclassopedia
+package org.typeclassopedia.extras
 
 import org.scalatest.FlatSpec
-import Typeclassopedia._
+import org.typeclassopedia.Typeclassopedia._
+import org.typeclassopedia.Applicative
 
-class ValidationSpec extends FlatSpec with Validations {
+class ValidationSpec extends FlatSpec {
 
   type StringValidation[S] = Validation[String, S]
   implicitly[Applicative[StringValidation]] // it lives!
