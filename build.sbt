@@ -12,7 +12,7 @@ resolvers ++= Seq(
 
 libraryDependencies += "org.scalatest" % "scalatest_2.10" % "2.0.M5b" % "test"
 
- libraryDependencies += "org.pegdown" % "pegdown" % "1.1.0" % "test"
+libraryDependencies += "org.pegdown" % "pegdown" % "1.1.0" % "test"
 
 unmanagedSourceDirectories in Compile := Seq(file("src/main/scala") )
 
