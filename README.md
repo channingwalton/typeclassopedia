@@ -1,7 +1,7 @@
 Typeclassopedia
 ===============
 
-My tinkering to understand scalaz and the typeclassopedia.
+My tinkering to understand the typeclassopedia.
 
 I suggest you start with Functor as it is the simplest class to study, then Applicative, Monad and Semigroup. 
 But before you do any of that, you need to understand [typeclasses in scala](http://www.casualmiracles.com/2012/05/03/a-small-example-of-the-typeclass-pattern-in-scala/).
@@ -10,6 +10,7 @@ The tests serve as examples of use.
 
 Further Reading
 -------------------
+* This project contains a copy of *The Monad.Reader Issue 13*  containing Brent Yorgey's *The Typeclassopedia* which provides descriptions of all the types defined here.
 * [Type Basics](http://twitter.github.com/scala_school/type-basics.html)
 * [Advanced Types](http://twitter.github.com/scala_school/advanced-types.html) - particularly the section on *Higher-kinded types & ad-hoc polymorphism*
 * [Functors, Monads, Applicatives – can be so simple](http://thedet.wordpress.com/2012/04/28/functors-monads-applicatives-can-be-so-simple/) by [Dirk Detering](https://twitter.com/developmind)
