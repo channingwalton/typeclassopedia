@@ -1,6 +1,8 @@
 Typeclassopedia
 ===============
 
+[![Build Status](https://api.travis-ci.org/channingwalton/typeclassopedia.png)](https://api.travis-ci.org/channingwalton/typeclassopedia.png)
+
 My tinkering to understand the typeclassopedia.
 
 I suggest you start with Functor as it is the simplest class to study, then Applicative, Monad and Semigroup. 
