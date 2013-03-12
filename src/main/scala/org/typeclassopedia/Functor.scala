@@ -5,6 +5,7 @@ package org.typeclassopedia
  *   A functor is something that applies a simple function, A ⇒ B, to some F[A] to yield an F[B].
  *   You will be know this as the map method on collection types and Option. Sometimes,
  *   you will see map called fmap.
+ *
  */
 trait Functor[F[_]] {
   def map[A, B](m: F[A], f: A ⇒ B): F[B]

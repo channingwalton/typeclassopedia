@@ -18,6 +18,7 @@ Further Reading
 * [Typeclassopedia presentation](http://typeclassopedia.bitbucket.org) (use arrow keys)
 * [Learning Scalaz](http://eed3si9n.com/learning-scalaz-day1) by [Eugene Yokota](https://twitter.com/eed3si9n)
 * [Small (scala) examples](http://www.casualmiracles.com/category/small-examples/) by [me](https://twitter.com/channingwalton)
+* [Applicative Programming with Effects] McBride and Paterson’s classic paper
 
 Books
 -------
