@@ -18,6 +18,17 @@ trait Implementations {
     }
   }
 
+  implicit object ListApplicative extends Monad[List] {
+    def map[A, B](m: List[A], f: A ⇒ B): List[B] = m map f
+    def <*>[A, B](ma: List[A], f: List[A ⇒ B]): List[B] = for (m ← ma; g ← f) yield g(m)
+    def point[A](a: ⇒ A) = List(a)
+    def flatMap[A, B](ma: List[A], f: A ⇒ List[B]) = ma flatMap f
+  }
+
+  implicit def listSemigroup[A: Semigroup]: Semigroup[List[A]] = new Semigroup[List[A]] {
+    def append(a: List[A], b: List[A]) = a ::: b
+  }
+
   implicit object SemigroupInt extends Semigroup[Int] {
     def append(a1: Int, a2: Int): Int = a1 + a2
   }
