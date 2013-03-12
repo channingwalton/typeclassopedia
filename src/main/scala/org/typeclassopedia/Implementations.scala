@@ -29,11 +29,17 @@ trait Implementations {
     def append(a: List[A], b: List[A]) = a ::: b
   }
 
-  implicit object SemigroupInt extends Semigroup[Int] {
+  implicit object ListFoldable extends Foldable[List] {
+    def foldMap[A, B](fa: List[A])(f: A ⇒ B)(implicit F: Monoid[B]): B = fa.foldLeft(F.zero)((b, a) ⇒ F.append(b, f(a)))
+  }
+
+  implicit object MonoidInt extends Monoid[Int] {
+    def zero = 0
     def append(a1: Int, a2: Int): Int = a1 + a2
   }
 
-  implicit object SemigroupString extends Semigroup[String] {
+  implicit object MonoidString extends Semigroup[String] {
+    def zero = ""
     def append(a1: String, a2: String): String = a1 + a2
   }
   implicit class OptionExtras[T](t: T) {

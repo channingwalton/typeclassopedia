@@ -7,5 +7,6 @@ object Typeclassopedia
   with Functors
   with Monads
   with Semigroups
+  with Foldables
   with Validations
   with Implementations
