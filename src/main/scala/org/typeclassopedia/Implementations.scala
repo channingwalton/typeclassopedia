@@ -29,8 +29,8 @@ trait Implementations {
     def append(a: List[A], b: List[A]) = a ::: b
   }
 
-  implicit object ListFoldable extends Foldable[List] {
-    def foldMap[A, B](fa: List[A])(f: A ⇒ B)(implicit F: Monoid[B]): B = fa.foldLeft(F.zero)((b, a) ⇒ F.append(b, f(a)))
+  implicit object ListFoldable extends Foldable[List] with Semigroups {
+    def foldMap[A, B: Monoid](fa: List[A])(f: A ⇒ B): B = fa.foldLeft(implicitly[Monoid[B]].zero)((b, a) ⇒ b |+| f(a))
   }
 
   implicit object MonoidInt extends Monoid[Int] {
