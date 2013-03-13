@@ -10,5 +10,5 @@ class FunctorSpec extends FlatSpec {
 
   "A functor" should "map stuff" in assert(Blub(1).map(x2) === Blub(2))
   it should "obey the identity law" in assert(Blub(1).map(identity) === Blub(1))
-  it should "obey the composition law" in assert(Blub(1).map(x2 compose plus1) === Blub(1).map(plus1).map(x2))
+  it should "obey the composition law" in assert(Blub(1).map(plus1 andThen x2) === Blub(1).map(plus1).map(x2))
 }

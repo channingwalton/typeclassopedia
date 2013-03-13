@@ -6,6 +6,11 @@ package org.typeclassopedia
  *   You will be know this as the map method on collection types and Option. Sometimes,
  *   you will see map called fmap.
  *
+ *  There are a couple of laws associated with a Functor, F:
+ *  <ul>
+ *  <li>F map identity is F</li>
+ *  <li>Given two functions, g and h, F map (g andThen h) must equal F map g map h</li>
+ *  </ul>
  */
 trait Functor[F[_]] {
   def map[A, B](m: F[A], f: A ⇒ B): F[B]
