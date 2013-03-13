@@ -9,7 +9,7 @@ package org.typeclassopedia
  *  There are a couple of laws associated with a Functor, F:
  *  <ul>
  *  <li>F map identity is F</li>
- *  <li>Given two functions, g and h, F map (g andThen h) must equal F map g map h</li>
+ *  <li>Given two functions, g and h, F map (g andThen h) == (F map g) map h</li>
  *  </ul>
  */
 trait Functor[F[_]] {

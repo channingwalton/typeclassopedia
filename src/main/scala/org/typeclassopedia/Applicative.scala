@@ -8,6 +8,10 @@ package org.typeclassopedia
  *   But fmap [map] doesn’t allow us to apply a function which is itself in a context to a value in another context.
  *   Applicative gives us just such a tool. … Note that every Applicative must also be a Functor.
  *   </pre>
+ *   There is a law associated with Applicatives which states
+ *   <pre>
+ *   Give an Applicative x: X, x map g == x <*> X.pure(g)
+ *   </pre>
  */
 trait Applicative[M[_]] extends Functor[M] {
   def <*>[A, B](m: M[A], f: M[A ⇒ B]): M[B]
