@@ -2,7 +2,7 @@ package org.typeclassopedia
 
 trait Implementations {
 
-  implicit object OptionApplicative extends Monad[Option] {
+  implicit object OptionMonad extends Monad[Option] {
     def map[A, B](m: Option[A], f: A ⇒ B): Option[B] = m map f
     def <*>[A, B](ma: Option[A], f: Option[A ⇒ B]): Option[B] = for (m ← ma; g ← f) yield g(m)
     def point[A](a: ⇒ A) = Some(a)
@@ -18,7 +18,7 @@ trait Implementations {
     }
   }
 
-  implicit object ListApplicative extends Monad[List] {
+  implicit object ListMonad extends Monad[List] {
     def map[A, B](m: List[A], f: A ⇒ B): List[B] = m map f
     def <*>[A, B](ma: List[A], f: List[A ⇒ B]): List[B] = for (m ← ma; g ← f) yield g(m)
     def point[A](a: ⇒ A) = List(a)
@@ -38,7 +38,7 @@ trait Implementations {
     def append(a1: Int, a2: Int): Int = a1 + a2
   }
 
-  implicit object MonoidString extends Semigroup[String] {
+  implicit object MonoidString extends Monoid[String] {
     def zero = ""
     def append(a1: String, a2: String): String = a1 + a2
   }

@@ -5,10 +5,10 @@ import Typeclassopedia._
 
 class FunctorSpec extends FlatSpec {
 
-  val plus1 = (_: Int) + 1
-  val x2 = (_: Int) * 2
+  val inc: Int ⇒ Int = 1 + _
+  val double: Int ⇒ Int = 2 * _
 
-  "A functor" should "map stuff" in assert(Blub(1).map(x2) === Blub(2))
+  "A functor" should "map stuff" in assert(Blub(1).map(double) === Blub(2))
   it should "obey the identity law" in assert(Blub(1).map(identity) === Blub(1))
-  it should "obey the composition law" in assert(Blub(1).map(plus1 andThen x2) === Blub(1).map(plus1).map(x2))
+  it should "obey the composition law" in assert(Blub(1).map(inc andThen double) === Blub(1).map(inc).map(double))
 }
