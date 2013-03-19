@@ -2,10 +2,17 @@ package org.typeclassopedia
 
 trait Implementations {
 
-  implicit object OptionMonad extends Monad[Option] {
+  trait OptionFunctor extends Functor[Option] {
     def map[A, B](m: Option[A], f: A ⇒ B): Option[B] = m map f
-    def <*>[A, B](ma: Option[A], f: Option[A ⇒ B]): Option[B] = for (m ← ma; g ← f) yield g(m)
     def point[A](a: ⇒ A) = Some(a)
+  }
+
+  trait OptionFoldable extends Foldable[Option] {
+    def foldMap[A, B](fa: Option[A])(f: A ⇒ B)(implicit F: Monoid[B]): B = fa.fold(F.zero)(f)
+  }
+
+  implicit object OptionMonad extends Monad[Option] with OptionFunctor {
+    def <*>[A, B](ma: Option[A], f: Option[A ⇒ B]): Option[B] = for (m ← ma; g ← f) yield g(m)
     def flatMap[A, B](ma: Option[A], f: A ⇒ Option[B]) = ma flatMap f
   }
 
@@ -15,6 +22,14 @@ trait Implementations {
       case (Some(a1), None)     ⇒ a
       case (None, Some(a2))     ⇒ b
       case (None, None)         ⇒ None
+    }
+  }
+
+  implicit object OptionTraverse extends Traversable[Option] with OptionFunctor with OptionFoldable {
+    def none[X]: Option[X] = None
+    def traverse[G[_]: Applicative, A, B](fa: Option[A])(f: A ⇒ G[B]): G[Option[B]] = {
+      val gapp = implicitly[Applicative[G]]
+      fa.fold(gapp.pure(none[B]))(v ⇒ gapp.map(f(v), (b: B) ⇒ Option(b)))
     }
   }
 

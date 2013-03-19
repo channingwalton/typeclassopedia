@@ -22,7 +22,7 @@ trait Functor[F[_]] {
   /**
    *   An alias for point
    */
-  def pure[A](a: ⇒ A): F[A] = point(a)
+  final def pure[A](a: ⇒ A): F[A] = point(a)
 }
 
 /**
