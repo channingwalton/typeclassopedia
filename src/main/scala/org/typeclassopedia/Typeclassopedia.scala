@@ -9,4 +9,5 @@ object Typeclassopedia
   with Semigroups
   with Foldables
   with Validations
+  with Traversables
   with Implementations
