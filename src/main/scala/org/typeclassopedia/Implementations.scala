@@ -56,7 +56,8 @@ trait Implementations {
       val nil: List[B] = Nil
       val gapp = implicitly[Applicative[G]]
       val lGB: List[G[B]] = fa.map(f)
-      val app = ((a: List[B], b: B) ⇒ b :: a).curried
+      // this is all horribly inefficient
+      val app = ((a: List[B], b: B) ⇒ a :+ b).curried
       lGB.foldLeft(gapp.point(nil))((acc, gb) ⇒ gapp.<*>(gb, gapp.map(acc, app)))
     }
   }
@@ -73,4 +74,5 @@ trait Implementations {
   implicit class OptionExtras[T](t: T) {
     def some: Option[T] = Some(t)
   }
+  def none[T]: Option[T] = None
 }
