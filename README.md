@@ -1,7 +1,7 @@
 Typeclassopedia
 ===============
 
-[![Build Status](https://api.travis-ci.org/channingwalton/typeclassopedia.png)](https://api.travis-ci.org/channingwalton/typeclassopedia.png)
+[![Build Status](https://api.travis-ci.org/channingwalton/typeclassopedia.png)](https://travis-ci.org/channingwalton/typeclassopedia)
 
 My tinkering to understand the typeclassopedia.
 
