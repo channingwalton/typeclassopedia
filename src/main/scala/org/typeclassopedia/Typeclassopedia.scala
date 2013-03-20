@@ -1,6 +1,7 @@
 package org.typeclassopedia
 
 import org.typeclassopedia.extras.Validations
+import org.typeclassopedia.std.Implementations
 
 object Typeclassopedia
   extends Applicatives
