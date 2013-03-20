@@ -26,26 +26,39 @@ trait Implementations {
   }
 
   implicit object OptionTraverse extends Traversable[Option] with OptionFunctor with OptionFoldable {
-    def none[X]: Option[X] = None
     def traverse[G[_]: Applicative, A, B](fa: Option[A])(f: A ⇒ G[B]): G[Option[B]] = {
+      val none: Option[B] = None
       val gapp = implicitly[Applicative[G]]
-      fa.fold(gapp.pure(none[B]))(v ⇒ gapp.map(f(v), (b: B) ⇒ Option(b)))
+      fa.fold(gapp.pure(none))(v ⇒ gapp.map(f(v), (b: B) ⇒ Option(b)))
     }
   }
 
-  implicit object ListMonad extends Monad[List] {
+  trait ListFunctor extends Functor[List] {
     def map[A, B](m: List[A], f: A ⇒ B): List[B] = m map f
-    def <*>[A, B](ma: List[A], f: List[A ⇒ B]): List[B] = for (m ← ma; g ← f) yield g(m)
     def point[A](a: ⇒ A) = List(a)
+  }
+
+  implicit object ListMonad extends ListFunctor with Monad[List] {
+    def <*>[A, B](ma: List[A], f: List[A ⇒ B]): List[B] = for (m ← ma; g ← f) yield g(m)
     def flatMap[A, B](ma: List[A], f: A ⇒ List[B]) = ma flatMap f
+  }
+
+  trait ListFoldable extends Foldable[List] with Semigroups {
+    def foldMap[A, B: Monoid](fa: List[A])(f: A ⇒ B): B = fa.foldLeft(implicitly[Monoid[B]].zero)((b, a) ⇒ b |+| f(a))
   }
 
   implicit def listSemigroup[A: Semigroup]: Semigroup[List[A]] = new Semigroup[List[A]] {
     def append(a: List[A], b: List[A]) = a ::: b
   }
 
-  implicit object ListFoldable extends Foldable[List] with Semigroups {
-    def foldMap[A, B: Monoid](fa: List[A])(f: A ⇒ B): B = fa.foldLeft(implicitly[Monoid[B]].zero)((b, a) ⇒ b |+| f(a))
+  implicit object ListTraverse extends Traversable[List] with ListFunctor with ListFoldable {
+    def traverse[G[_]: Applicative, A, B](fa: List[A])(f: A ⇒ G[B]): G[List[B]] = {
+      val nil: List[B] = Nil
+      val gapp = implicitly[Applicative[G]]
+      val lGB: List[G[B]] = fa.map(f)
+      val app = ((a: List[B], b: B) ⇒ b :: a).curried
+      lGB.foldLeft(gapp.point(nil))((acc, gb) ⇒ gapp.<*>(gb, gapp.map(acc, app)))
+    }
   }
 
   implicit object MonoidInt extends Monoid[Int] {
