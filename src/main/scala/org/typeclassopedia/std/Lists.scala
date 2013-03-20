@@ -20,18 +20,18 @@ trait Lists {
     def append(a: List[A], b: List[A]) = a ::: b
   }
 
-  implicit object ListTraverse extends Traversable[List] with ListFunctor with ListFoldable {
+  implicit object ListTraverse extends Traversable[List] with ListFunctor with ListFoldable with Applicatives {
     def traverse[G[_]: Applicative, A, B](fa: List[A])(f: A ⇒ G[B]): G[List[B]] = {
       // a nil of the right type
       val nil: List[B] = Nil
       // an applicative instance for G
       val gapp = implicitly[Applicative[G]]
       //first map fa, a List[A] with g to get a List[G[B]]
-      val lGB: List[G[B]] = fa.map(f)
+      val lGB: List[G[B]] = fa map f
 
       /* now use the applicative for G to fold the list, List[G[B]], to build a G[List[B]] */
       val app = ((a: List[B], b: B) ⇒ a :+ b).curried
-      lGB.foldLeft(gapp.point(nil))((acc, gb) ⇒ gapp.<*>(gb, gapp.map(acc, app)))
+      lGB.foldLeft(gapp.point(nil))((acc, gb) ⇒ gb <*> gapp.map(acc, app))
     }
   }
 }
