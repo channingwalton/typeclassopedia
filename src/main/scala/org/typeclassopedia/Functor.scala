@@ -36,6 +36,7 @@ trait Functors {
    */
   implicit class FunctorOps[F[_]: Functor, T](value: F[T]) {
     def map[B](f: T ⇒ B): F[B] = implicitly[Functor[F]].map(value, f)
+    final def fmap[B](f: T ⇒ B): F[B] = map(f)
   }
 
   /**
