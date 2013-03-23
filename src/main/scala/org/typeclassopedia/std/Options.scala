@@ -14,12 +14,15 @@ trait Options {
     def point[A](a: ⇒ A) = Some(a)
   }
 
+  trait OptionApplicative extends Applicative[Option] {
+    def <*>[A, B](ma: Option[A], f: Option[A ⇒ B]): Option[B] = for (m ← ma; g ← f) yield g(m)
+  }
+
   trait OptionFoldable extends Foldable[Option] {
     def foldMap[A, B](fa: Option[A])(f: A ⇒ B)(implicit F: Monoid[B]): B = fa.fold(F.zero)(f)
   }
 
-  implicit object OptionMonad extends Monad[Option] with OptionFunctor {
-    def <*>[A, B](ma: Option[A], f: Option[A ⇒ B]): Option[B] = for (m ← ma; g ← f) yield g(m)
+  trait OptionMonad extends Monad[Option] with OptionApplicative {
     def flatMap[A, B](ma: Option[A], f: A ⇒ Option[B]) = ma flatMap f
   }
 
@@ -32,11 +35,13 @@ trait Options {
     }
   }
 
-  implicit object OptionTraverse extends Traversable[Option] with OptionFunctor with OptionFoldable {
+  trait OptionTraverse extends Traversable[Option] with OptionFunctor with OptionFoldable {
     def traverse[G[_]: Applicative, A, B](fa: Option[A])(f: A ⇒ G[B]): G[Option[B]] = {
       val none: Option[B] = None
       val gapp = implicitly[Applicative[G]]
       fa.fold(gapp.pure(none))(v ⇒ gapp.map(f(v), (b: B) ⇒ Option(b)))
     }
   }
+
+  implicit object OptionAll extends OptionTraverse with OptionMonad
 }

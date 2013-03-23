@@ -7,8 +7,11 @@ trait Lists {
     def point[A](a: ⇒ A) = List(a)
   }
 
-  implicit object ListMonad extends ListFunctor with Monad[List] {
+  trait ListApplicative extends Applicative[List] {
     def <*>[A, B](ma: List[A], f: List[A ⇒ B]): List[B] = for (m ← ma; g ← f) yield g(m)
+  }
+
+  trait ListMonad extends Monad[List] with ListApplicative {
     def flatMap[A, B](ma: List[A], f: A ⇒ List[B]) = ma flatMap f
   }
 
@@ -20,7 +23,7 @@ trait Lists {
     def append(a: List[A], b: List[A]) = a ::: b
   }
 
-  implicit object ListTraverse extends Traversable[List] with ListFunctor with ListFoldable with Applicatives {
+  trait ListTraverse extends Traversable[List] with ListFunctor with ListFoldable with Applicatives {
     def traverse[G[_]: Applicative, A, B](fa: List[A])(f: A ⇒ G[B]): G[List[B]] = {
       // a nil of the right type
       val nil: List[B] = Nil
@@ -34,4 +37,6 @@ trait Lists {
       lGB.foldLeft(gapp.point(nil))((acc, gb) ⇒ gb <*> gapp.map(acc, app))
     }
   }
+
+  implicit object ListAll extends ListTraverse with ListMonad
 }
