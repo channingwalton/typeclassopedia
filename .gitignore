@@ -9,8 +9,12 @@ src_managed/
 project/boot/
 project/plugins/project/
 
+# emacs specific
+*.*~
+
 # Scala-IDE specific
 .scala_dependencies
 .cache
 .classpath
 .project
+.ensime*

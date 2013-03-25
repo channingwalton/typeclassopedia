@@ -26,10 +26,10 @@ trait Monad[M[_]] extends Applicative[M] {
  */
 trait Monads {
 
-  // enrich a value of M[T] with monadic operations 
+  // enrich a value of M[T] with monadic operations
   implicit class MonadOps[M[_]: Monad, T](value: M[T]) {
     def flatMap[B](f: T ⇒ M[B]): M[B] = implicitly[Monad[M]].flatMap(value, f)
-    // Haskell's 'bind' 
+    // Haskell's 'bind'
     def >>=[B](f: T ⇒ M[B]): M[B] = flatMap(f)
   }
 }

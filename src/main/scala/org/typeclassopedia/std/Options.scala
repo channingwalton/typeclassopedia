@@ -43,5 +43,9 @@ trait Options {
     }
   }
 
+  trait OptionAlternative extends Alternative[Option] {
+    def <|>[A: Monoid](m: M[A], mb: M[A]): M[A]
+  }
+
   implicit object OptionAll extends OptionTraverse with OptionMonad
 }
