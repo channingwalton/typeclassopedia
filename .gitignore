@@ -18,3 +18,7 @@ project/plugins/project/
 .classpath
 .project
 .ensime*
+.settings
+
+# IntelliJ
+.idea*
