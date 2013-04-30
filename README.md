@@ -3,7 +3,7 @@ Typeclassopedia
 
 [![Build Status](https://api.travis-ci.org/channingwalton/typeclassopedia.png)](https://travis-ci.org/channingwalton/typeclassopedia)
 
-This project is the simplest implementation of the Typeclassopedia in Scala.
+This project aims to be the simplest implementation of the Typeclassopedia in Scala.
 (If you find a simpler way to express something then please report it or send a pull request.)
 
 Some people learn better by seeing things in code, with examples, which is why I started doing this.
