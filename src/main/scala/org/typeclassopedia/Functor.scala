@@ -3,26 +3,17 @@ package org.typeclassopedia
 /**
  *   The concept of a Functor.
  *   A functor is something that applies a simple function, A ⇒ B, to some F[A] to yield an F[B].
- *   You will be know this as the map method on collection types and Option. Sometimes,
+ *   You will know this as the map method on collection types. Sometimes,
  *   you will see map called fmap.
  *
  *  There are a couple of laws associated with a Functor, F:
  *  <ul>
- *  <li>F map identity is F</li>
+ *  <li>F map identity == F</li>
  *  <li>Given two functions, g and h, F map (g andThen h) == (F map g) map h</li>
  *  </ul>
  */
 trait Functor[F[_]] {
   def map[A, B](m: F[A], f: A ⇒ B): F[B]
-
-  /**
-   * Point creates an F[A] given an A
-   */
-  def point[A](a: ⇒ A): F[A]
-  /**
-   *   An alias for point
-   */
-  final def pure[A](a: ⇒ A): F[A] = point(a)
 }
 
 /**
@@ -39,10 +30,4 @@ trait Functors {
     final def fmap[B](f: T ⇒ B): F[B] = map(f)
   }
 
-  /**
-   *  Wrap a simple type in a Functor F
-   */
-  implicit class FunctorValueOps[T](value: T) {
-    def pure[F[_]: Functor]: F[T] = implicitly[Functor[F]].pure(value)
-  }
 }

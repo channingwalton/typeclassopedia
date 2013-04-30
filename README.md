@@ -3,7 +3,14 @@ Typeclassopedia
 
 [![Build Status](https://api.travis-ci.org/channingwalton/typeclassopedia.png)](https://travis-ci.org/channingwalton/typeclassopedia)
 
-My tinkering to understand the typeclassopedia.
+This project is the simplest implementation of the Typeclassopedia in Scala.
+(If you find a simpler way to express something then please report it or send a pull request.)
+
+Some people learn better by seeing things in code, with examples, which is why I started doing this.
+The tests are intended to be examples using typical types like Option and List, but also a custom type, Blub, to show that new types can make use of the type classes defined here.
+
+How to Start
+------------
 
 I suggest you start with Functor as it is the simplest class to study, then Applicative, Monad and Semigroup. 
 But before you do any of that, you need to understand [typeclasses in scala](http://www.casualmiracles.com/2012/05/03/a-small-example-of-the-typeclass-pattern-in-scala/).

@@ -13,7 +13,7 @@ package org.typeclassopedia
  *   Give an Applicative x: X, x map g == x <*> X.pure(g)
  *   </pre>
  */
-trait Applicative[M[_]] extends Functor[M] {
+trait Applicative[M[_]] extends Pointed[M] {
   def <*>[A, B](m: M[A], f: M[A ⇒ B]): M[B]
 }
 
