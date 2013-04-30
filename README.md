@@ -17,6 +17,15 @@ But before you do any of that, you need to understand [typeclasses in scala](htt
 
 The tests serve as examples of use.
 
+Exercises
+---------
+There is only one exercise. 
+
+1. Check out the project
+1. Delete src/main/scala/org/typeclassopedia/std
+1. Delete src/test/scala/org/typeclassopedia/Blub.scala (except for the case class itself)
+1. Make all the tests pass again
+
 Further Reading
 -------------------
 * This project contains a copy of *The Monad.Reader Issue 13*  containing Brent Yorgey's *The Typeclassopedia* which provides descriptions of all the types defined here.
