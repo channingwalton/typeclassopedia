@@ -11,7 +11,10 @@ trait Options {
 
   trait OptionFunctor extends Functor[Option] {
     def map[A, B](m: Option[A], f: A ⇒ B): Option[B] = m map f
-    def point[A](a: ⇒ A) = Some(a)
+  }
+
+  trait OptionPointed extends Pointed[Option] {
+    def point[A](a: ⇒ A): Option[A] = Some(a)
   }
 
   trait OptionApplicative extends Applicative[Option] {
@@ -43,5 +46,5 @@ trait Options {
     }
   }
 
-  implicit object OptionAll extends OptionTraverse with OptionMonad
+  implicit object OptionAll extends OptionPointed with OptionTraverse with OptionMonad
 }

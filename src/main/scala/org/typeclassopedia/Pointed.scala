@@ -1,5 +1,9 @@
 package org.typeclassopedia
 
+/**
+ * The Pointed type class represents pointed functors.
+ * The Pointed class represents the additional ability to put a value into a default context.
+ */
 trait Pointed[P[_]] extends Functor[P] {
 
   /**

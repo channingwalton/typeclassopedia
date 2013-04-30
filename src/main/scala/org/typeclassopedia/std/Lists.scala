@@ -4,6 +4,9 @@ package std
 trait Lists {
   trait ListFunctor extends Functor[List] {
     def map[A, B](m: List[A], f: A ⇒ B): List[B] = m map f
+  }
+
+  trait ListPointed extends Pointed[List] {
     def point[A](a: ⇒ A) = List(a)
   }
 
@@ -38,5 +41,5 @@ trait Lists {
     }
   }
 
-  implicit object ListAll extends ListTraverse with ListMonad
+  implicit object ListAll extends ListPointed with ListTraverse with ListMonad
 }

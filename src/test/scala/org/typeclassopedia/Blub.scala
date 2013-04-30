@@ -6,6 +6,9 @@ object Blub {
 
   trait BlubFunctor extends Functor[Blub] {
     def map[A, B](m: Blub[A], f: A ⇒ B): Blub[B] = Blub(f(m.v))
+  }
+
+  trait BlubPointed extends Pointed[Blub] {
     def point[A](a: ⇒ A) = Blub(a)
   }
 
@@ -27,5 +30,5 @@ object Blub {
     }
   }
 
-  implicit object Blubbed extends BlubTraversable with BlubMonad
+  implicit object Blubbed extends BlubPointed with BlubTraversable with BlubMonad
 }
