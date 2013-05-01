@@ -16,3 +16,10 @@ trait Category[~>[_, _]] {
 
   def compose[A, B, C](f: B ~> C, g: A ~> B): A ~> C
 }
+
+trait Categories {
+  implicit class CategoryOps[~>[_, _]: Category, B, C](c: B ~> C) {
+    def compose[A](g: A ~> B): A ~> C = implicitly[Category[~>]].compose(c, g)
+    def <<<[A](g: A ~> B): A ~> C = compose(g)
+  }
+}

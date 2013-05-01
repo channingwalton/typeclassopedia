@@ -12,4 +12,5 @@ object Typeclassopedia
   with Foldables
   with Validations
   with Traversables
+  with Categories
   with Implementations

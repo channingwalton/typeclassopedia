@@ -32,3 +32,9 @@ trait Arrow[~>[_, _]] extends Category[~>] {
     compose(second[C, D, B](g), first[A, B, C](f))
 
 }
+
+trait Arrows {
+  implicit class ArrowOps[~>[_, _]: Arrow, B, C](arrow: B ~> C) {
+    def first[D] = implicitly[Arrow[~>]].first(arrow)
+  }
+}
