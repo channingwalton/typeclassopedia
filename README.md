@@ -3,7 +3,7 @@ Typeclassopedia
 
 [![Build Status](https://api.travis-ci.org/channingwalton/typeclassopedia.png)](https://travis-ci.org/channingwalton/typeclassopedia)
 
-This project is the simplest implementation of the Typeclassopedia in Scala.
+This project aims to be the simplest implementation of the Typeclassopedia in Scala.
 (If you find a simpler way to express something then please report it or send a pull request.)
 
 Some people learn better by seeing things in code, with examples, which is why I started doing this.
@@ -16,6 +16,15 @@ I suggest you start with Functor as it is the simplest class to study, then Appl
 But before you do any of that, you need to understand [typeclasses in scala](http://www.casualmiracles.com/2012/05/03/a-small-example-of-the-typeclass-pattern-in-scala/).
 
 The tests serve as examples of use.
+
+Exercises
+---------
+There is only one exercise. 
+
+1. Check out the project
+1. Delete src/main/scala/org/typeclassopedia/std
+1. Delete src/test/scala/org/typeclassopedia/Blub.scala (except for the case class itself)
+1. Make all the tests pass again
 
 Further Reading
 -------------------
