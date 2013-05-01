@@ -17,6 +17,8 @@ But before you do any of that, you need to understand [typeclasses in scala](htt
 
 The tests serve as examples of use.
 
+Also, before attempting to grok Category and its subtypes (Arrow), read [Introduction to Category Theory in Scala](http://hseeberger.wordpress.com/2010/11/25/introduction-to-category-theory-in-scala/) by Heiko Seeberger.
+
 Exercises
 ---------
 There is only one exercise. 
@@ -38,6 +40,7 @@ Further Reading
 * [Learning Scalaz](http://eed3si9n.com/learning-scalaz-day1) by [Eugene Yokota](https://twitter.com/eed3si9n)
 * [Small (scala) examples](http://www.casualmiracles.com/category/small-examples/) by [me](https://twitter.com/channingwalton)
 * [Applicative Programming with Effects](http://www.soi.city.ac.uk/~ross/papers/Applicative.html) McBride and Paterson’s classic paper
+* [Introduction to Category Theory in Scala](http://hseeberger.wordpress.com/2010/11/25/introduction-to-category-theory-in-scala/) by Heiko Seeberger
 
 Books
 -------
