@@ -28,7 +28,7 @@ trait Arrow[~>[_, _]] extends Category[~>] {
   /**
    * Borrowed from scalaz.
    */
-  def split[A, B, C, D](f: A ~> B, g: C ~> D): ((A, C) ~> (B, D)) =
+  private def split[A, B, C, D](f: A ~> B, g: C ~> D): ((A, C) ~> (B, D)) =
     compose(second[C, D, B](g), first[A, B, C](f))
 
 }
