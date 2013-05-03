@@ -7,6 +7,7 @@ class ArrowSpec extends FlatSpec {
 
   val f = (x: Int) => (x * 7).toString
   val g = (s: String) => s.toUpperCase
+  val h = (x: Int) => x / 2
 
   "Arrow" should "first" in {
     assert(f.first((3, 1)) ===("21", 1))
@@ -16,8 +17,12 @@ class ArrowSpec extends FlatSpec {
     assert(f.second((1, 3)) ===(1, "21"))
   }
 
-  it should "*** (compose)" in {
+  it should "***" in {
     assert((f *** g)((2, "hello")) ===("14", "HELLO"))
+  }
+
+  it should "&&&" in {
+    assert((f &&& h)((2)) ===("14", 1))
   }
 
 }

@@ -41,6 +41,8 @@ trait Arrows {
     def second[D]: (D, B) ~> (D, C) = implicitly[Arrow[~>]].second(arrow)
 
     def ***[B2, C2](fbc2: B2 ~> C2): (B, B2) ~> (C, C2) = implicitly[Arrow[~>]].***(arrow, fbc2)
+
+    def &&&[C2](fbc2: B ~> C2): B ~> (C, C2) = implicitly[Arrow[~>]].&&&(arrow, fbc2)
   }
 
 }
