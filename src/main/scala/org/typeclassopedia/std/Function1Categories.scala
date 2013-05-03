@@ -15,4 +15,5 @@ trait Function1Categories {
 
     def first[B, C, D](b: B => C): ((B, D)) => (C, D) = (bd: (B, D)) => (b(bd._1), bd._2)
   }
+
 }
