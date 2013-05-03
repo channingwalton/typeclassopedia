@@ -13,4 +13,5 @@ object Typeclassopedia
   with Validations
   with Traversables
   with Categories
+  with Arrows
   with Implementations

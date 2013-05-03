@@ -35,6 +35,7 @@ trait Arrow[~>[_, _]] extends Category[~>] {
 
 trait Arrows {
   implicit class ArrowOps[~>[_, _]: Arrow, B, C](arrow: B ~> C) {
-    def first[D] = implicitly[Arrow[~>]].first(arrow)
+    def first[D]: ~>[(B, D), (C, D)] = implicitly[Arrow[~>]].first(arrow)
+    def second[D]: (D, B) ~> (D, C) = implicitly[Arrow[~>]].second(arrow)
   }
 }

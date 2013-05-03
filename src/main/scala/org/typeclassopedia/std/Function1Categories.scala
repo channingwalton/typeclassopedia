@@ -11,8 +11,8 @@ trait Function1Categories {
   }
 
   implicit object Function1Arrow extends Function1Category with Arrow[Function1] {
-    def arr[B, C](f: B => C) = f
+    def arr[B, C](f: B => C): B => C = f
 
-    def first[B, C, D](b: B => C) = (bd: (B, D)) => (b(bd._1), bd._2)
+    def first[B, C, D](b: B => C): ((B, D)) => (C, D) = (bd: (B, D)) => (b(bd._1), bd._2)
   }
 }
