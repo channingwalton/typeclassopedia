@@ -22,7 +22,7 @@ class ArrowSpec extends FlatSpec {
   }
 
   it should "&&&" in {
-    assert((f &&& h)((2)) ===("14", 1))
+    assert((f &&& h)(2) ===("14", 1))
   }
 
 }
