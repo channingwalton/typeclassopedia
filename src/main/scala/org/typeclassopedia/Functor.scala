@@ -23,7 +23,7 @@ trait Functor[F[_]] {
 trait Functors {
 
   /**
-   * Add a map method to some F[_], delegating to a Functor[F] map method.
+   * Add a map method to some F[_], delegating to an implicit Functor[F] map method.
    */
   implicit class FunctorOps[F[_]: Functor, T](value: F[T]) {
     def map[B](f: T ⇒ B): F[B] = implicitly[Functor[F]].map(value, f)
