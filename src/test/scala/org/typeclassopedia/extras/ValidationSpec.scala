@@ -16,10 +16,6 @@ class ValidationSpec extends FlatSpec {
 
   "Validation" should "be an applicative" in assert((v <*> f) === Success(6))
   it should "deal with failure" in assert((e <*> f) === Failure("no."))
-  it should "use an applicative builder to apply a function" in assert(((v |@| v) {
-    _ - _
-  }) === Success(0))
-  it should "use an applicative builder and accumulate failure" in assert(((e |@| e |@| v) {
-    _ + _ + _
-  }) === Failure("no.no."))
+  it should "use an applicative builder to apply a function" in assert(((v |@| v) { _ - _ }) === Success(0))
+  it should "use an applicative builder and accumulate failure" in assert(((e |@| e |@| v) { _ + _ + _ }) === Failure("no.no."))
 }
