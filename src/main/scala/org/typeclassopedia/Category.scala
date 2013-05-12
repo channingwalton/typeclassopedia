@@ -3,7 +3,7 @@ package org.typeclassopedia
 /**
  * A Category generalizes the notion of function composition to general morphisms.
  *
- * Recall that a type parameterised by two types can be used in infix notation.
+ * Recall that a type parameterised by two types can be used in infix position.
  * So the ~>[_, _] below can be used like this:  A ~> B which is the same as ~>[A, B].
  * It is convenient to use the type in infix position to convey the idea of a morphism.
  *
@@ -18,8 +18,11 @@ trait Category[~>[_, _]] {
 }
 
 trait Categories {
-  implicit class CategoryOps[~>[_, _]: Category, B, C](c: B ~> C) {
+
+  implicit class CategoryOps[~>[_, _] : Category, B, C](c: B ~> C) {
     def compose[A](g: A ~> B): A ~> C = implicitly[Category[~>]].compose(c, g)
+
     def <<<[A](g: A ~> B): A ~> C = compose(g)
   }
+
 }

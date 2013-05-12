@@ -25,10 +25,11 @@ object Blub {
   }
 
   trait BlubTraversable extends Traversable[Blub] with BlubFunctor with BlubFoldable {
-    def traverse[G[_]: Applicative, A, B](fa: Blub[A])(f: A ⇒ G[B]): G[Blub[B]] = {
+    def traverse[G[_] : Applicative, A, B](fa: Blub[A])(f: A ⇒ G[B]): G[Blub[B]] = {
       implicitly[Applicative[G]].map(f(fa.v), Blub apply)
     }
   }
 
   implicit object Blubbed extends BlubPointed with BlubTraversable with BlubMonad
+
 }

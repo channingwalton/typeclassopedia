@@ -12,6 +12,7 @@ trait Semigroup[T] {
  * Implicits to help working with semigroups.
  */
 trait Semigroups {
+
   /**
    * Lift an instance into a Semigroup.
    */
@@ -28,4 +29,5 @@ trait Semigroups {
      */
     final def ⊕(b: T) = append(b)
   }
+
 }

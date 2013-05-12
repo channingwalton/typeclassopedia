@@ -1,11 +1,12 @@
 package org.typeclassopedia
 
-import org.scalatest._
 import Typeclassopedia._
+import org.scalatest._
 
 class ApplicativeSpec extends FlatSpec {
 
   val addInts = ((a: Int, b: Int, c: Int) ⇒ a + b + c).curried
+
   def X2 = (_: Int) * 2
 
   "An applicative" should "<*>" in assert(1.some <*> (2.some <*> (3.some map addInts)) === Some(6))

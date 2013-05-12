@@ -6,15 +6,10 @@ trait Kleisli[M[+ _], -A, +B] {
 
   def runKleisli(a: A): M[B]
 
-  def >=>[C](k: Kleisli[M, B, C])(implicit b: Monad[M]): Kleisli[M, A, C] = kleisli((a: A) => b.flatMap(runKleisli(a), k.runKleisli(_: B)))
-}
+  final def apply(a: A): M[B] = runKleisli(a)
 
-/*
-instance Monad m => Arrow (Kleisli m) where
-   arr f = Kleisli (return . f)
-   first (Kleisli f) = Kleisli (\ ~(b,d) -> do c <- f b
-return (c,d) )
-*/
+  final def >=>[C](k: Kleisli[M, B, C])(implicit b: Monad[M]): Kleisli[M, A, C] = kleisli((a: A) => b.flatMap(runKleisli(a), k.runKleisli(_: B)))
+}
 
 trait KleisliArrow[M[+ _]] extends Arrow[({type λ[α, β] = Kleisli[M, α, β]})#λ] with Kleislis {
 
@@ -32,7 +27,7 @@ trait KleisliArrow[M[+ _]] extends Arrow[({type λ[α, β] = Kleisli[M, α, β]}
 }
 
 trait Kleislis {
-  def kleisli[M[+ _], A, B](f: A => M[B]): Kleisli[M, A, B] = new Kleisli[M, A, B] {
+  implicit def kleisli[M[+ _], A, B](f: A => M[B]): Kleisli[M, A, B] = new Kleisli[M, A, B] {
     def runKleisli(a: A) = f(a)
   }
 }

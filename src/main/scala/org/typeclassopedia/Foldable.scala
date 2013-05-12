@@ -5,7 +5,9 @@ trait Foldable[F[_]] {
 }
 
 trait Foldables {
-  implicit class FoldableOps[M[_]: Foldable, A](value: M[A]) {
+
+  implicit class FoldableOps[M[_] : Foldable, A](value: M[A]) {
     def foldMap[B: Monoid](f: A ⇒ B): B = implicitly[Foldable[M]].foldMap(value)(f)
   }
+
 }

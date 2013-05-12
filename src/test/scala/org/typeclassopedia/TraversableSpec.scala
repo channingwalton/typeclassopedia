@@ -1,7 +1,7 @@
 package org.typeclassopedia
 
-import org.scalatest._
 import Typeclassopedia._
+import org.scalatest._
 
 class TraversableSpec extends FlatSpec {
 

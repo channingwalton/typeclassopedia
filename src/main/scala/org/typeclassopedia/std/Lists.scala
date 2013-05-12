@@ -2,6 +2,7 @@ package org.typeclassopedia
 package std
 
 trait Lists {
+
   trait ListFunctor extends Functor[List] {
     def map[A, B](m: List[A], f: A ⇒ B): List[B] = m map f
   }
@@ -27,7 +28,7 @@ trait Lists {
   }
 
   trait ListTraverse extends Traversable[List] with ListFunctor with ListFoldable with Applicatives {
-    def traverse[G[_]: Applicative, A, B](fa: List[A])(f: A ⇒ G[B]): G[List[B]] = {
+    def traverse[G[_] : Applicative, A, B](fa: List[A])(f: A ⇒ G[B]): G[List[B]] = {
       // a nil of the right type
       val nil: List[B] = Nil
       // an applicative instance for G
@@ -42,4 +43,5 @@ trait Lists {
   }
 
   implicit object ListAll extends ListPointed with ListTraverse with ListMonad
+
 }

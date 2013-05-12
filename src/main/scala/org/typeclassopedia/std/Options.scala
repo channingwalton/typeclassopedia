@@ -32,14 +32,14 @@ trait Options {
   implicit def optionSemigroup[A: Semigroup]: Semigroup[Option[A]] = new Semigroup[Option[A]] {
     def append(a: Option[A], b: Option[A]) = (a, b) match {
       case (Some(a1), Some(a2)) ⇒ Some(implicitly[Semigroup[A]].append(a1, a2))
-      case (Some(a1), None)     ⇒ a
-      case (None, Some(a2))     ⇒ b
-      case (None, None)         ⇒ None
+      case (Some(a1), None) ⇒ a
+      case (None, Some(a2)) ⇒ b
+      case (None, None) ⇒ None
     }
   }
 
   trait OptionTraverse extends Traversable[Option] with OptionFunctor with OptionFoldable {
-    def traverse[G[_]: Applicative, A, B](fa: Option[A])(f: A ⇒ G[B]): G[Option[B]] = {
+    def traverse[G[_] : Applicative, A, B](fa: Option[A])(f: A ⇒ G[B]): G[Option[B]] = {
       val none: Option[B] = None
       val gapp = implicitly[Applicative[G]]
       fa.fold(gapp.pure(none))(v ⇒ gapp.map(f(v), (b: B) ⇒ Option(b)))
@@ -47,4 +47,5 @@ trait Options {
   }
 
   implicit object OptionAll extends OptionPointed with OptionTraverse with OptionMonad
+
 }
