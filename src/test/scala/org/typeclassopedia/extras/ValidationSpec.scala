@@ -2,6 +2,7 @@ package org.typeclassopedia.extras
 
 import org.scalatest._
 import org.typeclassopedia.Applicative
+import org.typeclassopedia.Typeclassopedia._
 
 class ValidationSpec extends FlatSpec {
 
