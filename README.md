@@ -12,12 +12,16 @@ The tests are intended to be examples using typical types like Option and List, 
 How to Start
 ------------
 
-I suggest you start with Functor as it is the simplest class to study, then Applicative, Monad and Semigroup. 
+I suggest you start with Functor as it is the simplest class to study, then Applicative, Monad, Semigroup and Monoid.
+Then have a look at Validation which is not part of the Typeclassopedia but its useful.
+
+Do not start with Category, Arrow and Kleisli unless you've understood the above.
+
 But before you do any of that, you need to understand [typeclasses in scala](http://www.casualmiracles.com/2012/05/03/a-small-example-of-the-typeclass-pattern-in-scala/).
 
 The tests serve as examples of use.
 
-Also, before attempting to grok Category and its subtypes (Arrow), read [Introduction to Category Theory in Scala](http://hseeberger.wordpress.com/2010/11/25/introduction-to-category-theory-in-scala/) by Heiko Seeberger.
+Before attempting to grok Category and its subtypes (Arrow), read [Introduction to Category Theory in Scala](http://hseeberger.wordpress.com/2010/11/25/introduction-to-category-theory-in-scala/) by Heiko Seeberger.
 
 Exercises
 ---------
