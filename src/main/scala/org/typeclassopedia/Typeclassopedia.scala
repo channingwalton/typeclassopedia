@@ -14,4 +14,5 @@ object Typeclassopedia
   with Traversables
   with Categories
   with Arrows
+  with Kleislis
   with Implementations
