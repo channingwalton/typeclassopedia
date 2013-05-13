@@ -30,4 +30,9 @@ trait Kleislis {
   implicit def kleisli[M[+ _], A, B](f: A => M[B]): Kleisli[M, A, B] = new Kleisli[M, A, B] {
     def runKleisli(a: A) = f(a)
   }
+
+  def liftKleisliArrow[M[+_]: Monad] = new KleisliArrow[M] {
+    def Monad: Monad[M] = implicitly[Monad[M]]
+  }
+
 }

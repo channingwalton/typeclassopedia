@@ -11,4 +11,5 @@ class KleisliSpec extends FlatSpec {
     val root4 = sqrt >=> sqrt
     assert(root4(16) === Some(2))
   }
+
 }
