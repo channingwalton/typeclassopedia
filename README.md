@@ -17,7 +17,7 @@ Then have a look at Validation which is not part of the Typeclassopedia but its 
 
 Do not start with Category, Arrow and Kleisli unless you've understood the above.
 
-But before you do any of that, you need to understand [typeclasses in scala](http://www.casualmiracles.com/2012/05/03/a-small-example-of-the-typeclass-pattern-in-scala/).
+But before you do any of that, you need to understand [type classes in scala](http://www.casualmiracles.com/2012/05/03/a-small-example-of-the-typeclass-pattern-in-scala/).
 
 The tests serve as examples of use.
 
