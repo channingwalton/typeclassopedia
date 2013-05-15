@@ -5,7 +5,7 @@ import org.scalatest._
 
 class KleisliSpec extends FlatSpec {
 
-  val sqrt = (n: Double) => if (n >= 0) Some(math.sqrt(n)) else None
+  val sqrt = (n: Double) ⇒ if (n >= 0) Some(math.sqrt(n)) else None
 
   "Kleisli" should "compose" in {
     val root4 = sqrt >=> sqrt

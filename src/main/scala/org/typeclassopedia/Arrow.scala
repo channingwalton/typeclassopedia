@@ -7,13 +7,13 @@ package org.typeclassopedia
  */
 trait Arrow[~>[_, _]] extends Category[~>] {
 
-  def arr[B, C](f: B => C): B ~> C
+  def arr[B, C](f: B ⇒ C): B ~> C
 
   def first[B, C, D](f: B ~> C): (B, D) ~> (C, D)
 
   def second[A, B, C](f: A ~> B): (C, A) ~> (C, B) = {
     def swap[X, Y] = arr[(X, Y), (Y, X)] {
-      case (x, y) => (y, x)
+      case (x, y) ⇒ (y, x)
     }
 
     compose(swap, compose(first[A, B, C](f), swap))
@@ -23,7 +23,7 @@ trait Arrow[~>[_, _]] extends Category[~>] {
     compose(second[B2, C2, C](fbc2), first[B, C, B2](fbc))
 
   def &&&[B, C, C2](fbc: B ~> C, fbc2: B ~> C2): B ~> (C, C2) =
-    compose(split(fbc, fbc2), arr((b: B) => (b, b)))
+    compose(split(fbc, fbc2), arr((b: B) ⇒ (b, b)))
 
   /**
    * Borrowed from scalaz.

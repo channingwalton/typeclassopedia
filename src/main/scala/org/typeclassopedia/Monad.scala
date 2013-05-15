@@ -7,7 +7,7 @@ package org.typeclassopedia
  *
  * Monads also have a few laws:
  * <ul>
- * <li> M.pure(x).flatMap(k) == k(x) where x is a function A => M[B]
+ * <li> M.pure(x).flatMap(k) == k(x) where x is a function A⇒ M[B]
  * </ul>
  */
 trait Monad[M[_]] extends Applicative[M] {

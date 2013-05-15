@@ -5,15 +5,15 @@ import org.typeclassopedia.{Category, Arrow}
 trait Function1Categories {
 
   trait Function1Category extends Category[Function1] {
-    def id[A]: A => A = identity
+    def id[A]: A ⇒ A = identity
 
-    def compose[A, B, C](f: B => C, g: A => B): A => C = f compose g
+    def compose[A, B, C](f: B ⇒ C, g: A ⇒ B): A ⇒ C = f compose g
   }
 
   implicit object Function1Arrow extends Function1Category with Arrow[Function1] {
-    def arr[B, C](f: B => C): B => C = f
+    def arr[B, C](f: B ⇒ C): B ⇒ C = f
 
-    def first[B, C, D](b: B => C): ((B, D)) => (C, D) = (bd: (B, D)) => (b(bd._1), bd._2)
+    def first[B, C, D](b: B ⇒ C): ((B, D)) ⇒ (C, D) = (bd: (B, D)) ⇒ (b(bd._1), bd._2)
   }
 
 }

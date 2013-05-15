@@ -5,9 +5,9 @@ import org.scalatest._
 
 class ArrowSpec extends FlatSpec {
 
-  val f = (x: Int) => (x * 7).toString
-  val g = (s: String) => s.toUpperCase
-  val h = (x: Int) => x / 2
+  val f = (x: Int) ⇒ (x * 7).toString
+  val g = (s: String) ⇒ s.toUpperCase
+  val h = (x: Int) ⇒ x / 2
 
   "Arrow" should "first" in {
     assert(f.first((3, 1)) ===("21", 1))

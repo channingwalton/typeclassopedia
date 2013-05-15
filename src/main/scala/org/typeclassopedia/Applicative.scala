@@ -30,7 +30,7 @@ trait Applicatives {
      * This method simplifies working with applicatives.
      * For example, instead of
      * {{{
-     * val addInts = ( (a:Int, b:Int, c:Int) => a + b + c ).curried
+     * val addInts = ( (a:Int, b:Int, c:Int)⇒ a + b + c ).curried
      * val sum = x <*> (y <*> (z map addInts))
      * }}}
      * do
