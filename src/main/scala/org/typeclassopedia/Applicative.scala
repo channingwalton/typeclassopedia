@@ -6,7 +6,7 @@ package org.typeclassopedia
  * <pre>
  * Recall that Functor allows us to lift a “normal” function to a function on computational contexts.
  * But fmap [map] doesn't allow us to apply a function which is itself in a context to a value in another context.
- * Applicative gives us just such a tool. … Note that every Applicative must also be a Functor.
+ * Applicative gives us just such a tool. Note that every Applicative must also be a Functor.
  * </pre>
  * There is a law associated with Applicatives which states
  * <pre>
@@ -48,8 +48,14 @@ trait Applicatives {
 
     class ApplicativeBuilder3[C](c: M[C]) {
       def apply[D](f: (A, B, C) ⇒ D): M[D] = c <*> (b <*> (implicitly[Functor[M]].map(a, f.curried)))
+
+      class ApplicativeBuilder4[D](d: M[D]) {
+        def apply[E](f: (A, B, C, D) ⇒ E): M[E] = d <*> (c <*> (b <*> (implicitly[Functor[M]].map(a, f.curried))))
+      }
+
     }
 
+    // Continue the pattern for ApplicativeBuilder4/5/…
   }
 
 }
