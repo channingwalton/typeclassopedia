@@ -8,7 +8,7 @@ package org.typeclassopedia
  *
  * There are a couple of laws associated with a Functor, F:
  * <ul>
- * <li>F map identity == F</li>
+ * <li>F map identity == F, where <i>identity</i> is the identity function</li>
  * <li>Given two functions, g and h, F map (g andThen h) == (F map g) map h</li>
  * </ul>
  */

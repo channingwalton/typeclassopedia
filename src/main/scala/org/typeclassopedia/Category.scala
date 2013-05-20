@@ -23,6 +23,8 @@ trait Categories {
     def compose[A](g: A ~> B): A ~> C = implicitly[Category[~>]].compose(c, g)
 
     def <<<[A](g: A ~> B): A ~> C = compose(g)
+
+    def >>>[D](g: C ~> D): B ~> D = g <<< c
   }
 
 }

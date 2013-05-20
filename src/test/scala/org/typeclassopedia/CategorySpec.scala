@@ -11,5 +11,6 @@ class CategorySpec extends FlatSpec {
   "A category" should "compose" in {
     // use the <<< method to avoid confusion with Function1.compose
     assert((g <<< f apply 33) === 132)
+    assert((f >>> g apply 33) === 132)
   }
 }
