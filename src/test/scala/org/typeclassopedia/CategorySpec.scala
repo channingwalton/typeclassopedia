@@ -9,7 +9,6 @@ class CategorySpec extends FlatSpec {
   val g = (s: String) ⇒ s.reverse.toInt
 
   "A category" should "compose" in {
-    // use the <<< method to avoid confusion with Function1.compose
     assert((g <<< f apply 33) === 132)
     assert((f >>> g apply 33) === 132)
   }
