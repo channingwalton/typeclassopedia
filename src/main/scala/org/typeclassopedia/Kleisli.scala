@@ -29,7 +29,7 @@ trait KleisliArrow[M[+ _]] extends KleisliCategory[M] with Arrow[({type λ[α, �
   }
 }
 
-trait Kleislis {
+trait Kleislis extends Arrows {
   implicit def kleisli[M[+ _], A, B](f: A ⇒ M[B]): Kleisli[M, A, B] = new Kleisli[M, A, B] {
     def runKleisli(a: A) = f(a)
   }
@@ -38,9 +38,7 @@ trait Kleislis {
     implicit def Monad: Monad[F] = F0
   }
 
-  implicit class KleisliArrowOps[M[+_]: Monad, A, B](k: Kleisli[M, A, B]) {
-    val arrow = implicitly[KleisliArrow[M]]
-
-    def first[C]: Kleisli[M, (A, C), (B, C)] = arrow.first(k)
+  implicit class KleisliArrowOps[M[+_]: Monad, A, B](val arrow: Kleisli[M, A, B]) extends ArrowOps[({type λ[α, β] = Kleisli[M, α, β]})#λ, A, B] {
+    val arrowC = implicitly[KleisliArrow[M]]
   }
 }

@@ -35,8 +35,9 @@ trait Arrow[~>[_, _]] extends Category[~>] {
 
 trait Arrows {
 
-  implicit class ArrowOps[~>[_, _] : Arrow, B, C](arrow: B ~> C) {
-    val arrowC = implicitly[Arrow[~>]]
+  trait ArrowOps[~>[_, _], B, C] {
+    implicit def arrowC: Arrow[~>]
+    def arrow: B ~> C
 
     def first[D]: ~>[(B, D), (C, D)] = arrowC.first(arrow)
 
@@ -45,6 +46,10 @@ trait Arrows {
     def ***[B2, C2](fbc2: B2 ~> C2): (B, B2) ~> (C, C2) = arrowC.***(arrow, fbc2)
 
     def &&&[C2](fbc2: B ~> C2): B ~> (C, C2) = arrowC.&&&(arrow, fbc2)
+  }
+
+  implicit class ArrowOpsInstance[~>[_, _] : Arrow, B, C](val arrow: B ~> C) extends ArrowOps[~>, B, C] {
+    val arrowC: Arrow[~>] = implicitly[Arrow[~>]]
   }
 
 }
