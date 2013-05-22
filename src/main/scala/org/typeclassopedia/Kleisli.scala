@@ -33,4 +33,14 @@ trait Kleislis {
   implicit def kleisli[M[+ _], A, B](f: A ⇒ M[B]): Kleisli[M, A, B] = new Kleisli[M, A, B] {
     def runKleisli(a: A) = f(a)
   }
+
+  implicit def kleisliArrow[F[+_]](implicit F0: Monad[F]) = new KleisliArrow[F] {
+    implicit def Monad: Monad[F] = F0
+  }
+
+  implicit class KleisliArrowOps[M[+_]: Monad, A, B](k: Kleisli[M, A, B]) {
+    val arrow = implicitly[KleisliArrow[M]]
+
+    def first[C]: Kleisli[M, (A, C), (B, C)] = arrow.first(k)
+  }
 }
