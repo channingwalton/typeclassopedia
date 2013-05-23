@@ -6,8 +6,8 @@ import org.scalatest._
 class KleisliSpec extends FlatSpec {
 
   val sqrt = (n: Double) ⇒ if (n >= 0) Some(math.sqrt(n)) else None
-  val times2 = (n: Double) => (2 * n).some
-  val double = (s: String) => (s + s).some
+  val times2 = (n: Double) ⇒ (2 * n).some
+  val double = (s: String) ⇒ (s + s).some
 
   "Kleisli" should "compose functions" in {
     val root4 = sqrt >=> sqrt
