@@ -1,6 +1,6 @@
 package org.typeclassopedia.std
 
-import org.typeclassopedia.{ArrowChoice, Category, Arrow}
+import org.typeclassopedia.{ArrowChoice, Category}
 
 trait Function1Categories {
 
