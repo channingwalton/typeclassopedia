@@ -10,7 +10,7 @@ trait Function1Categories {
     def compose[A, B, C](f: B ⇒ C, g: A ⇒ B): A ⇒ C = f compose g
   }
 
-  trait Function1Arrow extends Arrow[Function1] {
+  trait Function1Arrow extends ArrowChoice[Function1] {
     def arr[B, C](f: B ⇒ C): B ⇒ C = f
 
     def first[B, C, D](b: B ⇒ C): ((B, D)) ⇒ (C, D) = (bd: (B, D)) ⇒ (b(bd._1), bd._2)
@@ -38,6 +38,6 @@ trait Function1Categories {
     }
   }
 
-  implicit object Function1Arrow extends Function1Category with Function1Arrow with Function1Choice
+  implicit object Function1Arrows extends Function1Category with Function1Arrow with Function1Choice
 
 }

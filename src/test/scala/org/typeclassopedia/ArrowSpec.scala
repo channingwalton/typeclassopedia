@@ -28,7 +28,7 @@ class ArrowSpec extends FlatSpec {
   "it" should "obey the identity law" in {
     val id = (a: Int) ⇒ a
 
-    assert(Function1Arrow.arr(id) === id)
+    assert(Function1Arrows.arr(id) === id)
   }
 
 }
