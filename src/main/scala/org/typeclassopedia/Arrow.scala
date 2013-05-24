@@ -19,17 +19,14 @@ trait Arrow[~>[_, _]] extends Category[~>] {
     compose(swap, compose(first[A, B, C](f), swap))
   }
 
-  def ***[B, C, B2, C2](fbc: B ~> C, fbc2: B2 ~> C2): (B, B2) ~> (C, C2) =
-    compose(second[B2, C2, C](fbc2), first[B, C, B2](fbc))
+  def ***[B, C, B2, C2](fbc: B ~> C, fbc2: B2 ~> C2): (B, B2) ~> (C, C2) = compose(second[B2, C2, C](fbc2), first[B, C, B2](fbc))
 
-  def &&&[B, C, C2](fbc: B ~> C, fbc2: B ~> C2): B ~> (C, C2) =
-    compose(split(fbc, fbc2), arr((b: B) ⇒ (b, b)))
+  def &&&[B, C, C2](fbc: B ~> C, fbc2: B ~> C2): B ~> (C, C2) = compose(split(fbc, fbc2), arr((b: B) ⇒ (b, b)))
 
   /**
    * Borrowed from scalaz.
    */
-  private def split[A, B, C, D](f: A ~> B, g: C ~> D): ((A, C) ~> (B, D)) =
-    compose(second[C, D, B](g), first[A, B, C](f))
+  private def split[A, B, C, D](f: A ~> B, g: C ~> D): ((A, C) ~> (B, D)) = compose(second[C, D, B](g), first[A, B, C](f))
 
 }
 
