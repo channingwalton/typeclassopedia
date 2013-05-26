@@ -3,7 +3,7 @@ Typeclassopedia
 
 [![Build Status](https://api.travis-ci.org/channingwalton/typeclassopedia.png)](https://travis-ci.org/channingwalton/typeclassopedia)
 
-This project aims to be the simplest implementation of the Typeclassopedia in Scala.
+This project aims to be a simple implementation of the Typeclassopedia in Scala.
 (If you find a simpler way to express something then please report it or send a pull request.)
 
 Some people learn better by seeing things in code, with examples, which is why I started doing this.
@@ -15,13 +15,12 @@ How to Start
 I suggest you start with Functor as it is the simplest class to study, then Applicative, Monad, Semigroup and Monoid.
 Then have a look at Validation which is not part of the Typeclassopedia but its useful.
 
-Do not start with Category, Arrow and Kleisli unless you've understood the above.
+Do not start with Category, Arrow or Kleisli unless you've understood the above, your brain with melt and kittens will have their toys taken away.
+Before attempting to grok Category and its subtypes (Arrow), read [Introduction to Category Theory in Scala](http://hseeberger.wordpress.com/2010/11/25/introduction-to-category-theory-in-scala/) by Heiko Seeberger.
 
 But before you do any of that, you need to understand [type classes in scala](http://www.casualmiracles.com/2012/05/03/a-small-example-of-the-typeclass-pattern-in-scala/).
 
 The tests serve as examples of use.
-
-Before attempting to grok Category and its subtypes (Arrow), read [Introduction to Category Theory in Scala](http://hseeberger.wordpress.com/2010/11/25/introduction-to-category-theory-in-scala/) by Heiko Seeberger.
 
 Exercises
 ---------
