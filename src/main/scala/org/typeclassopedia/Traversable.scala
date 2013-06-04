@@ -1,10 +1,14 @@
 package org.typeclassopedia
 
-trait Traversable[M[_]] extends Functor[M] with Foldable[M] {
+trait Traversable[T[_]] extends Functor[T] with Foldable[T] {
 
-  def traverse[G[_] : Applicative, A, B](fa: M[A])(f: A ⇒ G[B]): G[M[B]]
+  def traverse[F[_] : Applicative, A, B](fa: T[A])(f: A ⇒ F[B]): F[T[B]]
 
-  def sequence[G[_] : Applicative, A](fga: M[G[A]]): G[M[A]] = traverse[G, G[A], A](fga)(identity)
+  def sequenceA[F[_] : Applicative, A](fga: T[F[A]]): F[T[A]] = traverse[F, F[A], A](fga)(identity)
+
+  def mapM[M[_]: Monad, A, B](f: A => M[B])(v: T[A]): M[T[B]] = traverse(v)(f)
+
+  def sequence[M[_] : Monad, A](mga: T[M[A]]): M[T[A]] = traverse[M, M[A], A](mga)(identity)
 }
 
 /**
@@ -13,12 +17,16 @@ trait Traversable[M[_]] extends Functor[M] with Foldable[M] {
  */
 trait Traversables {
 
-  implicit class TraversableOps[M[_] : Traversable, T](value: M[T]) {
-    def traverse[G[_] : Applicative, B](f: T ⇒ G[B]): G[M[B]] = implicitly[Traversable[M]].traverse(value)(f)
+  implicit class TraversableOps[T[_] : Traversable, A](value: T[A]) {
+    def traverse[F[_] : Applicative, B](f: A ⇒ F[B]): F[T[B]] = implicitly[Traversable[T]].traverse(value)(f)
   }
 
-  implicit class SequenceOps[M[_] : Traversable, G[_]: Applicative, T](value: M[G[T]]) {
-    def sequence: G[M[T]] = implicitly[Traversable[M]].sequence[G, T](value)
+  implicit class SequenceOps[T[_] : Traversable, F[_]: Applicative, A](value: T[F[A]]) {
+    def sequenceA: F[T[A]] = implicitly[Traversable[T]].sequenceA[F, A](value)
+  }
+
+  implicit class MapMOps[T[_] : Traversable, A](value: T[A]) {
+    def mapM[B, M[_]: Monad](f: A => M[B]): M[T[B]] = implicitly[Traversable[T]].mapM[M, A, B](f)(value)
   }
 
 }
