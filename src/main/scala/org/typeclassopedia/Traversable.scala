@@ -21,8 +21,9 @@ trait Traversables {
     def traverse[F[_] : Applicative, B](f: A ⇒ F[B]): F[T[B]] = implicitly[Traversable[T]].traverse(value)(f)
   }
 
-  implicit class SequenceOps[T[_] : Traversable, F[_]: Applicative, A](value: T[F[A]]) {
+  implicit class SequenceAOps[T[_] : Traversable, F[_]: Applicative, A](value: T[F[A]]) {
     def sequenceA: F[T[A]] = implicitly[Traversable[T]].sequenceA[F, A](value)
+    def sequence: F[T[A]] = sequenceA
   }
 
   implicit class MapMOps[T[_] : Traversable, A](value: T[A]) {

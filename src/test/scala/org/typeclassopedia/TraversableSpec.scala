@@ -7,7 +7,9 @@ class TraversableSpec extends FlatSpec {
 
   "A Traversable" should "support traverse" in assert(1.some.traverse(v ⇒ List(v, v + 1)) === List(1.some, 2.some))
 
-  it should "support sequence" in assert(List(1.some).sequenceA === List(1).some)
+  it should "support sequenceA" in assert(List(1.some).sequenceA === List(1).some)
+
+  it should "support sequence" in assert(List(1.some).sequence === List(1).some)
 
   it should "support mapM" in assert(1.some.mapM(v => List(v)) === List(1.some))
 
