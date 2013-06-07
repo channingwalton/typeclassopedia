@@ -20,10 +20,12 @@ class MonadPlusSpec extends FlatSpec {
   }
 
   it should "obey monad plus laws" in {
-    val mplus = implicitly[MonadPlus[List]]
+    // ListAll has the implementation of MonadPlus for lists
+    val mzero = ListAll.mzero[Int]
+
     val add = (i:Int) => i :: i :: Nil
 
-    assert((mplus.mzero[Int] >>= add) === mplus.mzero[Int])
+    assert((mzero >>= add) === mzero)
     assert( (List(1) >> Nil) === Nil)
   }
 
