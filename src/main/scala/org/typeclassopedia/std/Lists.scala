@@ -19,6 +19,12 @@ trait Lists {
     def flatMap[A, B](ma: List[A], f: A ⇒ List[B]) = ma flatMap f
   }
 
+  trait ListMonadPlus extends MonadPlus[List] {
+    def mzero[A]: List[A] = Nil
+
+    def mplus[A](a: List[A], b: List[A]): List[A] = a ::: b
+  }
+
   trait ListFoldable extends Foldable[List] with Semigroups {
     def foldMap[A, B: Monoid](fa: List[A])(f: A ⇒ B): B = fa.foldLeft(implicitly[Monoid[B]].zero)((b, a) ⇒ b |+| f(a))
   }
@@ -44,6 +50,6 @@ trait Lists {
     }
   }
 
-  implicit object ListAll extends ListPointed with ListTraverse with ListMonad
+  implicit object ListAll extends ListPointed with ListTraverse with ListMonad with ListMonadPlus
 
 }

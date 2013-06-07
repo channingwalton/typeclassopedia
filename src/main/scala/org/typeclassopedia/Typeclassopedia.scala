@@ -8,6 +8,7 @@ object Typeclassopedia
   with Points
   with Functors
   with Monads
+  with MonadPluss
   with Semigroups
   with Foldables
   with Validations
