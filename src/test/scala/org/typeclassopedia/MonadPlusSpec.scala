@@ -5,8 +5,6 @@ import org.scalatest._
 
 class MonadPlusSpec extends FlatSpec {
 
-  val x: Option[Int] = Some(1)
-
   "Monad Plus" should "support mzero" in {
     assert(implicitly[MonadPlus[List]].mzero === Nil)
   }
