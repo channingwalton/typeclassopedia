@@ -22,7 +22,7 @@ trait Lists {
   trait ListMonadPlus extends MonadPlus[List] {
     def mzero[A]: List[A] = Nil
 
-    def mplus[A](a: List[A], b: List[A]): List[A] = a ::: b
+    def mplus[A](a: List[A], b: List[A]): List[A] = a ++ b
   }
 
   trait ListFoldable extends Foldable[List] with Semigroups {

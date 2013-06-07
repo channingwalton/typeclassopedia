@@ -29,8 +29,14 @@ trait Options {
     def flatMap[A, B](ma: Option[A], f: A ⇒ Option[B]) = ma flatMap f
   }
 
+  trait OptionMonadPlus extends MonadPlus[Option] {
+    def mzero[A]: Option[A] = None
+
+    def mplus[A](a: Option[A], b: Option[A]): Option[A] = a orElse b
+  }
+
   implicit def optionSemigroup[A: Semigroup]: Semigroup[Option[A]] = new Semigroup[Option[A]] {
-    def append(a: Option[A], b: Option[A]) = (a, b) match {
+    def append(a: Option[A], b: Option[A]): Option[A] = (a, b) match {
       case (Some(a1), Some(a2)) ⇒ Some(implicitly[Semigroup[A]].append(a1, a2))
       case (Some(a1), None) ⇒ a
       case (None, Some(a2)) ⇒ b
@@ -46,6 +52,6 @@ trait Options {
     }
   }
 
-  implicit object OptionAll extends OptionPointed with OptionTraverse with OptionMonad
+  implicit object OptionAll extends OptionPointed with OptionTraverse with OptionMonad with OptionMonadPlus
 
 }

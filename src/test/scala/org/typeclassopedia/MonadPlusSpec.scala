@@ -11,5 +11,11 @@ class MonadPlusSpec extends FlatSpec {
     assert(implicitly[MonadPlus[List]].mzero === Nil)
   }
 
-  it should "support mplus" in assert( (List(1) mplus List(2)) === List(1,2))
+  it should "support mplus for list" in assert( (List(1) mplus List(2)) === List(1,2))
+
+  it should "support mplus for option" in {
+    assert( (1.some mplus 2.some) === Some(1) )
+    assert( (none[Int] mplus 2.some) === Some(2) )
+    assert( (none[Int] mplus none[Int]) === None )
+  }
 }
