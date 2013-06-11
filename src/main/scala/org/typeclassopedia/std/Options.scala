@@ -17,6 +17,10 @@ trait Options {
     def point[A](a: ⇒ A): Option[A] = Some(a)
   }
 
+  trait OptionCopointed extends Copointed[Option] {
+    def extract[A](f: Option[A]): A = f.get
+  }
+
   trait OptionApplicative extends Applicative[Option] {
     def <*>[A, B](ma: Option[A], f: Option[A ⇒ B]): Option[B] = for (m ← ma; g ← f) yield g(m)
   }
@@ -52,6 +56,6 @@ trait Options {
     }
   }
 
-  implicit object OptionAll extends OptionPointed with OptionTraverse with OptionMonad with OptionMonadPlus
+  implicit object OptionAll extends OptionPointed with OptionCopointed with OptionTraverse with OptionMonad with OptionMonadPlus
 
 }

@@ -12,6 +12,10 @@ object Blub {
     def point[A](a: ⇒ A) = Blub(a)
   }
 
+  trait BlubCopointed extends Copointed[Blub] {
+    def extract[A](f: Blub[A]): A = f.v
+  }
+
   trait BlubApplicative extends Applicative[Blub] {
     def <*>[A, B](ma: Blub[A], f: Blub[A ⇒ B]): Blub[B] = Blub(f.v(ma.v))
   }
@@ -30,6 +34,6 @@ object Blub {
     }
   }
 
-  implicit object Blubbed extends BlubPointed with BlubTraversable with BlubMonad
+  implicit object Blubbed extends BlubPointed with BlubCopointed with BlubTraversable with BlubMonad
 
 }

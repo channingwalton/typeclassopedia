@@ -4,17 +4,17 @@ package org.typeclassopedia
  * The Pointed type class represents pointed functors.
  * The Pointed class represents the additional ability to put a value into a default context.
  */
-trait Pointed[P[_]] extends Functor[P] {
+trait Pointed[F[_]] extends Functor[F] {
 
   /**
    * Point creates an F[A] given an A.
    */
-  def point[A](a: ⇒ A): P[A]
+  def point[A](a: ⇒ A): F[A]
 
   /**
    * An alias for point
    */
-  final def pure[A](a: ⇒ A): P[A] = point(a)
+  final def pure[A](a: ⇒ A): F[A] = point(a)
 }
 
 /**
