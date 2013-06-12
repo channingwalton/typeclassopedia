@@ -24,6 +24,10 @@ object Blub {
     def flatMap[A, B](ma: Blub[A], f: A ⇒ Blub[B]) = f(ma.v)
   }
 
+  trait BlubComonad extends Comonad[Blub] {
+    def duplicate[A](a: Blub[A]): Blub[Blub[A]] = Blub(a)
+  }
+
   trait BlubFoldable extends Foldable[Blub] {
     def foldMap[A, B](fa: Blub[A])(f: A ⇒ B)(implicit F: Monoid[B]): B = f(fa.v)
   }
@@ -34,6 +38,6 @@ object Blub {
     }
   }
 
-  implicit object Blubbed extends BlubPointed with BlubCopointed with BlubTraversable with BlubMonad
+  implicit object Blubbed extends BlubPointed with BlubCopointed with BlubTraversable with BlubMonad with BlubComonad
 
 }

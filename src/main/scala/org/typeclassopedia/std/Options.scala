@@ -33,6 +33,10 @@ trait Options {
     def flatMap[A, B](ma: Option[A], f: A ⇒ Option[B]) = ma flatMap f
   }
 
+  trait OptionComand extends Comonad[Option] {
+    def duplicate[A](a: Option[A]): Option[Option[A]] = Option(a)
+  }
+
   trait OptionMonadPlus extends MonadPlus[Option] {
     def mzero[A]: Option[A] = None
 
@@ -56,6 +60,6 @@ trait Options {
     }
   }
 
-  implicit object OptionAll extends OptionPointed with OptionCopointed with OptionTraverse with OptionMonad with OptionMonadPlus
+  implicit object OptionAll extends OptionPointed with OptionCopointed with OptionTraverse with OptionMonad with OptionComand with OptionMonadPlus
 
 }

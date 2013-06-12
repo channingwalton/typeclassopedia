@@ -11,12 +11,20 @@ trait Lists {
     def point[A](a: ⇒ A) = List(a)
   }
 
+  trait ListCopointed extends Copointed[List] {
+    def extract[A](f: List[A]): A = f.head
+  }
+
   trait ListApplicative extends Applicative[List] {
     def <*>[A, B](ma: List[A], f: List[A ⇒ B]): List[B] = for (m ← ma; g ← f) yield g(m)
   }
 
   trait ListMonad extends Monad[List] with ListApplicative {
     def flatMap[A, B](ma: List[A], f: A ⇒ List[B]) = ma flatMap f
+  }
+
+  trait ListComonad extends Comonad[List] {
+    def duplicate[A](a: List[A]): List[List[A]] = List(a)
   }
 
   trait ListMonadPlus extends MonadPlus[List] {
@@ -50,6 +58,6 @@ trait Lists {
     }
   }
 
-  implicit object ListAll extends ListPointed with ListTraverse with ListMonad with ListMonadPlus
+  implicit object ListAll extends ListPointed with ListCopointed with ListComonad with  ListTraverse with ListMonad with ListMonadPlus
 
 }

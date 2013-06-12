@@ -21,7 +21,7 @@ class MonadPlusSpec extends FlatSpec {
     // ListAll has the implementation of MonadPlus for lists
     val mzero = ListAll.mzero[Int]
 
-    val add = (i:Int) => i :: i :: Nil
+    val add = (i:Int) ⇒ i :: i :: Nil
 
     assert((mzero >>= add) === mzero)
     assert( (List(1) >> Nil) === Nil)

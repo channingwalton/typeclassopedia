@@ -9,6 +9,7 @@ object Typeclassopedia
   with CoPoints
   with Functors
   with Monads
+  with Comonads
   with MonadPluss
   with Semigroups
   with Foldables

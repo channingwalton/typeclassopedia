@@ -6,7 +6,7 @@ trait Traversable[T[_]] extends Functor[T] with Foldable[T] {
 
   def sequenceA[F[_] : Applicative, A](fga: T[F[A]]): F[T[A]] = traverse[F, F[A], A](fga)(identity)
 
-  def mapM[M[_]: Monad, A, B](f: A => M[B])(v: T[A]): M[T[B]] = traverse(v)(f)
+  def mapM[M[_]: Monad, A, B](f: A ⇒ M[B])(v: T[A]): M[T[B]] = traverse(v)(f)
 
   def sequence[M[_] : Monad, A](mga: T[M[A]]): M[T[A]] = traverse[M, M[A], A](mga)(identity)
 }
@@ -27,7 +27,7 @@ trait Traversables {
   }
 
   implicit class MapMOps[T[_] : Traversable, A](value: T[A]) {
-    def mapM[B, M[_]: Monad](f: A => M[B]): M[T[B]] = implicitly[Traversable[T]].mapM[M, A, B](f)(value)
+    def mapM[B, M[_]: Monad](f: A ⇒ M[B]): M[T[B]] = implicitly[Traversable[T]].mapM[M, A, B](f)(value)
   }
 
 }

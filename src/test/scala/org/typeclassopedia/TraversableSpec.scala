@@ -11,7 +11,7 @@ class TraversableSpec extends FlatSpec {
 
   it should "support sequence" in assert(List(1.some).sequence === List(1).some)
 
-  it should "support mapM" in assert(1.some.mapM(v => List(v)) === List(1.some))
+  it should "support mapM" in assert(1.some.mapM(v ⇒ List(v)) === List(1.some))
 
   it should "preserve order" in assert(List(1, 2, 3).traverse(Option(_)) === Some(List(1, 2, 3)))
 
