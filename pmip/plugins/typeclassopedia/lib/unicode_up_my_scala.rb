@@ -1,5 +1,5 @@
 class UnicodeUpMyScala < PMIPAction
-  REPLACEMENTS = {'=>' => '⇒', '<-' => '←', '=>' => '⇒', '|@|' => '⊛', '->' => '→', '=/=' => '≠', '/==' => '≠'}
+  REPLACEMENTS = {'=>' => '⇒', '<-' => '←', '|@|' => '⊛', '->' => '→', '=/=' => '≠', '/==' => '≠'}
 
   def run(event, context)
     Refresh.file_system_before_and_after {
