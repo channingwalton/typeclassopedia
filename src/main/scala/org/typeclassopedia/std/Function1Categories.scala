@@ -1,6 +1,6 @@
 package org.typeclassopedia.std
 
-import org.typeclassopedia.{ArrowChoice, Category}
+import org.typeclassopedia.{ArrowApply, ArrowChoice, Category}
 
 trait Function1Categories {
 
@@ -14,6 +14,10 @@ trait Function1Categories {
     def arr[B, C](f: B ⇒ C): B ⇒ C = f
 
     def first[B, C, D](b: B ⇒ C): ((B, D)) ⇒ (C, D) = (bd: (B, D)) ⇒ (b(bd._1), bd._2)
+  }
+
+  trait Function1ArrowApply extends ArrowApply[Function1] {
+    def app[B, C]: (((B) => C, B)) => C = (bc: (B ⇒ C, B)) ⇒ bc._1(bc._2)
   }
 
   trait Function1Choice extends ArrowChoice[Function1] {
@@ -38,6 +42,6 @@ trait Function1Categories {
     }
   }
 
-  implicit object Function1Arrows extends Function1Category with Function1Arrow with Function1Choice
+  implicit object Function1Arrows extends Function1Category with Function1Arrow with Function1ArrowApply with Function1Choice
 
 }
