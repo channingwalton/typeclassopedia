@@ -3,28 +3,27 @@ package org.typeclassopedia
 import Typeclassopedia._
 import org.scalatest._
 
-class MonadPlusSpec extends FlatSpec {
+class MonadPlusSpec extends FlatSpec with MustMatchers {
 
   "Monad Plus" should "support mzero" in {
-    assert(implicitly[MonadPlus[List]].mzero === Nil)
+    implicitly[MonadPlus[List]].mzero must be === Nil
   }
 
-  it should "support mplus for list" in assert( (List(1) mplus List(2)) === List(1,2))
+  it should "support mplus for list" in { (List(1) mplus List(2)) must be === List(1, 2) }
 
   it should "support mplus for option" in {
-    assert( (1.some mplus 2.some) === Some(1) )
-    assert( (none[Int] mplus 2.some) === Some(2) )
-    assert( (none[Int] mplus none[Int]) === None )
+    (1.some mplus 2.some) must be === Some(1)
+    (none[Int] mplus 2.some) must be === Some(2)
+    (none[Int] mplus none[Int]) must be === None
   }
 
   it should "obey monad plus laws" in {
     // ListAll has the implementation of MonadPlus for lists
     val mzero = ListAll.mzero[Int]
 
-    val add = (i:Int) ⇒ i :: i :: Nil
+    val add = (i: Int) ⇒ i :: i :: Nil
 
-    assert((mzero >>= add) === mzero)
-    assert( (List(1) >> Nil) === Nil)
+    (mzero >>= add) must be === mzero
+    List(1) >> Nil must be === Nil
   }
-
 }

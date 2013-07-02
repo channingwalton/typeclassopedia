@@ -4,7 +4,7 @@ import org.scalatest._
 import org.typeclassopedia.Applicative
 import org.typeclassopedia.Typeclassopedia._
 
-class ValidationSpec extends FlatSpec {
+class ValidationSpec extends FlatSpec with MustMatchers {
 
   type StringValidation[S] = Validation[String, S]
   implicitly[Applicative[StringValidation]]
@@ -14,8 +14,8 @@ class ValidationSpec extends FlatSpec {
   val e: StringValidation[Int] = Failure("no.")
   val f: StringValidation[Int ⇒ Int] = Success(2 *)
 
-  "Validation" should "be an applicative" in assert((v <*> f) === Success(6))
-  it should "deal with failure" in assert((e <*> f) === Failure("no."))
-  it should "use an applicative builder to apply a function" in assert(((v ⊛ v) { _ - _ }) === Success(0))
-  it should "use an applicative builder and accumulate failure" in assert(((e ⊛ e ⊛ v) { _ + _ + _ }) === Failure("no.no."))
+  "Validation" should "be an applicative" in { (v <*> f) must be === Success(6) }
+  it should "deal with failure" in { (e <*> f) must be === Failure("no.") }
+  it should "use an applicative builder to apply a function" in { ((v ⊛ v) { _ - _ }) must be === Success(0) }
+  it should "use an applicative builder and accumulate failure" in { ((e ⊛ e ⊛ v) { _ + _ + _ }) must be === Failure("no.no.") }
 }

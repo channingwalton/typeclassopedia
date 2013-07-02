@@ -3,9 +3,9 @@ package org.typeclassopedia
 import org.scalatest._
 import Typeclassopedia._
 
-class CopointedSpec extends FlatSpec {
+class CopointedSpec extends FlatSpec with MustMatchers {
 
-  "A copointed functor" should "extract" in { assert( Option(1).extract === 1 ) }
-  it should "extract on List" in { assert( List(1).extract === 1 ) }
-  it should "extract on Blub" in { assert( Blub(1).extract === 1 ) }
+  "A copointed functor" should "extract" in { Option(1).extract must be === 1 }
+  it should "extract on List" in { List(1).extract must be === 1 }
+  it should "extract on Blub" in { Blub(1).extract must be === 1 }
 }
