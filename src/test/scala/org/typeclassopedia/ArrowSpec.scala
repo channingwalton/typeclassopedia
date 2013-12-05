@@ -10,23 +10,23 @@ class ArrowSpec extends FlatSpec with MustMatchers {
   val h = (x: Int) ⇒ x / 2
 
   "Arrow" should "first" in {
-    (f.first((3, 1)) === ("21", 1))
+    f.first((3, 1)) === ("21", 1)
   }
 
   it should "second" in {
-    (f.second((1, 3)) === (1, "21"))
+    f.second((1, 3)) === (1, "21")
   }
 
   it should "***" in {
-    ((f *** g)((2, "hello")) === ("14", "HELLO"))
+    (f *** g)((2, "hello")) === ("14", "HELLO")
   }
 
   it should "&&&" in {
-    ((f &&& h)(2) === ("14", 1))
+    (f &&& h)(2) === ("14", 1)
   }
 
   it should "obey the identity law" in {
     val id = (a: Int) ⇒ a
-    (Function1Arrows.arr(id) === id)
+    Function1Arrows.arr(id) === id
   }
 }

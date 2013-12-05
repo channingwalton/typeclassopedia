@@ -42,15 +42,15 @@ trait Applicatives {
   }
 
   class ApplicativeBuilder[M[_] : Applicative, A, B](a: M[A], b: M[B]) {
-    def apply[C](f: (A, B) ⇒ C): M[C] = b <*> (implicitly[Functor[M]].map(a, f.curried))
+    def apply[C](f: (A, B) ⇒ C): M[C] = b <*> implicitly[Functor[M]].map(a, f.curried)
 
     def ⊛[C](c: M[C]) = new ApplicativeBuilder3(c)
 
     class ApplicativeBuilder3[C](c: M[C]) {
-      def apply[D](f: (A, B, C) ⇒ D): M[D] = c <*> (b <*> (implicitly[Functor[M]].map(a, f.curried)))
+      def apply[D](f: (A, B, C) ⇒ D): M[D] = c <*> (b <*> implicitly[Functor[M]].map(a, f.curried))
 
       class ApplicativeBuilder4[D](d: M[D]) {
-        def apply[E](f: (A, B, C, D) ⇒ E): M[E] = d <*> (c <*> (b <*> (implicitly[Functor[M]].map(a, f.curried))))
+        def apply[E](f: (A, B, C, D) ⇒ E): M[E] = d <*> (c <*> (b <*> implicitly[Functor[M]].map(a, f.curried)))
       }
 
     }
