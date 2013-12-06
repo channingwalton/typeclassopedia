@@ -2,6 +2,9 @@ package org.typeclassopedia.std
 
 import org.typeclassopedia.{ArrowApply, ArrowChoice, Category}
 
+/**
+ * This contains implementations of [[org.typeclassopedia.Category Category[Function1] ]]
+ */
 trait Function1Categories {
 
   trait Function1Category extends Category[Function1] {
@@ -17,7 +20,7 @@ trait Function1Categories {
   }
 
   trait Function1ArrowApply extends ArrowApply[Function1] {
-    def app[B, C]: (((B) => C, B)) => C = (bc: (B ⇒ C, B)) ⇒ bc._1(bc._2)
+    def app[B, C]: (((B) ⇒ C, B)) ⇒ C = (bc: (B ⇒ C, B)) ⇒ bc._1(bc._2)
   }
 
   trait Function1Choice extends ArrowChoice[Function1] {

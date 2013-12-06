@@ -4,7 +4,7 @@ import com.intellij.openapi.vfs.VirtualFileManager
 class Refresh
    def self.file_system
      FileDocumentManager.instance.save_all_documents
-     VirtualFileManager.instance.refresh(true)
+     VirtualFileManager.instance.syncRefresh
    end
 
    def self.file_system_before(&block)

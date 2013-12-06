@@ -25,6 +25,11 @@ trait Options {
     def <*>[A, B](ma: Option[A], f: Option[A ⇒ B]): Option[B] = for (m ← ma; g ← f) yield g(m)
   }
 
+  trait OptionAlternative extends Alternative[Option] {
+    def empty[A](implicit ev: Monoid[Option[A]]): Option[A] = None
+    def <|>[A](a: Option[A], b: Option[A])(implicit ev: Monoid[Option[A]]): Option[A] = ev.append(a, b)
+  }
+
   trait OptionFoldable extends Foldable[Option] {
     def foldMap[A, B](fa: Option[A])(f: A ⇒ B)(implicit F: Monoid[B]): B = fa.fold(F.zero)(f)
   }

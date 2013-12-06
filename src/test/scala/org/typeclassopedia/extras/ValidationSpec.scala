@@ -15,8 +15,8 @@ class ValidationSpec extends FlatSpec {
   val e: StringValidation[Int] = Failure("no.")
   val f: StringValidation[Int ⇒ Int] = Success(2 *)
 
-  "Validation" should "be an applicative" in { (v <*> f) === Success(6) }
-  it should "deal with failure" in { (e <*> f) === Failure("no.") }
-  it should "use an applicative builder to apply a function" in { (v ⊛ v) { _ - _ } === Success(0) }
-  it should "use an applicative builder and accumulate failure" in { (e ⊛ e ⊛ v) { _ + _ + _ } === Failure("no.no.") }
+  "Validation" should "be an applicative" in { (v <*> f) shouldEqual Success(6) }
+  it should "deal with failure" in { (e <*> f) shouldEqual Failure("no.") }
+  it should "use an applicative builder to apply a function" in { (v ⊛ v) { _ - _ } shouldEqual Success(0) }
+  it should "use an applicative builder and accumulate failure" in { (e ⊛ e ⊛ v) { _ + _ + _ } shouldEqual Failure("no.no.") }
 }
