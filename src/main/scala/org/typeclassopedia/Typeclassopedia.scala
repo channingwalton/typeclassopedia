@@ -20,3 +20,4 @@ object Typeclassopedia
   with ArrowChoices
   with Kleislis
   with Implementations
+  with Alternatives

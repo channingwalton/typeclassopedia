@@ -26,8 +26,8 @@ trait Options {
   }
 
   trait OptionAlternative extends Alternative[Option] {
-    def empty[A](implicit ev: Monoid[Option[A]]): Option[A] = None
-    def <|>[A](a: Option[A], b: Option[A])(implicit ev: Monoid[Option[A]]): Option[A] = ev.append(a, b)
+    def empty[A]: Option[A] = None
+    def <|>[A](a: Option[A], b: Option[A]): Option[A] = if (a.isDefined) a else b
   }
 
   trait OptionFoldable extends Foldable[Option] {
@@ -65,6 +65,13 @@ trait Options {
     }
   }
 
-  implicit object OptionAll extends OptionPointed with OptionCopointed with OptionTraverse with OptionMonad with OptionComonad with OptionMonadPlus
+  implicit object OptionAll
+    extends OptionPointed
+    with OptionCopointed
+    with OptionTraverse
+    with OptionMonad
+    with OptionComonad
+    with OptionMonadPlus
+    with OptionAlternative
 
 }
