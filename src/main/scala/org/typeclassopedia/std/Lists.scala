@@ -19,6 +19,11 @@ trait Lists {
     def <*>[A, B](ma: List[A], f: List[A ⇒ B]): List[B] = for (m ← ma; g ← f) yield g(m)
   }
 
+  trait ListAlternative extends Alternative[List] {
+    def empty[A]: List[A] = Nil
+    def <|>[A](a: List[A], b: List[A]): List[A] = a ++ b
+  }
+
   trait ListMonad extends Monad[List] with ListApplicative {
     def flatMap[A, B](ma: List[A], f: A ⇒ List[B]) = ma flatMap f
   }
@@ -58,6 +63,13 @@ trait Lists {
     }
   }
 
-  implicit object ListAll extends ListPointed with ListCopointed with ListComonad with  ListTraverse with ListMonad with ListMonadPlus
+  implicit object ListAll
+    extends ListPointed
+    with ListCopointed
+    with ListComonad
+    with ListTraverse
+    with ListMonad
+    with ListMonadPlus
+    with ListAlternative
 
 }
