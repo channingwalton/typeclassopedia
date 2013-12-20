@@ -20,7 +20,7 @@ trait Function1Categories {
   }
 
   trait Function1ArrowApply extends ArrowApply[Function1] {
-    def app[B, C]: (((B) ⇒ C, B)) ⇒ C = (bc: (B ⇒ C, B)) ⇒ bc._1(bc._2)
+    def app[B, C]: ((B ⇒ C, B)) ⇒ C = (bc: (B ⇒ C, B)) ⇒ bc._1(bc._2)
   }
 
   trait Function1Choice extends ArrowChoice[Function1] {

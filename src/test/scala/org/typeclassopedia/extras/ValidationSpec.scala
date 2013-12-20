@@ -1,11 +1,10 @@
 package org.typeclassopedia.extras
 
 import org.scalatest._
-import Matchers._
 import org.typeclassopedia.Applicative
 import org.typeclassopedia.Typeclassopedia._
 
-class ValidationSpec extends FlatSpec {
+class ValidationSpec extends FlatSpec with Matchers {
 
   type StringValidation[S] = Validation[String, S]
   implicitly[Applicative[StringValidation]]
