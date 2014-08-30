@@ -14,6 +14,4 @@ case class OptionT[F[_] : Monad, A](fa: F[Option[A]]) {
   }))
 
   def run = fa
-
-  val any = List(1, true, "three")
 }
