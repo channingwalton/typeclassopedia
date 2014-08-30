@@ -7,7 +7,7 @@ import org.typeclassopedia._
  */
 case class OptionT[M[_] : Monad, A](fa: M[Option[A]]) {
 
-  val monadF = implicitly[Monad[M]]
+  private val monadF = implicitly[Monad[M]]
 
   def map[B](f: A ⇒ B): OptionT[M, B] = OptionT(monadF.map(fa, (_: Option[A]).map(f)))
 
