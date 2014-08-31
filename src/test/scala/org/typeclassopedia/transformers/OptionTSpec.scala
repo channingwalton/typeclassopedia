@@ -35,9 +35,6 @@ class OptionTSpec extends FlatSpec with Matchers {
     OptionT(Blub(Option(1))).isDefined shouldBe Blub(true)
     OptionT(Blub(Option.empty[Int])).isDefined shouldBe Blub(false)
 
-    OptionT(Blub(Option(1))).isEmpty shouldBe Blub(false)
-    OptionT(Blub(Option.empty[Int])).isEmpty shouldBe Blub(true)
-
     OptionT(Blub(Option(1))).getOrElse(2) shouldBe Blub(1)
     OptionT(Blub(Option.empty[Int])).getOrElse(2) shouldBe Blub(2)
   }

@@ -27,8 +27,6 @@ case class OptionT[M[_] : Monad, A](run: M[Option[A]]) {
 
   def isDefined: M[Boolean] = mapO(_.isDefined)
 
-  def isEmpty: M[Boolean] = mapO(_.isEmpty)
-
   def getOrElse(default: ⇒ A): M[A] = mapO(_.getOrElse(default))
 
   // etc.
