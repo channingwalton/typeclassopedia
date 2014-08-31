@@ -4,6 +4,8 @@ import org.typeclassopedia._
 
 /**
  * The type OptionT[M[_], A] is a monad transformer that constructs an Option[A] inside the monad M.
+ * The original code came from http://stackoverflow.com/a/18403796/434405, and additional ideas
+ * from Scalaz.
  */
 case class OptionT[M[_] : Monad, A](run: M[Option[A]]) {
 
