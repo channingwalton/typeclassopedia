@@ -19,7 +19,7 @@ case class OptionT[M[_] : Monad, A](run: M[Option[A]]) {
   def map[B](f: A ⇒ B): OptionT[M, B] = OptionT(mapO(_.map(f)))
 
   def flatMap[B](f: A ⇒ OptionT[M, B]): OptionT[M, B] = {
-    def applyF(o: Option[A]) = o.fold(monadM.pure(Option.empty[B]))(f(_).run)
+    def applyF(o: Option[A]): M[Option[B]] = o.fold(monadM.pure(Option.empty[B]))(f(_).run)
     OptionT(monadM.flatMap(run, applyF))
   }
 
