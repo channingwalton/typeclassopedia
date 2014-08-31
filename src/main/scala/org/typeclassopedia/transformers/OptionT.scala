@@ -18,10 +18,10 @@ case class OptionT[M[_] : Monad, A](run: M[Option[A]]) {
 
   def map[B](f: A ⇒ B): OptionT[M, B] = OptionT(mapO(_.map(f)))
 
-  def flatMap[B](f: A => OptionT[M, B]): OptionT[M, B] = OptionT(monadM.flatMap(run, (o: Option[A]) ⇒ o match {
-    case None ⇒ monadM.pure(Option.empty[B])
-    case Some(x) ⇒ f(x).run
-  }))
+  def flatMap[B](f: A ⇒ OptionT[M, B]): OptionT[M, B] = {
+    def applyF(o: Option[A]) = o.fold(monadM.pure(Option.empty[B]))(f(_).run)
+    OptionT(monadM.flatMap(run, applyF))
+  }
 
   // useful methods found on Option that let OptionT have an Option-like API
 
