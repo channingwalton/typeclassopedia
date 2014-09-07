@@ -29,7 +29,8 @@ case class ListT[M[_] : Monad, A](run: M[List[A]]) {
 
     /**
      * Map the List in M to M[List[B]] using f.
-     * But f returns an ListT so f(a).run is required to get M[List[B]]
+     * But f returns an ListT so all results need to be concatenated and the
+     * resultant ListT's run is returned
      */
     def mapMyList(l: List[A]): M[List[B]] = l match {
       case Nil ⇒ monadM.pure(Nil)
