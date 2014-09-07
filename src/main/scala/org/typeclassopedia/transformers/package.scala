@@ -1,10 +1,8 @@
 package org.typeclassopedia
 
 /**
- * This package has some monad transformers.
- *
  * It is very common to have nested types like List[Option[A]],
- * or IO[Option[A]]. It is inconvenient to work with values of these
+ * or IO[Option[A]], and it is inconvenient to work with values of these
  * types directly with nested for-comprehensions or functions.
  *
  * A monad transformer combines two monads into a single monad that shares

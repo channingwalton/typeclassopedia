@@ -14,21 +14,34 @@ case class ListT[M[_] : Monad, A](run: M[List[A]]) {
   /**
    * Apply a function to the List[A] contained by `run`
    */
-  private def mapO[B](f: List[A] ⇒ B): M[B] = monadM.map(run, f)
+  private def mapList[B](f: List[A] ⇒ B): M[B] = monadM.map(run, f)
 
-  def map[B](f: A ⇒ B): ListT[M, B] = ListT(mapO(_.map(f)))
+  /**
+   * Map the List in M with f
+   */
+  def map[B](f: A ⇒ B): ListT[M, B] = {
+    val listB: M[List[B]] = mapList((l: List[A]) ⇒ l.map(f))
+
+    ListT(listB)
+  }
 
   def flatMap[B](f: A ⇒ ListT[M, B]): ListT[M, B] = {
-    def applyF(o: List[A]): M[List[B]] = o match {
+
+    /**
+     * Map the List in M to M[List[B]] using f.
+     * But f returns an ListT so f(a).run is required to get M[List[B]]
+     */
+    def mapMyList(l: List[A]): M[List[B]] = l match {
       case Nil ⇒ monadM.pure(Nil)
       case nonEmpty ⇒ nonEmpty.map(f).reduce(_ ++ _).run
     }
-    ListT(monadM.flatMap(run, applyF))
+
+    ListT(monadM.flatMap(run, mapMyList))
   }
 
   // useful methods found on List that let ListT have a List-like API
 
-  def ++(bs: => ListT[M, A]): ListT[M, A] = ListT(monadM.flatMap(run, (list1: List[A]) ⇒
+  def ++(bs: ⇒ ListT[M, A]): ListT[M, A] = ListT(monadM.flatMap(run, (list1: List[A]) ⇒
     monadM.map(bs.run, (list2: List[A]) ⇒
       list1 ++ list2
     )
