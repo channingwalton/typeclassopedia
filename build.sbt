@@ -2,7 +2,7 @@ name := "typeclassopedia"
 
 version := "1.0"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.4"
 
 scalaBinaryVersion := "2.11"
 
@@ -14,4 +14,4 @@ resolvers ++= Seq(
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.1" % "test"
 
-libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.11.5" % "test"
+libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.11.6" % "test"
