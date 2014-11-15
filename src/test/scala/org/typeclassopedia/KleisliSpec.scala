@@ -25,8 +25,8 @@ class KleisliSpec extends FlatSpec with Matchers {
   }
 
   it should "offer ***" in {
-    (kleisli(sqrt) *** kleisli(double))(4, "hi") shouldEqual Some((2.0, "hihi"))
-    (kleisli(sqrt) *** kleisli(double))(-1, "hi") shouldEqual None
+    (kleisli(sqrt) *** kleisli(double)) ((4, "hi")) shouldEqual Some((2.0, "hihi"))
+    (kleisli(sqrt) *** kleisli(double)) ((-1, "hi")) shouldEqual None
   }
 
   it should "offer &&&" in {

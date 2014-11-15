@@ -6,7 +6,7 @@ scalaVersion := "2.11.4"
 
 scalaBinaryVersion := "2.11"
 
-scalacOptions := Seq("-language:_", "-deprecation")
+scalacOptions := Seq("-language:_", "-deprecation", "-Xlint", "-Xfatal-warnings")
 
 resolvers ++= Seq(
     "snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",

@@ -56,6 +56,6 @@ case class OptionT[M[_] : Monad, A](run: M[Option[A]]) {
 trait OptionTs {
 
   implicit def OptionTFunctor[M[_]: Monad, A] = new Functor[({type λ[α] = OptionT[M, α]})#λ] {
-    def map[A, B](m: OptionT[M, A], f: A ⇒ B): OptionT[M, B] = ???
+    def map[C, B](m: OptionT[M, C], f: C ⇒ B): OptionT[M, B] = ???
   }
 }
