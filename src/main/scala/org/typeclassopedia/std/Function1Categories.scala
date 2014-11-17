@@ -25,18 +25,18 @@ trait Function1Categories {
 
   trait Function1Choice extends ArrowChoice[Function1] {
     def left[B, C, D](f: B ⇒ C): Either[B, D] ⇒ Either[C, D] = {
-      case Left(v) ⇒ Left(f(v))
-      case Right(v) ⇒ Right(v)
+      case Left(v) ⇒ Left[C, D](f(v))
+      case Right(v) ⇒ Right[C, D](v)
     }
 
     def right[B, C, D](f: B ⇒ C): Either[D, B] ⇒ Either[D, C] = {
-      case Left(v) ⇒ Left(v)
-      case Right(v) ⇒ Right(f(v))
+      case Left(v) ⇒ Left[D, C](v)
+      case Right(v) ⇒ Right[D, C](f(v))
     }
 
     def +++[B, C, B2, C2](a: B ⇒ C, b: B2 ⇒ C2): Either[B, B2] ⇒ Either[C, C2] = {
-      case Left(v) ⇒ Left(a(v))
-      case Right(v) ⇒ Right(b(v))
+      case Left(v) ⇒ Left[C, C2](a(v))
+      case Right(v) ⇒ Right[C, C2](b(v))
     }
 
     def |||[B, C, D](a: B ⇒ D, b: C ⇒ D) = {

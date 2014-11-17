@@ -19,19 +19,19 @@ trait Validations {
    */
   implicit def ValidationApplicative[L: Semigroup]: Applicative[({type l[a] = Validation[L, a]})#l] = new Applicative[({type l[a] = Validation[L, a]})#l] {
     def <*>[A, B](m: Validation[L, A], f: Validation[L, A ⇒ B]): Validation[L, B] = (m, f) match {
-      case (Success(a), Success(fn)) ⇒ Success(fn(a))
-      case (Failure(e), Success(_)) ⇒ Failure(e)
-      case (Success(_), Failure(e)) ⇒ Failure(e)
+      case (Success(a), Success(fn)) ⇒ Success[L, B](fn(a))
+      case (Failure(e), Success(_)) ⇒ Failure[L, B](e)
+      case (Success(_), Failure(e)) ⇒ Failure[L, B](e)
 
       // This is the sneaky bit, here Failures are appended using a Semigroup instance for the type L, the failure type.
-      case (Failure(e1), Failure(e2)) ⇒ Failure(implicitly[Semigroup[L]].append(e2, e1))
+      case (Failure(e1), Failure(e2)) ⇒ Failure[L, B](implicitly[Semigroup[L]].append(e2, e1))
     }
 
     def map[A, B](m: Validation[L, A], f: A ⇒ B): Validation[L, B] = m match {
-      case Success(a) ⇒ Success(f(a))
-      case Failure(e) ⇒ Failure(e)
+      case Success(a) ⇒ Success[L, B](f(a))
+      case Failure(e) ⇒ Failure[L, B](e)
     }
 
-    def point[A](a: ⇒ A): Validation[L, A] = Success(a)
+    def point[A](a: ⇒ A): Validation[L, A] = Success[L, A](a)
   }
 }

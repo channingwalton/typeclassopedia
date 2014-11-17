@@ -18,7 +18,7 @@ trait Options {
   }
 
   trait OptionCopointed extends Copointed[Option] {
-    def extract[A](f: Option[A]): A = f.get
+    def extract[A](f: Option[A]): A = f.getOrElse(throw new IllegalArgumentException("Option cannot be None"))
   }
 
   trait OptionApplicative extends Applicative[Option] {

@@ -9,22 +9,22 @@ class ArrowChoiceSpec extends FlatSpec with Matchers {
   val g = (s: String) ⇒ s.toUpperCase
 
   "ArrowChoice" should "left" in {
-    (f.left[String] apply Left(1)) shouldEqual Left("7")
-    (f.left apply Right("hi")) shouldEqual Right("hi")
+    (f.left[String] apply Left[Int, String](1)) shouldEqual Left[String, String]("7")
+    (f.left apply Right[Int, String]("hi")) shouldEqual Right[Int, String]("hi")
   }
 
   it should "right" in {
-    (g.right[Int] apply Right("hi")) shouldEqual Right("HI")
-    (g.right apply Left(1)) shouldEqual Left(1)
+    (g.right[Int] apply Right[Int, String]("hi")) shouldEqual Right[Int, String]("HI")
+    (g.right apply Left[Int, String](1)) shouldEqual Left[Int, String](1)
   }
 
   it should "+++" in {
-    (f +++ g apply Left(1)) shouldEqual Left("7")
-    (f +++ g apply Right("hi")) shouldEqual Right("HI")
+    (f +++ g apply Left[Int, String](1)) shouldEqual Left[String, String]("7")
+    (f +++ g apply Right[Int, String]("hi")) shouldEqual Right[Int, String]("HI")
   }
 
   it should "|||" in {
-    (f ||| g apply Left(1)) shouldEqual "7"
-    (f ||| g apply Right("hi")) shouldEqual "HI"
+    (f ||| g apply Left[Int, String](1)) shouldEqual "7"
+    (f ||| g apply Right[Int, String]("hi")) shouldEqual "HI"
   }
 }

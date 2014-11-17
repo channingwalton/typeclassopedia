@@ -12,7 +12,7 @@ trait Lists {
   }
 
   trait ListCopointed extends Copointed[List] {
-    def extract[A](f: List[A]): A = f.head
+    def extract[A](f: List[A]): A = f.headOption.getOrElse(throw new IllegalArgumentException("the list cannot be empty"))
   }
 
   trait ListApplicative extends Applicative[List] {

@@ -7,7 +7,7 @@ import Matchers._
 class MonadPlusSpec extends FlatSpec with Matchers {
 
   "Monad Plus" should "support mzero" in {
-    implicitly[MonadPlus[List]].mzero equals Nil
+    implicitly[MonadPlus[List]].mzero[Int] shouldEqual List.empty[Int]
   }
 
   it should "support mplus for list" in { (List(1) mplus List(2)) shouldEqual List(1, 2) }
@@ -25,6 +25,6 @@ class MonadPlusSpec extends FlatSpec with Matchers {
     val add = (i: Int) ⇒ i :: i :: Nil
 
     (mzero >>= add) shouldEqual mzero
-    List(1) >> Nil shouldEqual Nil
+    List(1) >> List.empty[Int] shouldEqual List.empty[Int]
   }
 }
