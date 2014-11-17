@@ -8,7 +8,7 @@ trait Lists {
   }
 
   trait ListPointed extends Pointed[List] {
-    def point[A](a: ⇒ A) = List(a)
+    def point[A](a: ⇒ A): List[A] = List(a)
   }
 
   trait ListCopointed extends Copointed[List] {
@@ -25,7 +25,7 @@ trait Lists {
   }
 
   trait ListMonad extends Monad[List] with ListApplicative {
-    def flatMap[A, B](ma: List[A], f: A ⇒ List[B]) = ma flatMap f
+    def flatMap[A, B](ma: List[A], f: A ⇒ List[B]): List[B] = ma flatMap f
   }
 
   trait ListComonad extends Comonad[List] {
@@ -43,7 +43,7 @@ trait Lists {
   }
 
   implicit def listSemigroup[A: Semigroup]: Semigroup[List[A]] = new Semigroup[List[A]] {
-    def append(a: List[A], b: List[A]) = a ::: b
+    def append(a: List[A], b: List[A]): List[A] = a ::: b
   }
 
   trait ListTraverse extends Traversable[List] with ListFunctor with ListFoldable with Applicatives {
