@@ -6,6 +6,8 @@ scalaVersion := "2.11.4"
 
 scalaBinaryVersion := "2.11"
 
+updateOptions := updateOptions.value.withCachedResolution(true)
+
 resolvers ++= Seq(
     "snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
     "releases"  at "http://oss.sonatype.org/content/repositories/releases")
