@@ -8,4 +8,4 @@ trait StringShow {
   }
 }
 
-object Strings extends StringShow
+trait Strings extends StringShow
