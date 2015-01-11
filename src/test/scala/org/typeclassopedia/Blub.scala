@@ -1,5 +1,8 @@
 package org.typeclassopedia
 
+import org.typeclassopedia.extras.Show
+import org.typeclassopedia.Typeclassopedia._
+
 case class Blub[T](v: T)
 
 object Blub {
@@ -36,6 +39,10 @@ object Blub {
     def traverse[G[_] : Applicative, A, B](fa: Blub[A])(f: A ⇒ G[B]): G[Blub[B]] = {
       implicitly[Applicative[G]].map(f(fa.v), Blub apply)
     }
+  }
+
+  implicit def blubShow[T: Show]: Show[Blub[T]] = new Show[Blub[T]] {
+    def show(b: Blub[T]): String = s"A blub of ${implicitly[Show[T]].show(b.v)}"
   }
 
   implicit object Blubbed extends BlubPointed with BlubCopointed with BlubTraversable with BlubMonad with BlubComonad

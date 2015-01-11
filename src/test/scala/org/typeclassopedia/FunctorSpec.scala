@@ -11,4 +11,5 @@ class FunctorSpec extends FlatSpec with Matchers {
   "A functor" should "map stuff" in { Blub(1).map(double) shouldEqual Blub(2) }
   it should "obey the identity law" in { Blub(1).map(identity) shouldEqual Blub(1) }
   it should "obey the composition law" in { Blub(1).map(inc andThen double) shouldEqual Blub(1).map(inc).map(double) }
+  it should "obey the functor laws" in {  }
 }

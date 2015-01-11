@@ -14,6 +14,20 @@ package org.typeclassopedia
  */
 trait Functor[F[_]] {
   def map[A, B](m: F[A], f: A ⇒ B): F[B]
+
+   /**
+    * These are the laws that a Functor must obey - thanks Scalaz
+    */
+  trait FunctorLaws {
+
+    def identity[A](fa: F[A])(implicit FA: Equal[F[A]]): Boolean =
+      FA.equal(map[A, A](fa, x => x), fa)
+
+    def composite[A, B, C](fa: F[A], f1: A => B, g1: B => C, f2: B => C)(implicit FC: Equal[F[C]]): Boolean =
+      FC.equal(map(map(fa, f1), f2), map(fa, f2 compose f1))
+  }
+
+  def laws = new FunctorLaws {}
 }
 
 /**
@@ -33,5 +47,4 @@ trait Functors {
      */
     final def fmap[B](f: T ⇒ B): F[B] = map(f)
   }
-
 }

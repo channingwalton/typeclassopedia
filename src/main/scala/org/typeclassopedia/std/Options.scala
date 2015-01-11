@@ -65,6 +65,16 @@ trait Options {
     }
   }
 
+  trait OptionShow {
+    import org.typeclassopedia.extras.Show
+    implicit def optionShow[T: Show]: Show[Option[T]] =
+      new Show[Option[T]] {
+        def showT(t: T): String = implicitly[Show[T]].show(t)
+        def show(option: Option[T]): String =
+          option.fold("None")(v ⇒ s"Option(${showT(v)})")
+      }
+  }
+
   implicit object OptionAll
     extends OptionPointed
     with OptionCopointed
@@ -75,3 +85,6 @@ trait Options {
     with OptionAlternative
 
 }
+
+
+

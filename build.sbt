@@ -16,16 +16,7 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.1" % "test"
 
 libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.11.6" % "test"
 
-wartremoverErrors ++= Seq(
-    Wart.Any,
-    Wart.Any2StringAdd,
-    Wart.EitherProjectionPartial,
-    Wart.OptionPartial,
-    Wart.Product,
-    Wart.Serializable,
-    Wart.ListOps,
-    Wart.Nothing
-)
+wartremoverErrors ++= Warts.allBut(Wart.NoNeedForMonad) // NoNeedForMonad crashes the compiler https://github.com/puffnfresh/wartremover/issues/106
 
 scalacOptions ++= Seq(
     "-language:_",
@@ -34,11 +25,11 @@ scalacOptions ++= Seq(
     "-encoding", "UTF-8",       // yes, this is 2 args
     "-feature",
     "-unchecked",
-    "-Xfatal-warnings",
     "-Xlint",
     "-Yno-adapted-args",
     "-Ywarn-dead-code",        // N.B. doesn't work well with the ??? hole
     "-Ywarn-numeric-widen",
     "-Ywarn-value-discard",
     "-Xfuture"
+    //"-Xlog-implicits"
 )
