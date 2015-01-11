@@ -22,12 +22,12 @@ trait Semigroups {
     /**
      * An alias for append
      */
-    final def |+|(b: T) = append(b)
+    final def |+|(b: T): T = append(b)
 
     /**
      * The mathematical symbol for append
      */
-    final def ⊕(b: T) = append(b)
+    final def ⊕(b: T): T = append(b)
   }
 
 }

@@ -38,13 +38,13 @@ trait Applicatives {
      * (x ⊛ y ⊛ z) {_ + _ + _}
      * }}}
      */
-    final def ⊛[A](a: M[A]) = new ApplicativeBuilder(value, a)
+    final def ⊛[A](a: M[A]): ApplicativeBuilder[M, T, A] = new ApplicativeBuilder(value, a)
   }
 
   class ApplicativeBuilder[M[_] : Applicative, A, B](a: M[A], b: M[B]) {
     def apply[C](f: (A, B) ⇒ C): M[C] = b <*> implicitly[Functor[M]].map(a, f.curried)
 
-    def ⊛[C](c: M[C]) = new ApplicativeBuilder3(c)
+    def ⊛[C](c: M[C]): ApplicativeBuilder3[C] = new ApplicativeBuilder3(c)
 
     class ApplicativeBuilder3[C](c: M[C]) {
       def apply[D](f: (A, B, C) ⇒ D): M[D] = c <*> (b <*> implicitly[Functor[M]].map(a, f.curried))

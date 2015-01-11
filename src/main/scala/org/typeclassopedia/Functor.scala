@@ -27,7 +27,7 @@ trait Functor[F[_]] {
       FC.equal(map(map(fa, f1), f2), map(fa, f2 compose f1))
   }
 
-  def laws = new FunctorLaws {}
+  def laws: FunctorLaws = new FunctorLaws {}
 }
 
 /**

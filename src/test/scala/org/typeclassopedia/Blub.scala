@@ -12,7 +12,7 @@ object Blub {
   }
 
   trait BlubPointed extends Pointed[Blub] {
-    def point[A](a: ⇒ A) = Blub(a)
+    def point[A](a: ⇒ A): Blub[A] = Blub(a)
   }
 
   trait BlubCopointed extends Copointed[Blub] {
@@ -24,7 +24,7 @@ object Blub {
   }
 
   trait BlubMonad extends Monad[Blub] with BlubApplicative {
-    def flatMap[A, B](ma: Blub[A], f: A ⇒ Blub[B]) = f(ma.v)
+    def flatMap[A, B](ma: Blub[A], f: A ⇒ Blub[B]): Blub[B] = f(ma.v)
   }
 
   trait BlubComonad extends Comonad[Blub] {

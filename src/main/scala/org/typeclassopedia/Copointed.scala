@@ -4,9 +4,9 @@ trait Copointed[F[_]] extends Functor[F] {
 
   def extract[A](f: F[A]): A
 
-  final def copoint[A](f: F[A]) = extract(f)
+  final def copoint[A](f: F[A]): A = extract(f)
 
-  final def copure[A](f: F[A]) = extract(f)
+  final def copure[A](f: F[A]): A = extract(f)
 }
 
 trait CoPoints {

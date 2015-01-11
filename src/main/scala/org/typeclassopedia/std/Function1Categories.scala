@@ -39,7 +39,7 @@ trait Function1Categories {
       case Right(v) ⇒ Right[C, C2](b(v))
     }
 
-    def |||[B, C, D](a: B ⇒ D, b: C ⇒ D) = {
+    def |||[B, C, D](a: B ⇒ D, b: C ⇒ D): (Either[B, C]) ⇒ D = {
       case Left(v) ⇒ a(v)
       case Right(v) ⇒ b(v)
     }

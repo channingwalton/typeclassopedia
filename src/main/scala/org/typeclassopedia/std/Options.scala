@@ -35,7 +35,7 @@ trait Options {
   }
 
   trait OptionMonad extends Monad[Option] with OptionApplicative {
-    def flatMap[A, B](ma: Option[A], f: A ⇒ Option[B]) = ma flatMap f
+    def flatMap[A, B](ma: Option[A], f: A ⇒ Option[B]): Option[B] = ma flatMap f
   }
 
   trait OptionComonad extends Comonad[Option] {

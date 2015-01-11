@@ -5,9 +5,9 @@ import org.scalatest._
 
 class ApplicativeSpec extends FlatSpec with Matchers {
 
-  val addInts = ((a: Int, b: Int, c: Int) ⇒ a + b + c).curried
+  val addInts: (Int) ⇒ (Int) ⇒ (Int) ⇒ Int = ((a: Int, b: Int, c: Int) ⇒ a + b + c).curried
 
-  def X2 = (_: Int) * 2
+  def X2: (Int) ⇒ Int = (_: Int) * 2
 
   "An applicative" should "<*>" in { 1.some <*> (2.some <*> (3.some map addInts)) shouldEqual Some(6) }
   it should "<*> with List" in { (List(1,2) <*> List(X2)) shouldEqual List(2, 4) }

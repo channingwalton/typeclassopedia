@@ -10,7 +10,7 @@ trait Equal[F]  {
 
   trait EqualLaw {
 
-    def conditional(p: Boolean, q: => Boolean) = !p || q
+    def conditional(p: Boolean, q: => Boolean): Boolean = !p || q
 
     def commutative(f1: F, f2: F): Boolean = equal(f1, f2) == equal(f2, f1)
     def reflexive(f: F): Boolean = equal(f, f)
@@ -18,5 +18,5 @@ trait Equal[F]  {
       conditional(equal(f1, f2) && equal(f2, f3), equal(f1, f3))
     }
   }
-  def equalLaw = new EqualLaw {}
+  def equalLaw: EqualLaw = new EqualLaw {}
 }

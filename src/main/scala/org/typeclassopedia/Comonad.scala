@@ -9,7 +9,7 @@ trait Comonad[W[_]] extends Copointed[W] {
 
 trait Comonads {
   implicit class ComonadOps[W[_]: Comonad, A](value: W[A]) {
-    def duplicate = implicitly[Comonad[W]].duplicate(value)
+    def duplicate: W[W[A]] = implicitly[Comonad[W]].duplicate(value)
     def extend[B](f: W[A] ⇒ B): W[B] = implicitly[Comonad[W]].extend(value)(f)
   }
 }

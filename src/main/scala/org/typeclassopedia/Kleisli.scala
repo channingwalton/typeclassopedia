@@ -32,10 +32,10 @@ trait KleisliArrow[M[+ _]] extends KleisliCategory[M] with Arrow[({type λ[α, �
 trait Kleislis extends Arrows {
 
   implicit def kleisli[M[+ _], A, B](f: A ⇒ M[B]): Kleisli[M, A, B] = new Kleisli[M, A, B] {
-    def runKleisli(a: A) = f(a)
+    def runKleisli(a: A): M[B] = f(a)
   }
 
-  implicit def kleisliArrow[F[+_]](implicit F0: Monad[F]) = new KleisliArrow[F] {
+  implicit def kleisliArrow[F[+_]](implicit F0: Monad[F]): KleisliArrow[F] = new KleisliArrow[F] {
     implicit def Monad: Monad[F] = F0
   }
 
