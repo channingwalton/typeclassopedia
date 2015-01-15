@@ -1,6 +1,8 @@
 Typeclassopedia
 ===============
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/channingwalton/typeclassopedia?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://api.travis-ci.org/channingwalton/typeclassopedia.png)](https://travis-ci.org/channingwalton/typeclassopedia) [![Codacy Badge](https://www.codacy.com/project/badge/d8926bdd9c9341c6bb1925db8c544e47)](https://www.codacy.com/public/channingwalton/typeclassopedia)
 
 This project aims to be a simple implementation of the Typeclassopedia in Scala.
