@@ -24,7 +24,7 @@ The tests serve as examples of use.
 
 Exercises
 ---------
-There is only one exercise. 
+There is only one exercise.
 
 1. Check out the project
 1. Delete src/main/scala/org/typeclassopedia/std
