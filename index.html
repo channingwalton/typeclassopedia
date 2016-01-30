@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Typeclassopedia by channingwalton</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Typeclassopedia</h1>
+      <h2 class="project-tagline">My tinkering to understand the typeclassopedia.</h2>
+      <a href="https://github.com/channingwalton/typeclassopedia" class="btn">View on GitHub</a>
+      <a href="https://github.com/channingwalton/typeclassopedia/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/channingwalton/typeclassopedia/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="the-road-to-the-typeclassopedia" class="anchor" href="#the-road-to-the-typeclassopedia" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Road to the Typeclassopedia</h1>
+
+<p>People learn in many different ways. For computer science and programming, some enjoy starting from the math, the theory, and proofs. From there they find their way to practical concerns in everyday development. They think in abstract algebra and category theory, encoding their solutions in their chosen language.</p>
+
+<p>Thats awesome.</p>
+
+<p>But other people learn in a different way. They like to learn by example, with problems solved with patterns and techniques that later they learn have names and ideas rooted in mathematics.</p>
+
+<p>There are a lot of excellent books, papers and blogs that follow the first path, usually because the authors tend to be the kind of people that are happy to learn from the math and theory, applying it later.</p>
+
+<p>This book follows the second path, describing a set of ideas collectively called the Typeclassopedia, by starting from a problem and developing a solution.</p>
+
+<h1>
+<a id="the-path" class="anchor" href="#the-path" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Path</h1>
+
+<h2>
+<a id="option" class="anchor" href="#option" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Option</h2>
+
+<p>Here is some code that returns a value:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">trait</span> <span class="pl-en">Blub</span> {
+
+<span class="pl-c">    /**</span>
+<span class="pl-c">    ,* <span class="pl-k">@return</span> a Foo or null</span>
+<span class="pl-c">    ,*/</span>
+    <span class="pl-k">def</span> <span class="pl-en">foo</span>()<span class="pl-k">:</span> <span class="pl-en">Foo</span>
+  }</pre></div>
+
+<p>This is a common pattern, the method returns a Foo instance or null if the method cannot do its job. But, anyone calling this method needs to know that the result might be null which is extremely error prone and completely insane. We can do better than that by returning a value that represents that fact that the method might not be able to return a result, an optional value.</p>
+
+<p>Instead of the insidious null, we can represent this optional value with a type called <em>Option</em>. A type that represents a value that may or may not exist.</p>
+
+<p>Here it is:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">sealed</span> <span class="pl-k">trait</span> <span class="pl-en">Option</span>[<span class="pl-k">+</span><span class="pl-en">A</span>]
+
+  <span class="pl-c">// we have a value</span>
+  <span class="pl-k">case</span> <span class="pl-k">class</span> <span class="pl-en">Some</span>[<span class="pl-en">A</span>](<span class="pl-v">v</span>: <span class="pl-en">A</span>) <span class="pl-k">extends</span> <span class="pl-e">Option</span>[<span class="pl-en">A</span>]
+
+  <span class="pl-c">// no value</span>
+  <span class="pl-k">case</span> <span class="pl-k">object</span> <span class="pl-en">None</span> <span class="pl-k">extends</span> <span class="pl-e">Option</span>[<span class="pl-en">Nothing</span>]</pre></div>
+
+<p>Notice that <code>None extends Option[Nothing]</code>, <code>Nothing</code> is the bottom type which extends all other types. Because <code>Option</code> is covariant, <code>Option[Nothing]</code> extends all other <code>Option</code> types.</p>
+
+<p>So now Blub looks like:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">trait</span> <span class="pl-en">Blub</span> {
+    <span class="pl-k">def</span> <span class="pl-en">foo</span>()<span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-en">Foo</span>]
+  }</pre></div>
+
+<p>Two things have happened:</p>
+
+<ol>
+<li> the method now returns a type that represents the optional nature of the returned value, no more <code>null</code>!</li>
+<li> the comment has gone. It is not needed anymore because the method signature is sufficient.</li>
+</ol>
+
+<p>But now we have another problem, how do we work with the result? We certainly don't want to explicitly detect whether the result is a <em>Some</em> or <em>None</em> everytime by pattern matching or other means.</p>
+
+<p>Instead we can add a method to Option that enables a function to be applied to the value. Traditionally, that method is called <em>map</em>.</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">trait</span> <span class="pl-en">Option</span>[<span class="pl-k">+</span><span class="pl-en">A</span>] {
+    <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">B</span>](<span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">B</span>)<span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span>
+      <span class="pl-v">this</span> <span class="pl-k">match</span> {
+        <span class="pl-k">case</span> <span class="pl-en">Some</span>(a) <span class="pl-k">⇒</span> <span class="pl-en">Some</span>(f(a))
+        <span class="pl-k">case</span> <span class="pl-c1">None</span> <span class="pl-k">⇒</span> <span class="pl-c1">None</span>
+      }
+  }</pre></div>
+
+<p>If the Option is a Some, then the functon can be applied to the value and a new Some returned with the result. If the Option is a None, then map can only return None since there is no value to apply the function to.</p>
+
+<p>So we can now work with values in options not by pattern matching but by mapping with a function.</p>
+
+<h2>
+<a id="list" class="anchor" href="#list" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>List</h2>
+
+<p>Lists are important data structures and its self-evident why they are needed.</p>
+
+<p>Scala's standard library comes with a List so we won't go into writing one (hint: write one yourself as an exercise) but there are a couple of things to point out.</p>
+
+<ol>
+<li> Like Option, List requires a type parameter. eg List[Int] for a list of integers</li>
+<li> It has a map method like Option</li>
+</ol>
+
+<p>List's map method is roughly like this (but not exactly for reasons we won't go into here):</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">U</span>](<span class="pl-v">f</span>: <span class="pl-en">T</span> <span class="pl-k">⇒</span> <span class="pl-en">U</span>)<span class="pl-k">:</span> <span class="pl-en">List</span>[<span class="pl-en">U</span>]</pre></div>
+
+<p>Like Option, the map method takes a function, f, and returns a new List.</p>
+
+<h2>
+<a id="for-comprehensions" class="anchor" href="#for-comprehensions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>For comprehensions</h2>
+
+<p>In scala, if an object has a <code>map</code> method like Option and List do, you can use a <em>for comprehension</em>, syntactic sugar that compiles to map:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">val</span> <span class="pl-en">x</span><span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-k">String</span>] <span class="pl-k">=</span> ...
+
+  <span class="pl-k">for</span> {
+    v <span class="pl-k">&lt;</span><span class="pl-k">-</span> x
+  } <span class="pl-k">yield</span> v.length
+
+  <span class="pl-c">// is the same as</span>
+  x.map(v <span class="pl-k">⇒</span> v.length)</pre></div>
+
+<p>But for comprehensions can do a lot more as we will see later.</p>
+
+<h2>
+<a id="the-first-abstraction" class="anchor" href="#the-first-abstraction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The First Abstraction</h2>
+
+<p>Looking at Option and List we find that both <em>map</em> methods are very similar:</p>
+
+<ol>
+<li> They both take a function that transforms the element(s) of List and Option</li>
+<li> They both obey some obvious <em>laws</em>
+
+<ol>
+<li> Identity: If the function given is the <em>identity</em> function, then the returned Option or List is the same as the original</li>
+<li> Composition: If map is first passed <code>f: A ⇒ B</code>, and then <code>g: B ⇒ C</code>, its the same as passing a composite function: <code>f andThen g</code>, or <code>g compose f</code>.</li>
+</ol>
+</li>
+</ol>
+
+<p>So the question is, can we come up with something more general, and if we can, how do we express it and use it?</p>
+
+<p>Unsurprisingly the answer is yes because in Scala, and other languages like it, you can <em>abstract over type constructors</em>.</p>
+
+<p>Lets look at the map method again but recast it slightly differently:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">o</span>: <span class="pl-en">Option</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">B</span>)<span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-en">B</span>]</pre></div>
+
+<p>So instead of a map method on Option, we can put this method <em>somewhere</em> and call it. Its more cumbersome but stay with me. Lets do the same for List:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">o</span>: <span class="pl-en">List</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">B</span>)<span class="pl-k">:</span> <span class="pl-en">List</span>[<span class="pl-en">B</span>]</pre></div>
+
+<p>These method signatures are practically identical and vary only in the type argument. We can define this method in terms of any type that takes a single parameter, a type constructor, like this:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">trait</span> <span class="pl-en">MappingThing</span>[<span class="pl-en">M</span>[_]] {
+    <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">m</span>: <span class="pl-en">M</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">B</span>)<span class="pl-k">:</span> <span class="pl-en">M</span>[<span class="pl-en">B</span>]
+  }</pre></div>
+
+<p>We will come to what its called later, the important point is that the trait has a <em>map</em> method for any M, that is a type constructor, hence the type parameter is M[_].</p>
+
+<p>The implementations for List and Option are straight forward:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">object</span> <span class="pl-en">ListMappingThing</span> <span class="pl-k">extends</span> <span class="pl-e">MappingThing</span>[<span class="pl-en">List</span>] {
+    <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">m</span>: <span class="pl-en">List</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">B</span>)<span class="pl-k">:</span> <span class="pl-en">List</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span> <span class="pl-k">???</span> <span class="pl-c">// map a list</span>
+  }
+
+  <span class="pl-k">object</span> <span class="pl-en">OptionMappingThing</span> <span class="pl-k">extends</span> <span class="pl-e">MappingThing</span>[<span class="pl-en">Option</span>] {
+    <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">m</span>: <span class="pl-en">Option</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">B</span>)<span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span> <span class="pl-k">???</span> <span class="pl-c">// map an option</span>
+  }</pre></div>
+
+<p>Note that List and Map do not need their map methods anymore, we can use these two class instead, but how?</p>
+
+<p>It would be very inconvenient to have to call <code>ListMappingThing.map</code> or <code>OptionMappingThing.map</code> directly, and actually totally useless when we've written code that doesn't know if we have a List or Option, code that has abstracted over the type constructor itself.</p>
+
+<p>The solution is to use the typeclass pattern explained <em>above</em>. Code that needs a MappingThing can ask the compiler to provide it:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">def</span> <span class="pl-en">launch</span>[<span class="pl-en">A</span>, <span class="pl-en">M</span>[_]](<span class="pl-v">m</span>: <span class="pl-en">M</span>[<span class="pl-en">A</span>])(<span class="pl-k">implicit</span> <span class="pl-v">mappingThing</span>: <span class="pl-en">MappingThing</span>[<span class="pl-en">M</span>])<span class="pl-k">:</span> <span class="pl-en">Result</span> <span class="pl-k">=</span> {
+    <span class="pl-k">val</span> <span class="pl-en">v</span><span class="pl-k">:</span> <span class="pl-en">M</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span>  mappingThing.map(m, myFunkyFunction)
+
+    <span class="pl-c">// do things with v and return a result</span>
+  }</pre></div>
+
+<p>But to make the Option and List MappingThings available for the compiler to find we need to make their instances implicit:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">object</span> <span class="pl-en">AllTheMappingThings</span> {
+    <span class="pl-k">implicit</span> <span class="pl-k">object</span> <span class="pl-en">ListMappingThing</span> <span class="pl-k">extends</span> <span class="pl-e">MappingThing</span>[<span class="pl-en">List</span>] {
+      <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">m</span>: <span class="pl-en">List</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">B</span>)<span class="pl-k">:</span> <span class="pl-en">List</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span> <span class="pl-k">???</span> <span class="pl-c">// map a list</span>
+    }
+
+    <span class="pl-k">implicit</span> <span class="pl-k">object</span> <span class="pl-en">OptionMappingThing</span> <span class="pl-k">extends</span> <span class="pl-e">MappingThing</span>[<span class="pl-en">Option</span>] {
+      <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">m</span>: <span class="pl-en">Option</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">B</span>)<span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span> <span class="pl-k">???</span> <span class="pl-c">// map an option</span>
+    }
+  }</pre></div>
+
+<p>I have put the instances inside another object, but the right place for it is in the List and Option companion objects.</p>
+
+<h3>
+<a id="summary" class="anchor" href="#summary" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Summary</h3>
+
+<p>We have learnt a new way to decouple behaviour from data types using typeclasses that has numerous advantages:</p>
+
+<ol>
+<li> The concept of mapping, the map method, has been extracted to its own type. The operation now has a life of its own independent of the specific types that support it.</li>
+<li> Code can now be written more generally, and therefore be more generally useful, in terms of the MappingThing typeclass, not concrete instances. We don't need to write the <em>launch</em> method twice, once for Option and once for List.</li>
+<li> Now that we have a typeclass, anyone can write more of them for whatever types they want. Suddenly code written in terms of MappingThing can be used in all kinds of different contexts.</li>
+</ol>
+
+<h3>
+<a id="the-name" class="anchor" href="#the-name" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Name</h3>
+
+<p>What we've just invented is some called a <em>functor</em>. Mathematically, a functor is a mapping between so-called categories, but we aren't going to go there.</p>
+
+<h2>
+<a id="squash-it" class="anchor" href="#squash-it" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Squash it</h2>
+
+<p>We have a small problem with our map method, it can return anything at all. Why is that a problem?</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-c">// a function that returns an option</span>
+  <span class="pl-k">def</span> <span class="pl-en">sqrt</span>(<span class="pl-v">x</span>: <span class="pl-k">Double</span>)<span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-k">Double</span>] <span class="pl-k">=</span> <span class="pl-k">if</span> (x <span class="pl-k">&gt;=</span><span class="pl-c1">0</span>) <span class="pl-en">Some</span>(math.sqrt(x)) <span class="pl-k">else</span> <span class="pl-c1">None</span>
+
+  <span class="pl-c">// a value in an option</span>
+
+  <span class="pl-k">val</span> <span class="pl-en">x</span><span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-k">Int</span>] <span class="pl-k">=</span> <span class="pl-k">???</span>
+
+  <span class="pl-k">val</span> <span class="pl-en">y</span><span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-en">Option</span>[<span class="pl-k">Int</span>]] <span class="pl-k">=</span> x.map(v <span class="pl-k">⇒</span> sqrt(v))</pre></div>
+
+<p>y has ended up as an Option of an Option of Int which is annoying. So to handle this special case we are going to introduce a new method called <em>flatMap</em>. In Option it looks like this:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">sealed</span> <span class="pl-k">trait</span> <span class="pl-en">Option</span>[<span class="pl-en">A</span>] {
+    <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">B</span>](<span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">B</span>)<span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span> <span class="pl-k">???</span>
+
+    <span class="pl-k">def</span> <span class="pl-en">flatMap</span>[<span class="pl-en">B</span>](<span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">Option</span>[<span class="pl-en">B</span>])<span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span>
+      <span class="pl-v">this</span> <span class="pl-k">match</span> {
+        <span class="pl-k">case</span> <span class="pl-c1">None</span> <span class="pl-k">⇒</span> <span class="pl-c1">None</span>
+        <span class="pl-k">case</span> <span class="pl-en">Some</span>(x) <span class="pl-k">⇒</span> f(x)
+      }
+  }</pre></div>
+
+<p>List has a similar method.</p>
+
+<p>This method turns out to be very useful. Lets assume we have two Options and we want to work with the values of both in some way, flatMap will be useful:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">val</span> <span class="pl-en">x</span><span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-k">Int</span>] <span class="pl-k">=</span> <span class="pl-k">???</span>
+  <span class="pl-k">val</span> <span class="pl-en">y</span><span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-k">Int</span>] <span class="pl-k">=</span> <span class="pl-k">???</span>
+
+  <span class="pl-k">val</span> <span class="pl-en">sum</span><span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-k">Int</span>] <span class="pl-k">=</span> x.flatMap(xv <span class="pl-k">⇒</span> y.map(yv <span class="pl-k">⇒</span> xv <span class="pl-k">+</span> yv))</pre></div>
+
+<p>This doesn't look so nice but fortunately scala's for comprehension deals with this by offering syntactic sugar for both map and flatMap. The above is identical to:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">val</span> <span class="pl-en">sum</span><span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-k">Int</span>] <span class="pl-k">=</span>
+    <span class="pl-k">for</span> {
+      xv <span class="pl-k">&lt;</span><span class="pl-k">-</span> x
+      yv <span class="pl-k">&lt;</span><span class="pl-k">-</span> y
+    } <span class="pl-k">yield</span> xv <span class="pl-k">+</span> yv</pre></div>
+
+<p>Much better.</p>
+
+<p>List has a similar method so that we can work with multiple lists like this:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">val</span> <span class="pl-en">x</span><span class="pl-k">:</span> <span class="pl-en">List</span>[<span class="pl-k">Int</span>] <span class="pl-k">=</span> <span class="pl-k">???</span>
+  <span class="pl-k">val</span> <span class="pl-en">y</span><span class="pl-k">:</span> <span class="pl-en">List</span>[<span class="pl-k">Int</span>] <span class="pl-k">=</span> <span class="pl-k">???</span>
+
+  <span class="pl-k">val</span> <span class="pl-en">sums</span><span class="pl-k">:</span> <span class="pl-en">List</span>[<span class="pl-k">Int</span>] <span class="pl-k">=</span>
+     <span class="pl-k">for</span> {
+      xv <span class="pl-k">&lt;</span><span class="pl-k">-</span> x
+      yv <span class="pl-k">&lt;</span><span class="pl-k">-</span> y
+    } <span class="pl-k">yield</span> xv <span class="pl-k">+</span> yv</pre></div>
+
+<h2>
+<a id="the-second-abstraction" class="anchor" href="#the-second-abstraction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Second Abstraction</h2>
+
+<p>Looking at Option and List we find that both <em>flatMap</em> methods are very similar, and as with the map method we can recast it a little:</p>
+
+<p>Option:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">def</span> <span class="pl-en">flatMap</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">o</span>: <span class="pl-en">Option</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">Option</span>[<span class="pl-en">B</span>])<span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-en">B</span>]</pre></div>
+
+<p>List:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">def</span> <span class="pl-en">flatMap</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">o</span>: <span class="pl-en">List</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">List</span>[<span class="pl-en">B</span>])<span class="pl-k">:</span> <span class="pl-en">List</span>[<span class="pl-en">B</span>]</pre></div>
+
+<p>These methods are practically identical, what we can do is define this method in terms of any type that takes a single parameter, a type constructor, like this:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">trait</span> <span class="pl-en">FlatMappingThing</span>[<span class="pl-en">M</span>[_]] {
+    <span class="pl-k">def</span> <span class="pl-en">flatMap</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">m</span>: <span class="pl-en">M</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">M</span>[<span class="pl-en">B</span>])<span class="pl-k">:</span> <span class="pl-en">M</span>[<span class="pl-en">B</span>]
+  }</pre></div>
+
+<p>The implementations for List and Option are:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">object</span> <span class="pl-en">AllTheFlatMappingThings</span> {
+    <span class="pl-k">implicit</span> <span class="pl-k">object</span> <span class="pl-en">ListFlatMappingThing</span> <span class="pl-k">extends</span> <span class="pl-e">FlatMappingThing</span>[<span class="pl-en">List</span>] {
+      <span class="pl-k">def</span> <span class="pl-en">flatMap</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">m</span>: <span class="pl-en">List</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">List</span>[<span class="pl-en">B</span>])<span class="pl-k">:</span> <span class="pl-en">List</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span> <span class="pl-k">???</span>
+    }
+
+    <span class="pl-k">implicit</span> <span class="pl-k">object</span> <span class="pl-en">OptionFlatMappingThing</span> <span class="pl-k">extends</span> <span class="pl-e">FlatMappingThing</span>[<span class="pl-en">Option</span>] {
+      <span class="pl-k">def</span> <span class="pl-en">flatMap</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">m</span>: <span class="pl-en">Option</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">Option</span>[<span class="pl-en">B</span>])<span class="pl-k">:</span> <span class="pl-en">Option</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span> <span class="pl-k">???</span>
+    }
+  }</pre></div>
+
+<p>And using this code with typeclasses:</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">def</span> <span class="pl-en">launch</span>[<span class="pl-en">A</span>, <span class="pl-en">M</span>[_]](<span class="pl-v">m</span>: <span class="pl-en">M</span>[<span class="pl-en">A</span>])(<span class="pl-k">implicit</span> <span class="pl-v">flatMappingThing</span>: <span class="pl-en">FlatMappingThing</span>[<span class="pl-en">M</span>])<span class="pl-k">:</span> <span class="pl-en">Result</span> <span class="pl-k">=</span> {
+    <span class="pl-k">val</span> <span class="pl-en">mapped</span><span class="pl-k">:</span> <span class="pl-en">M</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span>  flatMappingThing.flatMap(m, myFunkyFunction)
+    <span class="pl-c">// return a result</span>
+  }</pre></div>
+
+<p>So this is very similar to the functor case.</p>
+
+<h3>
+<a id="summary-1" class="anchor" href="#summary-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Summary</h3>
+
+<p>We have applied the same pattern as the functor above, but this time for the flatMap method. This enables us to cope with multple values of Options, Lists or any other kind of type constructor, or functions that return Options, Lists, etc.</p>
+
+<h3>
+<a id="the-name-1" class="anchor" href="#the-name-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Name</h3>
+
+<p>Stand back ... its a Monad!</p>
+
+<p>There is a little more to a monad than just a flatMap method, it needs to obey some laws too which we will skip, but if you're interested search <a href="https://www.google.com/search?q=scala+monad+laws">Google</a> for Scala Monad Laws.</p>
+
+<h2>
+<a id="syntax" class="anchor" href="#syntax" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Syntax</h2>
+
+<p>The abstractions above are great but because we've moved the map and flatMap methods to typeclasses, scala won't let you use for-comprehensions since the map and flatMap method are on the typeclasses. In the specific case of Option and List they do have those methods because they are part of the Scala library and thats what the original authors did. But if you had a new type for which you'd defined typeclass instances, then that new type won't have map and flatMap.</p>
+
+<p>The solution is to provide some syntax for any type that has a Functor or Monad typeclass.</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">implicit</span> <span class="pl-k">class</span> <span class="pl-en">FunctorSyntax</span>[<span class="pl-en">F</span>[_]<span class="pl-k">:</span> <span class="pl-en">Functor</span>, <span class="pl-en">A</span>](<span class="pl-v">v</span>: <span class="pl-en">F</span>[<span class="pl-en">A</span>]) {
+    <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">B</span>](<span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">B</span>)<span class="pl-k">:</span> <span class="pl-en">F</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span> implicitly[<span class="pl-en">Functor</span>[<span class="pl-en">F</span>]].map(v, f)
+  }</pre></div>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">implicit</span> <span class="pl-k">class</span> <span class="pl-en">MonadSyntax</span>[<span class="pl-en">M</span>[_]<span class="pl-k">:</span> <span class="pl-en">Monad</span>, <span class="pl-en">A</span>](<span class="pl-v">v</span>: <span class="pl-en">M</span>[<span class="pl-en">A</span>]) {
+    <span class="pl-k">def</span> <span class="pl-en">flatMap</span>[<span class="pl-en">B</span>](<span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">M</span>[<span class="pl-en">B</span>])<span class="pl-k">:</span> <span class="pl-en">M</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span> implicitly[<span class="pl-en">Monad</span>[<span class="pl-en">F</span>]].flatMap(v, f)
+  }</pre></div>
+
+<h1>
+<a id="basic-theory" class="anchor" href="#basic-theory" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic Theory</h1>
+
+<h2>
+<a id="types-kinds-and-type-constructors" class="anchor" href="#types-kinds-and-type-constructors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Types, Kinds and Type Constructors</h2>
+
+<p>A <em>variable</em> has a <em>type</em>. For example, <code>x: Int</code> means the variable <code>x</code> has the type <code>Int</code>.</p>
+
+<p>A <em>proper type</em>, also known as an <em>inhabitated</em> type, is a type that can have values. The type Int is a proper type because it has values like 0 and 1. <code>List[Int]</code> is also an inhabited, or proper type, that is inhabited by values like <code>1 :: 2 :: Nil</code>, instances of a list.</p>
+
+<p>A <em>type constructor</em> is something that takes a type and produces a type. Examples are anything with type parameters like List or Option. Type constructors are not inhabited, it is not possible to have values of List or Option, only List[X] or Option[Y].</p>
+
+<p>In type theory it is useful to denote different <em>kinds</em> of types so that we can talk more generally about types, type constructors, etc.</p>
+
+<h3>
+<a id="extra-theory" class="anchor" href="#extra-theory" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Extra Theory</h3>
+
+<p>Types are denoted with an asterisk: <em>Int</em> is of type *</p>
+
+<p>A type constructor taking a single type is denoted like this: <code>*
+-&gt; *</code>, meaning that given a type, denoted by the first *, it will produce a new proper type, *. For example, A List given an Int will produce List[Int].</p>
+
+<p>Something like Either[A, B], which takes two type parameters, is denoted like this: <code>*-&gt; * -&gt; *</code> because it takes two proper types and produces a type. <code>Either[Int, String]</code> is a proper type contructed with Either and two proper types, Int and String.</p>
+
+<p><em>Kinds</em> are a way of describing similar types at an abstract level. <code>*</code>, <code>* -&gt;
+*</code>, <code>* -&gt; * -&gt; *</code>, are <em>kinds</em>. Kinds are useful when working more abstractly with types, both proper and improper (inhabited or uninhabited).</p>
+
+<p>Further reading <a href="https://en.wikipedia.org/wiki/Kind_(type_theory)">Wikipedia</a> <a href="http://blogs.atlassian.com/2013/09/scala-types-of-a-higher-kind/">Types of a Higher Kind</a> <a href="http://programmers.stackexchange.com/a/255928/18311">Stack Exchange</a></p>
+
+<h2>
+<a id="typeclasses" class="anchor" href="#typeclasses" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Typeclasses</h2>
+
+<p>Typeclasses are an extremely common pattern used extensively in libraries like the <a href="http://typelevel.org/">Typelevel</a> libraries. Martin Odersky et al describe typeclasses as follows:</p>
+
+<blockquote>
+<p>Type classes are useful to solve several fundamental challenges in software engineering and programming languages. In particular type classes support retroactive extension: the ability to extend existing software modules with new functionality without needing to touch or re-compile the original source.</p>
+</blockquote>
+
+<p>Read more here: <a href="http://ropas.snu.ac.kr/%7Ebruno/papers/TypeClasses.pdf">Type Classes as Objects and Implicits</a></p>
+
+<p>In Scala, the typeclass pattern consists of several parts:</p>
+
+<ul>
+<li>  a trait with one or more type parameters that defines some behaviour</li>
+<li>  an optional companion object of the trait with <em>implicit</em> instances of the trait for common types like Strings or Options, and other types present in the standard library.</li>
+</ul>
+
+<p>For example, a trait with a show method to transform a T into a String</p>
+
+<div class="highlight highlight-source-scala"><pre>  <span class="pl-k">trait</span> <span class="pl-en">Show</span>[<span class="pl-en">T</span>] {
+    <span class="pl-k">def</span> <span class="pl-en">show</span>(<span class="pl-v">t</span>: <span class="pl-en">T</span>)<span class="pl-k">:</span> <span class="pl-k">String</span>
+  }
+
+  <span class="pl-c">// A companion object with some useful default instance of the typeclass</span>
+  <span class="pl-k">object</span> <span class="pl-en">Show</span> {
+
+    <span class="pl-k">implicit</span> <span class="pl-k">object</span> <span class="pl-en">StringShow</span> <span class="pl-k">extends</span> <span class="pl-e">Show</span>[<span class="pl-k">String</span>] {
+      <span class="pl-k">def</span> <span class="pl-en">show</span>(<span class="pl-v">s</span>: <span class="pl-k">String</span>)<span class="pl-k">:</span> <span class="pl-k">String</span> <span class="pl-k">=</span> s.toString
+    }
+
+    <span class="pl-k">implicit</span> <span class="pl-k">object</span> <span class="pl-en">IntShow</span> <span class="pl-k">extends</span> <span class="pl-e">Show</span>[<span class="pl-k">Int</span>] {
+      <span class="pl-k">def</span> <span class="pl-en">show</span>(<span class="pl-v">t</span>: <span class="pl-k">Int</span>) <span class="pl-k">=</span> t.toString
+    }
+
+    <span class="pl-c">// This show requires a Show[T] so its a method</span>
+    <span class="pl-k">implicit</span> <span class="pl-k">def</span> <span class="pl-en">listShow</span>[<span class="pl-en">T</span>](<span class="pl-k">implicit</span> <span class="pl-v">tShow</span>: <span class="pl-en">Show</span>[<span class="pl-en">T</span>])<span class="pl-k">:</span>  <span class="pl-en">Show</span>[<span class="pl-en">List</span>[<span class="pl-en">T</span>]]  <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Show</span>[<span class="pl-en">List</span>[<span class="pl-en">T</span>]] {
+
+      <span class="pl-k">def</span> <span class="pl-en">show</span>(<span class="pl-v">l</span>: <span class="pl-en">List</span>[<span class="pl-en">T</span>])<span class="pl-k">:</span> <span class="pl-k">String</span> <span class="pl-k">=</span> {
+        <span class="pl-k">val</span> <span class="pl-en">list</span> <span class="pl-k">=</span> l.map(v <span class="pl-k">⇒</span> tShow.show(v)).mkString(<span class="pl-s"><span class="pl-pds">"</span>,<span class="pl-pds">"</span></span>)
+        s<span class="pl-s"><span class="pl-pds">"</span>List($list)<span class="pl-pds">"</span></span>
+      }
+
+    }
+   }
+
+  <span class="pl-c">// Example of use</span>
+  <span class="pl-k">def</span> <span class="pl-en">foo</span>[<span class="pl-en">T</span>](<span class="pl-v">v</span>: <span class="pl-en">T</span>)(<span class="pl-k">implicit</span> <span class="pl-v">show</span>: <span class="pl-en">Show</span>[<span class="pl-en">T</span>]) <span class="pl-k">=</span> show.show(v)
+
+  println(foo(<span class="pl-s"><span class="pl-pds">"</span>hi<span class="pl-pds">"</span></span>))
+
+  println(foo(<span class="pl-c1">123</span>))
+
+  println(foo(<span class="pl-en">List</span>(<span class="pl-c1">1</span>,<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span class="pl-c1">4</span>,<span class="pl-c1">5</span>)))</pre></div>
+
+<p>As an exercise, implement Show[Option[T]] and Show[Either[A, B]]</p>
+
+<h1>
+<a id="common-types-and-what-they-represent" class="anchor" href="#common-types-and-what-they-represent" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Common types and what they represent</h1>
+
+<p>It is not uncommon to read blogs or other articles in which the follow statements are made:</p>
+
+<ul>
+<li>  Lists represent indeterminism</li>
+<li>  Either is a disjoint union</li>
+<li>  etc.</li>
+</ul>
+
+<p>What do they mean?</p>
+
+<h2>
+<a id="option-or-maybe" class="anchor" href="#option-or-maybe" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Option (or Maybe)</h2>
+
+<p>Option represents an optional value, or sometimes, success and failure.</p>
+
+<p>It has two constructors: None and Some[T], where Some[T] contains a value of type T.</p>
+
+<p>Option is of kind <code>* -&gt; *</code></p>
+
+<h2>
+<a id="list-1" class="anchor" href="#list-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>List</h2>
+
+<p>Lists represent lists of things, but they are often referred to as representing <em>indeterminism</em>. A function returning a list can return any number of values including nothing (the empty list), hence the list is being used to represent an indeterministic result.</p>
+
+<p>Lists are <em>recursive</em> data structures because they are typically defined in terms of themselves: a list is either the empty list, Nil, or a single element followed by a list.</p>
+
+<p>List is of kind <code>* -&gt; *</code></p>
+
+<h2>
+<a id="either" class="anchor" href="#either" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Either</h2>
+
+<p>Either is of kind <code>* -&gt; * -&gt; *</code></p>
+
+<h2>
+<a id="validation" class="anchor" href="#validation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Validation</h2>
+
+<h2>
+<a id="identity" class="anchor" href="#identity" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Identity</h2>
+
+<p>Intuitively it simply wraps a value, it does not embody anything meaningful but is useful in some contexts beyond the scope of this document.</p>
+
+<p>Identity is of kind <code>* -&gt; *</code></p>
+
+<h2>
+<a id="further-reading" class="anchor" href="#further-reading" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Further Reading</h2>
+
+<p><a href="http://www.cs.tufts.edu/comp/150FP/archive/brent-yorgey/tc.pdf">Typeclassopedia</a> <a href="https://pp.ipd.kit.edu/uploads/publikationen/kuhnle13bachelorarbeit.pdf">Modeling Uncertain Data using Monads and an Application to the Sequence Alignment Problem</a> <a href="http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html">Functors, Applicatives, And Monads In Pictures</a></p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/channingwalton/typeclassopedia">Typeclassopedia</a> is maintained by <a href="https://github.com/channingwalton">channingwalton</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
