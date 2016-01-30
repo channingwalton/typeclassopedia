@@ -349,6 +349,8 @@ The solution is to provide some syntax for any type that has a Functor or Monad 
   }
 ```
 
+… to be continued.
+
 Basic Theory
 ============
 
