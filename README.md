@@ -9,6 +9,8 @@ This project aims to be a simple implementation of the Typeclassopedia in Scala.
 Some people learn better by seeing things in code, with examples, which is why I started doing this.
 The tests are intended to be examples using typical types like Option and List, but also a custom type, Blub, to show that new types can make use of the type classes defined here.
 
+Read (The Road to the Typeclassopedia)[http://channingwalton.github.io/typeclassopedia/] which I hope will be a gentle introduction to the ideas from examples rather than from theory.
+
 How to Start
 ------------
 
