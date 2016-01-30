@@ -88,7 +88,7 @@ Scala's standard library comes with a List so we won't go into writing one (hint
 1.  Like Option, List requires a type parameter. eg List\[Int\] for a list of integers
 2.  It has a map method like Option
 
-List's map method is roughly like this (but not exactly for reasons we won't go into here):
+List's map method is roughly like this:
 
 ``` scala
   def map[U](f: T ⇒ U): List[U]
@@ -148,7 +148,7 @@ These method signatures are practically identical and vary only in the type argu
   }
 ```
 
-We will come to what its called later, the important point is that the trait has a *map* method for any M, that is a type constructor, hence the type parameter is M\[\_\].
+We will come to what its called later, the important point is that the trait has a *map* method for any M that is a type constructor, hence the type parameter is M\[\_\].
 
 The implementations for List and Option are straight forward:
 
@@ -166,7 +166,7 @@ Note that List and Map do not need their map methods anymore, we can use these t
 
 It would be very inconvenient to have to call `ListMappingThing.map` or `OptionMappingThing.map` directly, and actually totally useless when we've written code that doesn't know if we have a List or Option, code that has abstracted over the type constructor itself.
 
-The solution is to use the typeclass pattern explained *above*. Code that needs a MappingThing can ask the compiler to provide it:
+The solution is to use the typeclass pattern. Code that needs a MappingThing can ask the compiler to provide it, but including an implicit parameter list with a `MappingThing\[M\]`:
 
 ``` scala
   def launch[A, M[_]](m: M[A])(implicit mappingThing: MappingThing[M]): Result = {
