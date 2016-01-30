@@ -105,7 +105,7 @@
 <li> It has a map method like Option</li>
 </ol>
 
-<p>List's map method is roughly like this (but not exactly for reasons we won't go into here):</p>
+<p>List's map method is roughly like this:</p>
 
 <div class="highlight highlight-source-scala"><pre>  <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">U</span>](<span class="pl-v">f</span>: <span class="pl-en">T</span> <span class="pl-k">⇒</span> <span class="pl-en">U</span>)<span class="pl-k">:</span> <span class="pl-en">List</span>[<span class="pl-en">U</span>]</pre></div>
 
@@ -161,7 +161,7 @@
     <span class="pl-k">def</span> <span class="pl-en">map</span>[<span class="pl-en">A</span>, <span class="pl-en">B</span>](<span class="pl-v">m</span>: <span class="pl-en">M</span>[<span class="pl-en">A</span>], <span class="pl-v">f</span>: <span class="pl-en">A</span> <span class="pl-k">⇒</span> <span class="pl-en">B</span>)<span class="pl-k">:</span> <span class="pl-en">M</span>[<span class="pl-en">B</span>]
   }</pre></div>
 
-<p>We will come to what its called later, the important point is that the trait has a <em>map</em> method for any M, that is a type constructor, hence the type parameter is M[_].</p>
+<p>We will come to what its called later, the important point is that the trait has a <em>map</em> method for any M that is a type constructor, hence the type parameter is M[_].</p>
 
 <p>The implementations for List and Option are straight forward:</p>
 
@@ -177,7 +177,7 @@
 
 <p>It would be very inconvenient to have to call <code>ListMappingThing.map</code> or <code>OptionMappingThing.map</code> directly, and actually totally useless when we've written code that doesn't know if we have a List or Option, code that has abstracted over the type constructor itself.</p>
 
-<p>The solution is to use the typeclass pattern explained <em>above</em>. Code that needs a MappingThing can ask the compiler to provide it:</p>
+<p>The solution is to use the typeclass pattern. Code that needs a MappingThing can ask the compiler to provide it, but including an implicit parameter list with a <code>MappingThing[M]</code>:</p>
 
 <div class="highlight highlight-source-scala"><pre>  <span class="pl-k">def</span> <span class="pl-en">launch</span>[<span class="pl-en">A</span>, <span class="pl-en">M</span>[_]](<span class="pl-v">m</span>: <span class="pl-en">M</span>[<span class="pl-en">A</span>])(<span class="pl-k">implicit</span> <span class="pl-v">mappingThing</span>: <span class="pl-en">MappingThing</span>[<span class="pl-en">M</span>])<span class="pl-k">:</span> <span class="pl-en">Result</span> <span class="pl-k">=</span> {
     <span class="pl-k">val</span> <span class="pl-en">v</span><span class="pl-k">:</span> <span class="pl-en">M</span>[<span class="pl-en">B</span>] <span class="pl-k">=</span>  mappingThing.map(m, myFunkyFunction)
