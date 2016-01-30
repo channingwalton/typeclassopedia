@@ -166,7 +166,7 @@ Note that List and Map do not need their map methods anymore, we can use these t
 
 It would be very inconvenient to have to call `ListMappingThing.map` or `OptionMappingThing.map` directly, and actually totally useless when we've written code that doesn't know if we have a List or Option, code that has abstracted over the type constructor itself.
 
-The solution is to use the typeclass pattern. Code that needs a MappingThing can ask the compiler to provide it, but including an implicit parameter list with a `MappingThing\[M\]`:
+The solution is to use the typeclass pattern. Code that needs a MappingThing can ask the compiler to provide it, but including an implicit parameter list with a `MappingThing[M]`:
 
 ``` scala
   def launch[A, M[_]](m: M[A])(implicit mappingThing: MappingThing[M]): Result = {
