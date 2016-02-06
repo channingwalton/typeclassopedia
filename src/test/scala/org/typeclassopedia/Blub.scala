@@ -1,7 +1,6 @@
 package org.typeclassopedia
 
 import org.typeclassopedia.extras.Show
-import org.typeclassopedia.Typeclassopedia._
 
 case class Blub[T](v: T)
 

@@ -333,7 +333,7 @@ There is a little more to a monad than just a flatMap method, it needs to obey s
 Syntax
 ------
 
-The abstractions above are great but because we've moved the map and flatMap methods to typeclasses, scala won't let you use for-comprehensions since the map and flatMap method are on the typeclasses. In the specific case of Option and List they do have those methods because they are part of the Scala library and thats what the original authors did. But if you had a new type for which you'd defined typeclass instances, then that new type won't have map and flatMap.
+The abstractions above are great, but because we've moved the map and flatMap methods to typeclasses, scala for-comprehensions won't work since the map and flatMap method are no longer on the objects you are working with. In the specific case of Option and List they do have those methods because they are part of the Scala library and thats what the original authors did. But if you had a new type for which you'd defined typeclass instances, then that new type won't have map and flatMap.
 
 The solution is to provide some syntax for any type that has a Functor or Monad typeclass.
 

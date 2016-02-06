@@ -2,7 +2,6 @@ package org.typeclassopedia
 
 import Typeclassopedia._
 import org.scalatest._
-import Matchers._
 
 class MonadPlusSpec extends FlatSpec with Matchers {
 
