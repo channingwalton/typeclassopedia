@@ -1,5 +1,8 @@
 package org.typeclassopedia
 
+import java.lang.String
+import scala.{math, Double, None, Some}
+
 import Typeclassopedia._
 import org.scalatest._
 

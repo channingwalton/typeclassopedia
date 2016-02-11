@@ -1,6 +1,9 @@
 package org.typeclassopedia
 package std
 
+import scala.{IllegalArgumentException, List, Nil}
+import scala.Predef.implicitly
+
 trait Lists {
 
   trait ListFunctor extends Functor[List] {

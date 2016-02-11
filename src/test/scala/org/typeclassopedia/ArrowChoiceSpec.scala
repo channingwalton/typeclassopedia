@@ -1,5 +1,9 @@
 package org.typeclassopedia
 
+import java.lang.String
+import scala.{Int, Left, Right}
+
+
 import org.scalatest._
 import Typeclassopedia._
 

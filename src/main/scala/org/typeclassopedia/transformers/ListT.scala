@@ -1,5 +1,8 @@
 package org.typeclassopedia.transformers
 
+import scala.{List, Nil}
+import scala.Predef.implicitly
+
 import org.typeclassopedia._
 
 /**

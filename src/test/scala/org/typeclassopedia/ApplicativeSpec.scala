@@ -1,5 +1,6 @@
 package org.typeclassopedia
 
+import scala.{Int, List, None, Some}
 import Typeclassopedia._
 import org.scalatest._
 

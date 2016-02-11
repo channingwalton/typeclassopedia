@@ -1,5 +1,6 @@
 package org.typeclassopedia
 
+import scala.{Option, List}
 import Typeclassopedia._
 import org.scalatest._
 

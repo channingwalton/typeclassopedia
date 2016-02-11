@@ -1,5 +1,6 @@
 package org.typeclassopedia.extras
 
+import scala.Predef.implicitly
 import org.typeclassopedia.Applicative
 import org.typeclassopedia.Semigroup
 

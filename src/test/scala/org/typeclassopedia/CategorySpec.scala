@@ -1,5 +1,9 @@
 package org.typeclassopedia
 
+import scala.Int
+import scala.Predef.wrapString
+
+import java.lang.String
 import Typeclassopedia._
 import org.scalatest._
 

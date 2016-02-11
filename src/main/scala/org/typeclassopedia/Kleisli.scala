@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.Predef.implicitly
+
 trait Kleisli[M[+ _], -A, +B] {
 
   import Typeclassopedia._

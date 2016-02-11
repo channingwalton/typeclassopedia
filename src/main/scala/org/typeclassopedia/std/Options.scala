@@ -1,6 +1,10 @@
 package org.typeclassopedia
 package std
 
+import scala.{None, Option, Some, StringContext}
+import scala.Predef.implicitly
+import java.lang.{IllegalArgumentException, String}
+
 trait Options {
 
   implicit class OptionExtras[T](t: T) {

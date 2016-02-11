@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.Boolean
+
 /**
   * This is a blatant rip off from Scalaz.
   * There is nothing particularly tricky with this class, but its used in law checking which is useful.

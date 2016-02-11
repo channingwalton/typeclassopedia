@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.Predef.implicitly
+
 trait MonadPlus[M[_]] extends Monad[M] {
   def mzero[A]: M[A]
   def mplus[A](a: M[A], b: M[A]): M[A]

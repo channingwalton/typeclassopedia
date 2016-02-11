@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.Predef.implicitly
+
 /**
  * A Category generalizes the notion of function composition to general morphisms.
  *

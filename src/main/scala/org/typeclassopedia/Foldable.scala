@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.Predef.implicitly
+
 trait Foldable[F[_]] {
   def foldMap[A, B](fa: F[A])(f: A ⇒ B)(implicit F: Monoid[B]): B
 }

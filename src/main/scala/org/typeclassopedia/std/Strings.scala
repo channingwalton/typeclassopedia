@@ -1,5 +1,7 @@
 package org.typeclassopedia.std
 
+import java.lang.String
+
 import org.typeclassopedia.extras.Show
 
 trait StringShow {

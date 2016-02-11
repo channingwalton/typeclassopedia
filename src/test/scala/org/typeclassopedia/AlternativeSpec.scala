@@ -1,5 +1,8 @@
 package org.typeclassopedia
 
+import scala.{Int, List, Option}
+import scala.Predef._
+
 import Typeclassopedia._
 import org.scalatest._
 import org.scalatest.prop.PropertyChecks

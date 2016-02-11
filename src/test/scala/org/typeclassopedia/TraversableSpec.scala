@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.{Int, List, Option, None, Some}
+
 import Typeclassopedia._
 import org.scalatest._
 import Matchers._

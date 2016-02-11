@@ -1,5 +1,7 @@
 package org.typeclassopedia.std
 
+import scala.{Either, Function1, Left, Right}
+import scala.Predef.identity
 import org.typeclassopedia.{ArrowApply, ArrowChoice, Category}
 
 /**

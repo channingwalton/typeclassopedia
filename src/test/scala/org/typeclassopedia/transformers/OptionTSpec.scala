@@ -1,5 +1,7 @@
 package org.typeclassopedia.transformers
 
+import java.lang.String
+import scala.{Int, Option}
 import org.scalatest.{Matchers, FlatSpec}
 import org.typeclassopedia.Blub
 

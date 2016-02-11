@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.Predef.{implicitly, identity}
+
 trait Traversable[T[_]] extends Functor[T] with Foldable[T] {
 
   def traverse[F[_] : Applicative, A, B](fa: T[A])(f: A ⇒ F[B]): F[T[B]]

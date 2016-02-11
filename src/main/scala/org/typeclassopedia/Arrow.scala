@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.Predef.implicitly
+
 /**
  * Arrow is explained in the Monad.Reader Issue 13 far better than I can.
  * In particular, read page 52 which discusses the methods below.

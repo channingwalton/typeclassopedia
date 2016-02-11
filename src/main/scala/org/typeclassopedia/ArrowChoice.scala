@@ -1,5 +1,8 @@
 package org.typeclassopedia
 
+import scala.Predef.implicitly
+import scala.Either
+
 trait ArrowChoice[~>[_, _]] extends Arrow[~>] {
 
   def left[B, C, D](a: B ~> C): Either[B, D] ~> Either[C, D]

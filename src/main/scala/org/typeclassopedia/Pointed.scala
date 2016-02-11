@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.Predef.implicitly
+
 /**
  * The Pointed type class represents pointed functors.
  * The Pointed class represents the additional ability to put a value into a default context.

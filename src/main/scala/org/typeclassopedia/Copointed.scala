@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.Predef.implicitly
+
 trait Copointed[F[_]] extends Functor[F] {
 
   def extract[A](f: F[A]): A

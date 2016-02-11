@@ -28,6 +28,9 @@ scalacOptions ++= Seq(
     "-Ywarn-dead-code",
     "-Ywarn-numeric-widen",
     "-Ywarn-value-discard",
-    "-Xfuture"
+    "-Xfuture",
+    "-Ywarn-unused-import",
+    "-Yno-predef",
+    "-Yno-imports"
     //"-Xlog-implicits"
 )

@@ -1,5 +1,8 @@
 package org.typeclassopedia
 
+import java.lang.String
+import scala.StringContext
+import scala.Predef.implicitly
 import org.typeclassopedia.extras.Show
 
 case class Blub[T](v: T)

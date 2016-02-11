@@ -1,5 +1,8 @@
 package org.typeclassopedia
 
+import scala.Int
+import scala.Predef.identity
+
 import Typeclassopedia._
 import org.scalatest._
 

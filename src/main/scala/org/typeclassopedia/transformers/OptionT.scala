@@ -1,5 +1,8 @@
 package org.typeclassopedia.transformers
 
+import scala.Predef.implicitly
+import scala.{Boolean, None, Option, Some}
+
 import org.typeclassopedia._
 
 /**

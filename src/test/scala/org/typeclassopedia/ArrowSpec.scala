@@ -1,5 +1,8 @@
 package org.typeclassopedia
 
+import java.lang.String
+import scala.Int
+
 import Typeclassopedia._
 import org.scalatest._
 

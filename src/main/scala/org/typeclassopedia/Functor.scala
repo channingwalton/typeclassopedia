@@ -1,5 +1,8 @@
 package org.typeclassopedia
 
+import scala.Predef.implicitly
+import scala.Boolean
+
 /**
  * The concept of a Functor.
  * A functor is something that applies a simple function, A ⇒ B, to some F[A] to yield an F[B].

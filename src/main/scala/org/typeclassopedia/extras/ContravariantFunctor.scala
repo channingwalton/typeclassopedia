@@ -1,5 +1,7 @@
 package org.typeclassopedia.extras
 
+import java.lang.String
+
 /**
   * See http://typelevel.org/blog/2016/02/04/variance-and-functors.html
   */

@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.Predef.implicitly
+
 /**
  * A semigroup provides an associative operation (like + for numbers).
  * For a more formal definition, have a look at Wikipedia.

@@ -1,5 +1,6 @@
 package org.typeclassopedia
 
+import scala.{Int, None}
 import Typeclassopedia._
 import org.scalatest._
 import Matchers._

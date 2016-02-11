@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.Predef.implicitly
+
 trait Comonad[W[_]] extends Copointed[W] {
 
   def duplicate[A](a: W[A]): W[W[A]]

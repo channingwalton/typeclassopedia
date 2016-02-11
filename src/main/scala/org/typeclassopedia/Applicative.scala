@@ -1,5 +1,7 @@
 package org.typeclassopedia
 
+import scala.Predef.implicitly
+
 /**
  * The concept of an applicative functor.
  * Brent Yorgey's description is as follows:

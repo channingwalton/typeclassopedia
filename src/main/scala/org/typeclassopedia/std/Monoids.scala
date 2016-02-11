@@ -1,6 +1,9 @@
 package org.typeclassopedia
 package std
 
+import scala.Int
+import java.lang.String
+
 trait Monoids {
 
   implicit object MonoidInt extends Monoid[Int] {
