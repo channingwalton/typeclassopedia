@@ -20,9 +20,9 @@ class OptionTSpec extends FlatSpec with Matchers {
   it should "do the for-comprehension thing with all the options" in {
     val r = for {
       a ← OptionT(Blub(Option(1)))
-      b ← OptionT(Blub(Option(1)))
-    } yield a + b
-    r shouldEqual OptionT(Blub(Option(2)))
+      b ← OptionT(Blub(Option("foo")))
+    } yield a + b.length
+    r shouldEqual OptionT(Blub(Option(4)))
   }
 
   it should "do the for-comprehension thing with a none" in {
