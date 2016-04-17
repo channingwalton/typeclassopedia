@@ -15,7 +15,7 @@ How to Start
 ------------
 
 I suggest you start with Functor as it is the simplest class to study, then Applicative, Monad, Semigroup and Monoid.
-Then have a look at Validation which is not part of the Typeclassopedia but its useful.
+Then have a look at Validation which is not part of the Typeclassopedia but it's useful.
 
 Do not start with Category, Arrow or Kleisli unless you've understood the above, your brain with melt and kittens will have their toys taken away.
 Before attempting to grok Category and its subtypes (Arrow), read [Introduction to Category Theory in Scala](http://hseeberger.wordpress.com/2010/11/25/introduction-to-category-theory-in-scala/) by Heiko Seeberger.
