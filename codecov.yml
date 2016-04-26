@@ -1,2 +1,4 @@
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+codecov:
+  token: e71cac93-7a3a-43e1-87cc-e04024210737
+  branch: master
+  bot: null
