@@ -1,11 +1,12 @@
- language: scala
+language: scala
  
- scala:
+scala:
    - "2.11.8"
- jdk:
-   - oraclejdk8
+
+jdk:
+  - oraclejdk8
    
- script:
+script:
   - sbt clean coverage test
 
 after_success:
