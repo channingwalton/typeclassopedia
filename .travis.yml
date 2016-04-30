@@ -1,8 +1,12 @@
  language: scala
+ 
  scala:
    - "2.11.8"
  jdk:
    - oraclejdk8
+   
+ script:
+  - sbt clean test
 
 after_success:
   - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
