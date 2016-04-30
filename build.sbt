@@ -34,3 +34,5 @@ scalacOptions ++= Seq(
     "-Yno-imports"
     //"-Xlog-implicits"
 )
+
+coverageEnabled := true
