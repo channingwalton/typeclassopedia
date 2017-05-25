@@ -27,6 +27,5 @@ class MonadPlusSpec extends FlatSpec with Matchers {
     val add = (i: Int) ⇒ i :: i :: Nil
 
     (mzero >>= add) shouldEqual mzero
-    List(1) >> List.empty[Int] shouldEqual List.empty[Int]
   }
 }

@@ -55,8 +55,8 @@ trait Options {
   implicit def optionSemigroup[A: Semigroup]: Semigroup[Option[A]] = new Semigroup[Option[A]] {
     def append(a: Option[A], b: Option[A]): Option[A] = (a, b) match {
       case (Some(a1), Some(a2)) ⇒ Some(implicitly[Semigroup[A]].append(a1, a2))
-      case (Some(a1), None) ⇒ a
-      case (None, Some(a2)) ⇒ b
+      case (Some(_), None) ⇒ a
+      case (None, Some(_)) ⇒ b
       case (None, None) ⇒ None
     }
   }
