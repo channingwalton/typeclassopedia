@@ -2,6 +2,7 @@ package org.typeclassopedia
 
 /**
   * With thanks to Tony Morris: http://blog.tmorris.net/posts/memoisation-with-state-using-scala/index.html
+  * I also like this explanation of the State monad: https://softwarecorner.wordpress.com/2013/08/29/scalaz-state-monad/
   */
 case class State[S, A](run: S => (A, S)) {
   // 1. the map method
