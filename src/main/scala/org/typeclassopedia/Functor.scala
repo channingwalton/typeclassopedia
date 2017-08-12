@@ -27,7 +27,7 @@ trait Functor[F[_]] {
       FA.equal(map[A, A](fa, x => x), fa)
 
     def composite[A, B, C](fa: F[A], f1: A => B, f2: B => C)(implicit FC: Equal[F[C]]): Boolean =
-      FC.equal(map(map(fa, f1), f2), map(fa, f2 compose f1))
+      FC.equal(map(map(fa, f1), f2), map(fa, f1 andThen f2))
   }
 
   def laws: FunctorLaws = new FunctorLaws {}
