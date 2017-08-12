@@ -1,13 +1,10 @@
 language: scala
  
 scala:
-   - "2.11.8"
+   - "2.12.3"
 
 jdk:
   - oraclejdk8
    
 script:
-  - sbt clean coverage test && sbt ++$TRAVIS_SCALA_VERSION coverageReport
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports."
+  - sbt clean test
