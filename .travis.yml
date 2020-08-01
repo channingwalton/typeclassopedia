@@ -1,10 +1,8 @@
 language: scala
  
 scala:
-   - "2.12.6"
+   - "2.13.3"
 
 jdk:
-  - oraclejdk8
-   
-script:
-  - sbt clean test
+  - oraclejdk11
+
