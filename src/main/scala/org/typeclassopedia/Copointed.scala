@@ -14,12 +14,12 @@ trait Copointed[F[_]] extends Functor[F] {
 trait CoPoints {
 
   /**
-   * Wrap a simple type in a Pointed
-   */
+    * Wrap a simple type in a Pointed
+    */
   implicit class CoPointedValueOps[F[_]: Copointed, T](value: F[T]) {
     def extract: T = implicitly[Copointed[F]].extract(value)
     def copoint: T = extract
-    def copure: T = extract
+    def copure: T  = extract
   }
 
 }

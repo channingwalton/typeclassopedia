@@ -7,17 +7,17 @@ package org.typeclassopedia
 case class State[S, A](run: S => (A, S)) {
   // 1. the map method
   def map[B](f: A => B): State[S, B] =
-    State(s => {
+    State { s =>
       val (a, t) = run(s)
       (f(a), t)
-    })
+    }
 
   // 2. the flatMap method
   def flatMap[B](f: A => State[S, B]): State[S, B] =
-    State(s => {
+    State { s =>
       val (a, t) = run(s)
       f(a) run t
-    })
+    }
 
   // Convenience function to drop the resulting state value
   def eval(s: S): A =
