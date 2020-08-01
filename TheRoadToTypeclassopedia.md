@@ -1,13 +1,16 @@
 The Road to the Typeclassopedia
 ===============================
 
-People learn in many different ways. For computer science and programming, some enjoy starting from the math, the theory, and proofs. From there they find their way to practical concerns in everyday development. They think in abstract algebra and category theory, encoding their solutions in their chosen language.
+People learn in many ways. For computer science and programming, some enjoy starting from the math, the theory, and proofs.
+From there they find their way to practical concerns in everyday development.
+They think in abstract algebra and category theory, encoding their solutions in their chosen language.
 
-Thats awesome.
+That's awesome.
 
-But other people learn in a different way. They like to learn by example, with problems solved with patterns and techniques that later they learn have names and ideas rooted in mathematics.
+Other people learn differently, by example, with problems solved with patterns and techniques that later they learn have names and ideas rooted in mathematics.
 
-There are a lot of excellent books, papers and blogs that follow the first path, usually because the authors tend to be the kind of people that are happy to learn from the math and theory, applying it later.
+There are a lot of excellent books, papers and blogs that follow the first path, usually because the authors
+tend to be the kind of people that are happy to learn from the math and theory, applying it later.
 
 This book follows the second path, describing a set of ideas collectively called the Typeclassopedia, by starting from a problem and developing a solution.
 
@@ -29,7 +32,9 @@ Here is some code that returns a value:
   }
 ```
 
-This is a common pattern, the method returns a Foo instance or null if the method cannot do its job. But, anyone calling this method needs to know that the result might be null which is extremely error prone and completely insane. We can do better than that by returning a value that represents that fact that the method might not be able to return a result, an optional value.
+This is a common pattern, the method returns a Foo instance or null if the method cannot do its job.
+Anyone calling this method needs to know that the result might be null which is extremely error prone and completely insane.
+We can do better than that by returning a value that represents that fact that the method might not be able to return a result, an optional value.
 
 Instead of the insidious null, we can represent this optional value with a type called *Option*. A type that represents a value that may or may not exist.
 
@@ -60,9 +65,10 @@ Two things have happened:
 1.  the method now returns a type that represents the optional nature of the returned value, no more `null`!
 2.  the comment has gone. It is not needed anymore because the method signature is sufficient.
 
-But now we have another problem, how do we work with the result? We certainly don't want to explicitly detect whether the result is a *Some* or *None* everytime by pattern matching or other means.
+Now we have another problem, how do we work with the result? We certainly don't want to explicitly detect whether
+the result is a *Some* or *None* everytime by pattern matching or other means.
 
-Instead we can add a method to Option that enables a function to be applied to the value. Traditionally, that method is called *map*.
+Instead, we can add a method to Option that enables a function to be applied to the value. Traditionally, that method is called *map*.
 
 ``` scala
   trait Option[+A] {
@@ -74,7 +80,8 @@ Instead we can add a method to Option that enables a function to be applied to t
   }
 ```
 
-If the Option is a Some, then the functon can be applied to the value and a new Some returned with the result. If the Option is a None, then map can only return None since there is no value to apply the function to.
+If the Option is a Some, then the functon can be applied to the value, and a new Some returned with the result.
+If the Option is a None, then map can only return None since there is no value to apply the function to.
 
 So we can now work with values in options not by pattern matching but by mapping with a function.
 
@@ -140,7 +147,8 @@ So instead of a map method on Option, we can put this method *somewhere* and cal
   def map[A, B](o: List[A], f: A => B): List[B]
 ```
 
-These method signatures are practically identical and vary only in the type argument. We can define this method in terms of any type that takes a single parameter, a type constructor, like this:
+These method signatures are practically identical and vary only in the type argument.
+This method can be defined in terms of any type that takes a single parameter, a type constructor, like this:
 
 ``` scala
   trait MappingThing[M[_]] {
@@ -164,9 +172,10 @@ The implementations for List and Option are straight forward:
 
 Note that List and Map do not need their map methods anymore, we can use these two class instead, but how?
 
-It would be very inconvenient to have to call `ListMappingThing.map` or `OptionMappingThing.map` directly, and actually totally useless when we've written code that doesn't know if we have a List or Option, code that has abstracted over the type constructor itself.
+It would be very inconvenient to have to call `ListMappingThing.map` or `OptionMappingThing.map` directly,
+and actually totally useless when we've written code that doesn't know if we have a List or Option, code that has abstracted over the type constructor itself.
 
-The solution is to use the typeclass pattern. Code that needs a MappingThing can ask the compiler to provide it, but including an implicit parameter list with a `MappingThing[M]`:
+The solution is to use the *typeclass* pattern. Code that needs a MappingThing can ask the compiler to provide it, but including an implicit parameter list with a `MappingThing[M]`:
 
 ``` scala
   def launch[A, M[_]](m: M[A])(implicit mappingThing: MappingThing[M]): Result = {
@@ -197,8 +206,10 @@ I have put the instances inside another object, but the right place for it is in
 We have learnt a new way to decouple behaviour from data types using typeclasses that has numerous advantages:
 
 1.  The concept of mapping, the map method, has been extracted to its own type. The operation now has a life of its own independent of the specific types that support it.
-2.  Code can now be written more generally, and therefore be more generally useful, in terms of the MappingThing typeclass, not concrete instances. We don't need to write the *launch* method twice, once for Option and once for List.
-3.  Now that we have a typeclass, anyone can write more of them for whatever types they want. Suddenly code written in terms of MappingThing can be used in all kinds of different contexts.
+2.  Code can now be written more generally, and therefore be more generally useful, in terms of the MappingThing typeclass, not concrete instances.
+    We don't need to write the *launch* method twice, once for Option and once for List.
+3.  Now that we have a typeclass, anyone can write more of them for whatever types they want.
+    Suddenly code written in terms of MappingThing can be used in all kinds of different contexts.
 
 ### The Name
 
@@ -220,7 +231,8 @@ We have a small problem with our map method, it can return anything at all. Why 
   val y: Option[Option[Int]] = x.map(v => sqrt(v))
 ```
 
-y has ended up as an Option of an Option of Int which is annoying. So to handle this special case we are going to introduce a new method called *flatMap*. In Option it looks like this:
+y has ended up as an Option of an Option of Int which is annoying. So to handle this special case we are going to introduce a new method called *flatMap*.
+In Option it looks like this:
 
 ``` scala
   sealed trait Option[A] {
@@ -322,18 +334,23 @@ So this is very similar to the functor case.
 
 ### Summary
 
-We have applied the same pattern as the functor above, but this time for the flatMap method. This enables us to cope with multple values of Options, Lists or any other kind of type constructor, or functions that return Options, Lists, etc.
+We have applied the same pattern as the functor above, but this time for the flatMap method.
+This enables us to cope with multple values of Options, Lists or any other kind of type constructor, or functions that return Options, Lists, etc.
 
 ### The Name
 
-Stand back ... its a Monad!
+Stand back ... it is a Monad!
 
-There is a little more to a monad than just a flatMap method, it needs to obey some laws too which we will skip, but if you're interested search [Google](https://www.google.com/search?q=scala+monad+laws) for Scala Monad Laws.
+There is a little more to a monad than just a flatMap method, it needs to obey some laws too which we will skip,
+but if you're interested search [Google](https://www.google.com/search?q=scala+monad+laws) for Scala Monad Laws.
 
 Syntax
 ------
 
-The abstractions above are great, but because we've moved the map and flatMap methods to typeclasses, scala for-comprehensions won't work since the map and flatMap method are no longer on the objects you are working with. In the specific case of Option and List they do have those methods because they are part of the Scala library and thats what the original authors did. But if you had a new type for which you'd defined typeclass instances, then that new type won't have map and flatMap.
+The abstractions above are great, but because we've moved the map and flatMap methods to typeclasses,
+scala for-comprehensions won't work since the map and flatMap method are no longer on the objects you are working with.
+In the specific case of Option and List they do have those methods because they are part of the Scala library and thats
+what the original authors did. But if you had a new type for which you'd defined typeclass instances, then that new type won't have map and flatMap.
 
 The solution is to provide some syntax for any type that has a Functor or Monad typeclass.
 
@@ -359,9 +376,11 @@ Types, Kinds and Type Constructors
 
 A *variable* has a *type*. For example, `x: Int` means the variable `x` has the type `Int`.
 
-A *proper type*, also known as an *inhabitated* type, is a type that can have values. The type Int is a proper type because it has values like 0 and 1. `List[Int]` is also an inhabited, or proper type, that is inhabited by values like `1 :: 2 :: Nil`, instances of a list.
+A *proper type*, also known as an *inhabitated* type, is a type that can have values. The type Int is a proper type because it has values like 0 and 1.
+`List[Int]` is also an inhabited, or proper type, that is inhabited by values like `1 :: 2 :: Nil`, instances of a list.
 
-A *type constructor* is something that takes a type and produces a type. Examples are anything with type parameters like List or Option. Type constructors are not inhabited, it is not possible to have values of List or Option, only List\[X\] or Option\[Y\].
+A *type constructor* is something that takes a type and produces a type. Examples are anything with type parameters like List or Option.
+Type constructors are not inhabited, it is not possible to have values of List or Option, only List\[X\] or Option\[Y\].
 
 In type theory it is useful to denote different *kinds* of types so that we can talk more generally about types, type constructors, etc.
 
@@ -372,7 +391,8 @@ Types are denoted with an asterisk: *Int* is of type \*
 A type constructor taking a single type is denoted like this: `*
 -> *`, meaning that given a type, denoted by the first \*, it will produce a new proper type, \*. For example, A List given an Int will produce List\[Int\].
 
-Something like Either\[A, B\], which takes two type parameters, is denoted like this: `*-> * -> *` because it takes two proper types and produces a type. `Either[Int, String]` is a proper type contructed with Either and two proper types, Int and String.
+Something like Either\[A, B\], which takes two type parameters, is denoted like this: `*-> * -> *` because it takes two proper types and produces a type.
+`Either[Int, String]` is a proper type contructed with Either and two proper types, Int and String.
 
 *Kinds* are a way of describing similar types at an abstract level. `*`, `* ->
 *`, `* -> * -> *`, are *kinds*. Kinds are useful when working more abstractly with types, both proper and improper (inhabited or uninhabited).
@@ -457,7 +477,8 @@ Option is of kind `* -> *`
 List
 ----
 
-Lists represent lists of things, but they are often referred to as representing *indeterminism*. A function returning a list can return any number of values including nothing (the empty list), hence the list is being used to represent an indeterministic result.
+Lists represent lists of things, but they are often referred to as representing *indeterminism*.
+A function returning a list can return any number of values including nothing (the empty list), hence the list is being used to represent an indeterministic result.
 
 Lists are *recursive* data structures because they are typically defined in terms of themselves: a list is either the empty list, Nil, or a single element followed by a list.
 
