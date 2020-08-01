@@ -502,4 +502,6 @@ Identity is of kind `* -> *`
 Further Reading
 ---------------
 
-[Typeclassopedia](http://www.cs.tufts.edu/comp/150FP/archive/brent-yorgey/tc.pdf) [Modeling Uncertain Data using Monads and an Application to the Sequence Alignment Problem](https://pp.ipd.kit.edu/uploads/publikationen/kuhnle13bachelorarbeit.pdf) [Functors, Applicatives, And Monads In Pictures](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)
+* [Typeclassopedia](http://www.cs.tufts.edu/comp/150FP/archive/brent-yorgey/tc.pdf)
+* [Modeling Uncertain Data using Monads and an Application to the Sequence Alignment Problem](https://pp.ipd.kit.edu/uploads/publikationen/kuhnle13bachelorarbeit.pdf) 
+* [Functors, Applicatives, And Monads In Pictures](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)
