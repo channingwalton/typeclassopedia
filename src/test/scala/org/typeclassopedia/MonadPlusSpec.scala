@@ -1,31 +1,29 @@
 package org.typeclassopedia
 
-import scala.{Int, List, Some, Nil, None}
-import scala.Predef.implicitly
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.must.Matchers
+import org.typeclassopedia.Typeclassopedia._
 
-import Typeclassopedia._
-import org.scalatest._
+class MonadPlusSpec extends AnyFlatSpec with Matchers {
 
-class MonadPlusSpec extends FlatSpec with Matchers {
-
-  "Monad Plus" should "support mzero" in {
-    implicitly[MonadPlus[List]].mzero[Int] shouldEqual List.empty[Int]
+  "Monad Plus" must "support mzero" in {
+    implicitly[MonadPlus[List]].mzero[Int] mustEqual List.empty[Int]
   }
 
-  it should "support mplus for list" in { (List(1) mplus List(2)) shouldEqual List(1, 2) }
+  it must "support mplus for list" in { (List(1) mplus List(2)) mustEqual List(1, 2) }
 
-  it should "support mplus for option" in {
-    (1.some mplus 2.some) shouldEqual Some(1)
-    (none[Int] mplus 2.some) shouldEqual Some(2)
-    (none[Int] mplus none[Int]) shouldEqual None
+  it must "support mplus for option" in {
+    (1.some mplus 2.some) mustEqual Some(1)
+    (none[Int] mplus 2.some) mustEqual Some(2)
+    (none[Int] mplus none[Int]) mustEqual None
   }
 
-  it should "obey monad plus laws" in {
+  it must "obey monad plus laws" in {
     // ListAll has the implementation of MonadPlus for lists
     val mzero = ListAll.mzero[Int]
 
-    val add = (i: Int) ⇒ i :: i :: Nil
+    val add = (i: Int) => i :: i :: Nil
 
-    (mzero >>= add) shouldEqual mzero
+    (mzero >>= add) mustEqual mzero
   }
 }

@@ -1,34 +1,31 @@
 package org.typeclassopedia
 
-import java.lang.String
-import scala.{Int, Left, Right}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.must.Matchers
+import org.typeclassopedia.Typeclassopedia._
 
+class ArrowChoiceSpec extends AnyFlatSpec with Matchers {
 
-import org.scalatest._
-import Typeclassopedia._
+  val f = (x: Int) => (x * 7).toString
+  val g = (s: String) => s.toUpperCase
 
-class ArrowChoiceSpec extends FlatSpec with Matchers {
-
-  val f = (x: Int) ⇒ (x * 7).toString
-  val g = (s: String) ⇒ s.toUpperCase
-
-  "ArrowChoice" should "left" in {
-    (f.left[String] apply Left[Int, String](1)) shouldEqual Left[String, String]("7")
-    (f.left apply Right[Int, String]("hi")) shouldEqual Right[Int, String]("hi")
+  "ArrowChoice" must "left" in {
+    (f.left[String] apply Left[Int, String](1)) mustEqual Left[String, String]("7")
+    (f.left apply Right[Int, String]("hi")) mustEqual Right[Int, String]("hi")
   }
 
-  it should "right" in {
-    (g.right[Int] apply Right[Int, String]("hi")) shouldEqual Right[Int, String]("HI")
-    (g.right apply Left[Int, String](1)) shouldEqual Left[Int, String](1)
+  it must "right" in {
+    (g.right[Int] apply Right[Int, String]("hi")) mustEqual Right[Int, String]("HI")
+    (g.right apply Left[Int, String](1)) mustEqual Left[Int, String](1)
   }
 
-  it should "+++" in {
-    (f +++ g apply Left[Int, String](1)) shouldEqual Left[String, String]("7")
-    (f +++ g apply Right[Int, String]("hi")) shouldEqual Right[Int, String]("HI")
+  it must "+++" in {
+    (f +++ g apply Left[Int, String](1)) mustEqual Left[String, String]("7")
+    (f +++ g apply Right[Int, String]("hi")) mustEqual Right[Int, String]("HI")
   }
 
-  it should "|||" in {
-    (f ||| g apply Left[Int, String](1)) shouldEqual "7"
-    (f ||| g apply Right[Int, String]("hi")) shouldEqual "HI"
+  it must "|||" in {
+    (f ||| g apply Left[Int, String](1)) mustEqual "7"
+    (f ||| g apply Right[Int, String]("hi")) mustEqual "HI"
   }
 }

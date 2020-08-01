@@ -1,17 +1,17 @@
 package org.typeclassopedia
 
-import scala.{Int, Option, Some}
-import Typeclassopedia._
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.must.Matchers
+import org.typeclassopedia.Typeclassopedia._
 
-class MonadSpec extends FlatSpec with Matchers {
+class MonadSpec extends AnyFlatSpec with Matchers {
 
   val x: Option[Int] = Some(1)
 
-  "A monad" should "flatMap that thang" in {
+  "A monad" must "flatMap that thang" in {
     // I'll use >>= instead so we know Typeclassopedia is being used
-    (x >>= (x ⇒ Some(x + 1))) shouldEqual Some(2)
+    (x >>= (x => Some(x + 1))) mustEqual Some(2)
   }
 
-  it should "support new monads" in { (Blub(1) >>= (x ⇒ Blub(x + 1))) shouldEqual Blub(2) }
+  it must "support new monads" in { (Blub(1) >>= (x => Blub(x + 1))) mustEqual Blub(2) }
 }

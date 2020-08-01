@@ -1,12 +1,11 @@
 package org.typeclassopedia
 
-import scala.Predef.wrapString
-import scala.List
-import Typeclassopedia._
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.must.Matchers
+import org.typeclassopedia.Typeclassopedia._
 
-class FoldableSpec extends FlatSpec with Matchers {
+class FoldableSpec extends AnyFlatSpec with Matchers {
 
-  "A foldable" should "foldMap" in { List("1", "2", "3").foldMap(_.toInt) shouldEqual 6 }
+  "A foldable" must "foldMap" in { List("1", "2", "3").foldMap(_.toInt) mustEqual 6 }
 
 }

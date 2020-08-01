@@ -3,15 +3,15 @@ package org.typeclassopedia
 import scala.Predef.implicitly
 
 /**
- * A Category generalizes the notion of function composition to general morphisms.
- *
- * Recall that a type parameterised by two types can be used in infix position.
- * So the ~>[_, _] below can be used like this:  A ~> B which is the same as ~>[A, B].
- * It is convenient to use the type in infix position to convey the idea of a morphism.
- *
- * Note also that Scalaz uses ⇒: rather than ~> but I thought I'd use what the TMR-Issue 13 - Typeclassopedia
- * paper used.
- */
+  * A Category generalizes the notion of function composition to general morphisms.
+  *
+  * Recall that a type parameterised by two types can be used in infix position.
+  * So the ~>[_, _] below can be used like this:  A ~> B which is the same as ~>[A, B].
+  * It is convenient to use the type in infix position to convey the idea of a morphism.
+  *
+  * Note also that Scalaz uses =>: rather than ~> but I thought I'd use what the TMR-Issue 13 - Typeclassopedia
+  * paper used.
+  */
 trait Category[~>[_, _]] {
 
   def id[A]: A ~> A
@@ -21,7 +21,7 @@ trait Category[~>[_, _]] {
 
 trait Categories {
 
-  implicit class CategoryOps[~>[_, _] : Category, B, C](c: B ~> C) {
+  implicit class CategoryOps[~>[_, _]: Category, B, C](c: B ~> C) {
 
     val cat = implicitly[Category[~>]]
 

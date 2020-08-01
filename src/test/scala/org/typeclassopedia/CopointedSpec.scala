@@ -1,13 +1,12 @@
 package org.typeclassopedia
 
-import scala.{List, Option}
-
-import org.scalatest._
 import Typeclassopedia._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.must.Matchers
 
-class CopointedSpec extends FlatSpec with Matchers {
+class CopointedSpec extends AnyFlatSpec with Matchers {
 
-  "A copointed functor" should "extract" in { Option(1).extract shouldEqual 1 }
-  it should "extract on List" in { List(1).extract shouldEqual 1 }
-  it should "extract on Blub" in { Blub(1).extract shouldEqual 1 }
+  "A copointed functor" must "extract" in { Option(1).extract mustEqual 1 }
+  it must "extract on List" in { List(1).extract mustEqual 1 }
+  it must "extract on Blub" in { Blub(1).extract mustEqual 1 }
 }

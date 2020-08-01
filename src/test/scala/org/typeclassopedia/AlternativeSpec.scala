@@ -1,26 +1,26 @@
 package org.typeclassopedia
 
-import scala.{Int, List, Option}
-import scala.Predef._
+import org.scalacheck.Arbitrary._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.scalacheck._
+import org.typeclassopedia.Typeclassopedia._
 
-import Typeclassopedia._
-import org.scalatest._
-import org.scalatest.prop.PropertyChecks
+class AlternativeSpec extends AnyFlatSpec with Matchers with ScalaCheckPropertyChecks {
 
-class AlternativeSpec extends FlatSpec with Matchers with PropertyChecks {
-
-  "Option alternative" should "choose" in {
+  "Option alternative" must "choose" in {
     val options = Table(
       ("a", "b", "result"),
-      (none[Int], none[Int],  none[Int]),
-      (1.some,    none[Int],  1.some),
-      (none[Int], 2.some,     2.some),
-      (1.some,    2.some,     1.some)
+      (none[Int], none[Int], none[Int]),
+      (1.some, none[Int], 1.some),
+      (none[Int], 2.some, 2.some),
+      (1.some, 2.some, 1.some)
     )
 
-    forAll(options) { (a: Option[Int], b: Option[Int], r: Option[Int]) => a <|> b shouldEqual r }
+    forAll(options)((a: Option[Int], b: Option[Int], r: Option[Int]) => a <|> b mustEqual r)
   }
 
-  "List Alternative" should "concatenate lists" in
-    forAll { (a: List[Int], b: List[Int]) ⇒ a <|> b shouldEqual (a ++ b) }
+  "List Alternative" must "concatenate lists" in {
+    ScalaCheckPropertyChecks.forAll((a: List[Int], b: List[Int]) => a <|> b mustEqual (a ++ b))
+  }
 }

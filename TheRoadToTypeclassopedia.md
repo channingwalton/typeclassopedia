@@ -66,10 +66,10 @@ Instead we can add a method to Option that enables a function to be applied to t
 
 ``` scala
   trait Option[+A] {
-    def map[B](f: A ⇒ B): Option[B] =
+    def map[B](f: A => B): Option[B] =
       this match {
-        case Some(a) ⇒ Some(f(a))
-        case None ⇒ None
+        case Some(a) => Some(f(a))
+        case None => None
       }
   }
 ```
@@ -91,7 +91,7 @@ Scala's standard library comes with a List so we won't go into writing one (hint
 List's map method is roughly like this:
 
 ``` scala
-  def map[U](f: T ⇒ U): List[U]
+  def map[U](f: T => U): List[U]
 ```
 
 Like Option, the map method takes a function, f, and returns a new List.
@@ -109,7 +109,7 @@ In scala, if an object has a `map` method like Option and List do, you can use a
   } yield v.length
 
   // is the same as
-  x.map(v ⇒ v.length)
+  x.map(v => v.length)
 ```
 
 But for comprehensions can do a lot more as we will see later.
@@ -122,7 +122,7 @@ Looking at Option and List we find that both *map* methods are very similar:
 1.  They both take a function that transforms the element(s) of List and Option
 2.  They both obey some obvious *laws*
     1.  Identity: If the function given is the *identity* function, then the returned Option or List is the same as the original
-    2.  Composition: If map is first passed `f: A ⇒ B`, and then `g: B ⇒ C`, its the same as passing a composite function: `f andThen g`, or `g compose f`.
+    2.  Composition: If map is first passed `f: A => B`, and then `g: B => C`, its the same as passing a composite function: `f andThen g`, or `g compose f`.
 
 So the question is, can we come up with something more general, and if we can, how do we express it and use it?
 
@@ -131,20 +131,20 @@ Unsurprisingly the answer is yes because in Scala, and other languages like it, 
 Lets look at the map method again but recast it slightly differently:
 
 ``` scala
-  def map[A, B](o: Option[A], f: A ⇒ B): Option[B]
+  def map[A, B](o: Option[A], f: A => B): Option[B]
 ```
 
 So instead of a map method on Option, we can put this method *somewhere* and call it. Its more cumbersome but stay with me. Lets do the same for List:
 
 ``` scala
-  def map[A, B](o: List[A], f: A ⇒ B): List[B]
+  def map[A, B](o: List[A], f: A => B): List[B]
 ```
 
 These method signatures are practically identical and vary only in the type argument. We can define this method in terms of any type that takes a single parameter, a type constructor, like this:
 
 ``` scala
   trait MappingThing[M[_]] {
-    def map[A, B](m: M[A], f: A ⇒ B): M[B]
+    def map[A, B](m: M[A], f: A => B): M[B]
   }
 ```
 
@@ -154,11 +154,11 @@ The implementations for List and Option are straight forward:
 
 ``` scala
   object ListMappingThing extends MappingThing[List] {
-    def map[A, B](m: List[A], f: A ⇒ B): List[B] = ??? // map a list
+    def map[A, B](m: List[A], f: A => B): List[B] = ??? // map a list
   }
 
   object OptionMappingThing extends MappingThing[Option] {
-    def map[A, B](m: Option[A], f: A ⇒ B): Option[B] = ??? // map an option
+    def map[A, B](m: Option[A], f: A => B): Option[B] = ??? // map an option
   }
 ```
 
@@ -181,11 +181,11 @@ But to make the Option and List MappingThings available for the compiler to find
 ``` scala
   object AllTheMappingThings {
     implicit object ListMappingThing extends MappingThing[List] {
-      def map[A, B](m: List[A], f: A ⇒ B): List[B] = ??? // map a list
+      def map[A, B](m: List[A], f: A => B): List[B] = ??? // map a list
     }
 
     implicit object OptionMappingThing extends MappingThing[Option] {
-      def map[A, B](m: Option[A], f: A ⇒ B): Option[B] = ??? // map an option
+      def map[A, B](m: Option[A], f: A => B): Option[B] = ??? // map an option
     }
   }
 ```
@@ -217,19 +217,19 @@ We have a small problem with our map method, it can return anything at all. Why 
 
   val x: Option[Int] = ???
 
-  val y: Option[Option[Int]] = x.map(v ⇒ sqrt(v))
+  val y: Option[Option[Int]] = x.map(v => sqrt(v))
 ```
 
 y has ended up as an Option of an Option of Int which is annoying. So to handle this special case we are going to introduce a new method called *flatMap*. In Option it looks like this:
 
 ``` scala
   sealed trait Option[A] {
-    def map[B](f: A ⇒ B): Option[B] = ???
+    def map[B](f: A => B): Option[B] = ???
 
-    def flatMap[B](f: A ⇒ Option[B]): Option[B] =
+    def flatMap[B](f: A => Option[B]): Option[B] =
       this match {
-        case None ⇒ None
-        case Some(x) ⇒ f(x)
+        case None => None
+        case Some(x) => f(x)
       }
   }
 ```
@@ -242,7 +242,7 @@ This method turns out to be very useful. Lets assume we have two Options and we 
   val x: Option[Int] = ???
   val y: Option[Int] = ???
 
-  val sum: Option[Int] = x.flatMap(xv ⇒ y.map(yv ⇒ xv + yv))
+  val sum: Option[Int] = x.flatMap(xv => y.map(yv => xv + yv))
 ```
 
 This doesn't look so nice but fortunately scala's for comprehension deals with this by offering syntactic sugar for both map and flatMap. The above is identical to:
@@ -278,20 +278,20 @@ Looking at Option and List we find that both *flatMap* methods are very similar,
 Option:
 
 ``` scala
-  def flatMap[A, B](o: Option[A], f: A ⇒ Option[B]): Option[B]
+  def flatMap[A, B](o: Option[A], f: A => Option[B]): Option[B]
 ```
 
 List:
 
 ``` scala
-  def flatMap[A, B](o: List[A], f: A ⇒ List[B]): List[B]
+  def flatMap[A, B](o: List[A], f: A => List[B]): List[B]
 ```
 
 These methods are practically identical, what we can do is define this method in terms of any type that takes a single parameter, a type constructor, like this:
 
 ``` scala
   trait FlatMappingThing[M[_]] {
-    def flatMap[A, B](m: M[A], f: A ⇒ M[B]): M[B]
+    def flatMap[A, B](m: M[A], f: A => M[B]): M[B]
   }
 ```
 
@@ -300,11 +300,11 @@ The implementations for List and Option are:
 ``` scala
   object AllTheFlatMappingThings {
     implicit object ListFlatMappingThing extends FlatMappingThing[List] {
-      def flatMap[A, B](m: List[A], f: A ⇒ List[B]): List[B] = ???
+      def flatMap[A, B](m: List[A], f: A => List[B]): List[B] = ???
     }
 
     implicit object OptionFlatMappingThing extends FlatMappingThing[Option] {
-      def flatMap[A, B](m: Option[A], f: A ⇒ Option[B]): Option[B] = ???
+      def flatMap[A, B](m: Option[A], f: A => Option[B]): Option[B] = ???
     }
   }
 ```
@@ -339,13 +339,13 @@ The solution is to provide some syntax for any type that has a Functor or Monad 
 
 ``` scala
   implicit class FunctorSyntax[F[_]: Functor, A](v: F[A]) {
-    def map[B](f: A ⇒ B): F[B] = implicitly[Functor[F]].map(v, f)
+    def map[B](f: A => B): F[B] = implicitly[Functor[F]].map(v, f)
   }
 ```
 
 ``` scala
   implicit class MonadSyntax[M[_]: Monad, A](v: M[A]) {
-    def flatMap[B](f: A ⇒ M[B]): M[B] = implicitly[Monad[F]].flatMap(v, f)
+    def flatMap[B](f: A => M[B]): M[B] = implicitly[Monad[F]].flatMap(v, f)
   }
 ```
 
@@ -415,7 +415,7 @@ For example, a trait with a show method to transform a T into a String
     implicit def listShow[T](implicit tShow: Show[T]):  Show[List[T]]  = new Show[List[T]] {
 
       def show(l: List[T]): String = {
-        val list = l.map(v ⇒ tShow.show(v)).mkString(",")
+        val list = l.map(v => tShow.show(v)).mkString(",")
         s"List($list)"
       }
 

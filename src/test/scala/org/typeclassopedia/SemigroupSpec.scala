@@ -1,15 +1,14 @@
 package org.typeclassopedia
 
-import scala.{Int, None}
-import Typeclassopedia._
-import org.scalatest._
-import Matchers._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.must.Matchers
+import org.typeclassopedia.Typeclassopedia._
 
-private class SemigroupSpec extends FlatSpec {
-  "Append" should "append ints" in { (1 |+| 2) shouldEqual 3 }
-  it should "append options" in {
-    (1.some |+| 2.some) shouldEqual 3.some
-    (1.some |+| None) shouldEqual 1.some
-    (none[Int] |+| 1.some) shouldEqual 1.some
+private class SemigroupSpec extends AnyFlatSpec with Matchers {
+  "Append" must "append ints" in { (1 |+| 2) mustEqual 3 }
+  it must "append options" in {
+    (1.some |+| 2.some) mustEqual 3.some
+    (1.some |+| None) mustEqual 1.some
+    (none[Int] |+| 1.some) mustEqual 1.some
   }
 }

@@ -1,13 +1,13 @@
 package org.typeclassopedia.extras
 
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.must.Matchers
+import org.typeclassopedia.Blub
 import org.typeclassopedia.Typeclassopedia._
 
-import org.typeclassopedia.Blub
+class ShowSpec extends AnyFlatSpec with Matchers {
 
-class ShowSpec extends FlatSpec with Matchers {
-
-  "Show" should "produce a nice string for a string value" in {
-    Blub("hi").show shouldEqual "A blub of hi"
+  "Show" must "produce a nice string for a string value" in {
+    Blub("hi").show mustEqual "A blub of hi"
   }
 }

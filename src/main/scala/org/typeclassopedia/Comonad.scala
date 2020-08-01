@@ -6,12 +6,12 @@ trait Comonad[W[_]] extends Copointed[W] {
 
   def duplicate[A](a: W[A]): W[W[A]]
 
-  def extend[A, B](a: W[A])(f: W[A] ⇒ B): W[B] = map(duplicate(a), f)
+  def extend[A, B](a: W[A])(f: W[A] => B): W[B] = map(duplicate(a), f)
 }
 
 trait Comonads {
   implicit class ComonadOps[W[_]: Comonad, A](value: W[A]) {
-    def duplicate: W[W[A]] = implicitly[Comonad[W]].duplicate(value)
-    def extend[B](f: W[A] ⇒ B): W[B] = implicitly[Comonad[W]].extend(value)(f)
+    def duplicate: W[W[A]]            = implicitly[Comonad[W]].duplicate(value)
+    def extend[B](f: W[A] => B): W[B] = implicitly[Comonad[W]].extend(value)(f)
   }
 }

@@ -19,13 +19,13 @@ trait ArrowChoices {
     def choice: ArrowChoice[~>]
     def arrow: B ~> C
 
-    def left[D]: Either[B, D] ~> Either[C, D] = choice left arrow
-    def right[D]: Either[D, B] ~> Either[D, C] = choice right arrow
-    def +++[B2, C2](b: B2 ~> C2): Either[B, B2] ~> Either[C, C2] = choice +++ (arrow, b)
-    def |||[D](b: D ~> C): Either[B, D] ~> C = choice ||| (arrow, b)
+    def left[D]: Either[B, D] ~> Either[C, D]                    = choice left arrow
+    def right[D]: Either[D, B] ~> Either[D, C]                   = choice right arrow
+    def +++[B2, C2](b: B2 ~> C2): Either[B, B2] ~> Either[C, C2] = choice.+++(arrow, b)
+    def |||[D](b: D ~> C): Either[B, D] ~> C                     = choice.|||(arrow, b)
   }
 
-  implicit class ArrowChoiceOpsInstance[~>[_, _] : ArrowChoice, B, C](val arrow: B ~> C) extends ArrowChoiceOps[~>, B, C] {
+  implicit class ArrowChoiceOpsInstance[~>[_, _]: ArrowChoice, B, C](val arrow: B ~> C) extends ArrowChoiceOps[~>, B, C] {
     val choice: ArrowChoice[~>] = implicitly[ArrowChoice[~>]]
   }
 }
