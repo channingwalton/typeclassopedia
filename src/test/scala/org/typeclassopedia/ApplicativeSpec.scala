@@ -2,7 +2,10 @@ package org.typeclassopedia
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
-import org.typeclassopedia.Typeclassopedia._
+import org.typeclassopedia.std.Options.{given _, _}
+import org.typeclassopedia.std.Lists.{given _, _}
+import Blub.{given _, _}
+import scala.language.implicitConversions
 
 class ApplicativeSpec extends AnyFlatSpec with Matchers {
 

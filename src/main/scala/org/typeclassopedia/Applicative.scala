@@ -1,7 +1,5 @@
 package org.typeclassopedia
 
-import scala.Predef.implicitly
-
 /**
   * The concept of an applicative functor.
   * Brent Yorgey's description is as follows:
@@ -18,31 +16,10 @@ import scala.Predef.implicitly
 trait Applicative[M[_]] extends Pointed[M] with Functor[M] {
   extension [A, B](m: M[A])
     def <*>(f: M[A => B]): M[B]
-}
 
-/**
-  * Implicits to help working with Applicative.
-  * This is imported by Typeclassopedia so that all you need to import is Typeclassopedia._
-  */
-trait Applicatives {
+    def ⊛(b: M[B]): ApplicativeBuilder[A, B] = new ApplicativeBuilder(m, b)
 
-  implicit class ApplicativeOps[M[_]: Applicative, T](value: M[T]) {
-    /**
-      * This method simplifies working with applicatives.
-      * For example, instead of
-      * {{{
-      * val addInts = ( (a:Int, b:Int, c:Int)=> a + b + c ).curried
-      * val sum = x <*> (y <*> (z map addInts))
-      * }}}
-      * do
-      * {{{
-      * (x ⊛ y ⊛ z) {_ + _ + _}
-      * }}}
-      */
-    final def ⊛[A](a: M[A]): ApplicativeBuilder[M, T, A] = new ApplicativeBuilder(value, a)
-  }
-
-  class ApplicativeBuilder[M[_]: Applicative, A, B](a: M[A], b: M[B]) {
+  class ApplicativeBuilder[A, B](a: M[A], b: M[B]) {
     def apply[C](f: (A, B) => C): M[C] = b <*> a.map(f.curried)
 
     def ⊛[C](c: M[C]): ApplicativeBuilder3[C] = new ApplicativeBuilder3(c)
@@ -58,5 +35,4 @@ trait Applicatives {
 
     // Continue the pattern for ApplicativeBuilder4/5/…
   }
-
 }

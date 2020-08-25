@@ -60,7 +60,7 @@ object Lists {
       def append(a: List[A], b: List[A]): List[A] = a ::: b
     }
 
-  trait ListTraverse extends Traversable[List] with ListFunctor with ListFoldable with Applicatives {
+  trait ListTraverse extends Traversable[List] with ListFunctor with ListFoldable {
     def traverse[G[_]: Applicative, A, B](fa: List[A])(f: A => G[B]): G[List[B]] = {
       // a nil of the right type
       val nil: List[B] = Nil
