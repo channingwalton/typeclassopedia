@@ -12,7 +12,8 @@ trait Function1Categories {
   trait Function1Category extends Category[Function1] {
     def id[A]: A => A = identity
 
-    def compose[A, B, C](f: B => C, g: A => B): A => C = f compose g
+    extension[A, B, C, D](f: B => C)
+      override def compose(g: A => B): A => C = f compose g
   }
 
   trait Function1Arrow extends ArrowChoice[Function1] {
@@ -46,7 +47,5 @@ trait Function1Categories {
       case Right(v) => b(v)
     }
   }
-
-  implicit object Function1Arrows extends Function1Category with Function1Arrow with Function1ArrowApply with Function1Choice
 
 }

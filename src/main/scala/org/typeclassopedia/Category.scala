@@ -1,7 +1,5 @@
 package org.typeclassopedia
 
-import scala.Predef.implicitly
-
 /**
   * A Category generalizes the notion of function composition to general morphisms.
   *
@@ -16,19 +14,8 @@ trait Category[~>[_, _]] {
 
   def id[A]: A ~> A
 
-  def compose[A, B, C](f: B ~> C, g: A ~> B): A ~> C
-}
-
-trait Categories {
-
-  implicit class CategoryOps[~>[_, _]: Category, B, C](c: B ~> C) {
-
-    val cat = implicitly[Category[~>]]
-
-    def compose[A](g: A ~> B): A ~> C = cat.compose(c, g)
-
-    def <<<[A](g: A ~> B): A ~> C = cat.compose(c, g)
-
-    def >>>[D](g: C ~> D): B ~> D = cat.compose(g, c)
-  }
+  extension[A, B, C, D](f: B ~> C)
+    def compose(g: A ~> B): A ~> C
+    def <<<(g: A ~> B): A ~> C = f.compose(g)
+    def >>>(g: C ~> D): B ~> D = g.compose(f)
 }

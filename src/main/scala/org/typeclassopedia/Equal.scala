@@ -8,16 +8,17 @@ import scala.Boolean
   */
 trait Equal[F] {
 
-  def equal(a1: F, a2: F): Boolean
+  extension[A](a1: A)
+    def equal(a2: A): Boolean
 
   trait EqualLaw {
 
     def conditional(p: Boolean, q: => Boolean): Boolean = !p || q
 
-    def commutative(f1: F, f2: F): Boolean = equal(f1, f2) == equal(f2, f1)
-    def reflexive(f: F): Boolean           = equal(f, f)
+    def commutative(f1: F, f2: F): Boolean = f1.equal(f2) == f2.equal(f1)
+    def reflexive(f: F): Boolean           = f.equal(f)
     def transitive(f1: F, f2: F, f3: F): Boolean =
-      conditional(equal(f1, f2) && equal(f2, f3), equal(f1, f3))
+      conditional(f1.equal(f2) && f2.equal(f3), f1.equal(f3))
   }
   def equalLaw: EqualLaw = new EqualLaw {}
 }

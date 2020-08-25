@@ -23,7 +23,8 @@ trait KleisliCategory[M[+_]] extends Category[({ type λ[α, β] = Kleisli[M, α
 
   def id[A]: Kleisli[M, A, A] = kleisli(a => a.point)
 
-  def compose[A, B, C](bc: Kleisli[M, B, C], ab: Kleisli[M, A, B]): Kleisli[M, A, C] = ab >=> bc
+  extension[A, B, C, D](bc: Kleisli[M, B, C])
+    override def compose(ab: Kleisli[M, A, B]): Kleisli[M, A, C] = ab >=> bc
 }
 
 trait KleisliArrow[M[+_]] extends KleisliCategory[M] with Arrow[({ type λ[α, β] = Kleisli[M, α, β] })#λ] {
