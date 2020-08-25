@@ -30,8 +30,10 @@ object Lists {
   }
 
   trait ListAlternative extends Alternative[List] {
-    def empty[A]: List[A]                       = Nil
-    def <|>[A](a: List[A], b: List[A]): List[A] = a ++ b
+    def empty[A]: List[A] = Nil
+
+    extension [A, B](a: List[A])
+      override def <|>(b: List[A]): List[A] = a ++ b
   }
 
   trait ListMonad extends Monad[List] with ListApplicative {

@@ -38,7 +38,9 @@ object Options {
 
   trait OptionAlternative extends Alternative[Option] {
     def empty[A]: Option[A]                           = None
-    def <|>[A](a: Option[A], b: Option[A]): Option[A] = if (a.isDefined) a else b
+
+    extension [A, B](a: Option[A])
+      override def <|>(b: Option[A]): Option[A] = if (a.isDefined) a else b
   }
 
   trait OptionFoldable extends Foldable[Option] {
