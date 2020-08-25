@@ -1,17 +1,12 @@
-name := "typeclassopedia"
+val dottyVersion = "0.26.0-RC1"
 
-version := "1.0"
-
-scalaVersion := "2.13.3"
-
-scalaBinaryVersion := "2.13"
-
-resolvers ++= Seq(
-    "snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
-    "releases"  at "http://oss.sonatype.org/content/repositories/releases")
-
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.0" % "test"
-libraryDependencies += "org.scalatestplus" %% "scalatestplus-scalacheck" % "3.1.0.0-RC2" % "test"
-
-scalafmtConfig in Compile := file(".scalafmt.conf")
-scalafmtOnCompile in Compile := true
+lazy val root = project
+  .in(file("."))
+  .settings(
+    version := "1.0",
+    name := "typeclassopedia",
+    scalaVersion := dottyVersion,
+    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
+    libraryDependencies += "org.scalatest" % "scalatest_0.26" % "3.2.2" % "test",
+    libraryDependencies += "org.scalatestplus" % "scalacheck-1-14_0.26" % "3.2.2.0" % "test"
+)
