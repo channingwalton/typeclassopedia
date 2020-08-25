@@ -4,14 +4,16 @@ package std
 import scala.{ IllegalArgumentException, List, Nil }
 import scala.Predef.implicitly
 
-trait Lists {
+object Lists {
 
   trait ListFunctor extends Functor[List] {
-    def map[A, B](m: List[A], f: A => B): List[B] = m map f
+    extension [A, B](m: List[A])
+      override def map(f: A => B): List[B] = m map f
   }
 
   trait ListPointed extends Pointed[List] {
-    def point[A](a: => A): List[A] = List(a)
+    extension [A](a: A)
+      override def point: List[A] = List(a)
   }
 
   trait ListCopointed extends Copointed[List] {
@@ -19,11 +21,12 @@ trait Lists {
   }
 
   trait ListApplicative extends Applicative[List] {
-    def <*>[A, B](ma: List[A], f: List[A => B]): List[B] =
-      for {
-        m <- ma
-        g <- f
-      } yield g(m)
+    extension [A, B](ma: List[A])
+      override def <*>(f: List[A => B]): List[B] =
+        for {
+          m <- ma
+          g <- f
+        } yield g(m)
   }
 
   trait ListAlternative extends Alternative[List] {
@@ -32,7 +35,8 @@ trait Lists {
   }
 
   trait ListMonad extends Monad[List] with ListApplicative {
-    def flatMap[A, B](ma: List[A], f: A => List[B]): List[B] = ma flatMap f
+    extension[A, B](ma: List[A])
+      override def flatMap(f: A => List[B]): List[B] = ma flatMap f
   }
 
   trait ListComonad extends Comonad[List] {

@@ -1,9 +1,7 @@
 package org.typeclassopedia.transformers
 
 import scala.{ List, Nil }
-import scala.Predef.implicitly
-
-import org.typeclassopedia._
+import org.typeclassopedia.Monad
 
 /**
   * The type ListT[M[_], A] is a monad transformer that constructs a List[A] inside the monad M.
@@ -12,12 +10,10 @@ import org.typeclassopedia._
   */
 case class ListT[M[_]: Monad, A](run: M[List[A]]) {
 
-  private val monadM = implicitly[Monad[M]]
-
   /**
     * Apply a function to the List[A] contained by `run`
     */
-  private def mapList[B](f: List[A] => B): M[B] = monadM.map(run, f)
+  private def mapList[B](f: List[A] => B): M[B] = run.map(f)
 
   /**
     * Map the List in M with f
@@ -37,17 +33,17 @@ case class ListT[M[_]: Monad, A](run: M[List[A]]) {
       */
     def mapMyList(l: List[A]): M[List[B]] =
       l match {
-        case Nil      => monadM.pure(Nil)
+        case Nil      => Nil.pure
         case nonEmpty => nonEmpty.map(f).reduce(_ ++ _).run
       }
 
-    ListT(monadM.flatMap(run, mapMyList))
+    ListT(run.flatMap(mapMyList))
   }
 
   // useful methods found on List that let ListT have a List-like API
 
   def ++(bs: => ListT[M, A]): ListT[M, A] =
-    ListT(monadM.flatMap(run, (list1: List[A]) => monadM.map(bs.run, (list2: List[A]) => list1 ++ list2)))
+    ListT(run.flatMap((list1: List[A]) => bs.run.map((list2: List[A]) => list1 ++ list2)))
 
   // etc.
 }

@@ -2,7 +2,9 @@ package org.typeclassopedia
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
-import org.typeclassopedia.Typeclassopedia._
+import org.typeclassopedia.std.Options._
+
+import scala.language.implicitConversions
 
 class MonadSpec extends AnyFlatSpec with Matchers {
 

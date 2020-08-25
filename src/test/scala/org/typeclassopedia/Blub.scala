@@ -5,16 +5,19 @@ import scala.StringContext
 import scala.Predef.implicitly
 import org.typeclassopedia.extras.Show
 
-case class Blub[T](v: T)
+final case class Blub[T](v: T)
 
 object Blub {
 
   trait BlubFunctor extends Functor[Blub] {
-    def map[A, B](m: Blub[A], f: A => B): Blub[B] = Blub(f(m.v))
+    extension [A, B](m: Blub[A])
+      override def map(f: A => B): Blub[B]
+        = Blub(f(m.v))
   }
 
   trait BlubPointed extends Pointed[Blub] {
-    def point[A](a: => A): Blub[A] = Blub(a)
+    extension [A](a: A)
+      def point: Blub[A] = Blub(a)
   }
 
   trait BlubCopointed extends Copointed[Blub] {
@@ -39,7 +42,7 @@ object Blub {
 
   trait BlubTraversable extends Traversable[Blub] with BlubFunctor with BlubFoldable {
     def traverse[G[_]: Applicative, A, B](fa: Blub[A])(f: A => G[B]): G[Blub[B]] =
-      implicitly[Applicative[G]].map(f(fa.v), Blub[B](_))
+      f(fa.v).map(Blub[B](_))
   }
 
   implicit def blubShow[T: Show]: Show[Blub[T]] =
@@ -47,6 +50,6 @@ object Blub {
       def show(b: Blub[T]): String = s"A blub of ${implicitly[Show[T]].show(b.v)}"
     }
 
-  implicit object Blubbed extends BlubPointed with BlubCopointed with BlubTraversable with BlubMonad with BlubComonad
+  given Blubbed as BlubPointed with BlubCopointed with BlubTraversable with BlubMonad with BlubComonad
 
 }

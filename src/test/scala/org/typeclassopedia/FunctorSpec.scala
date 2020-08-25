@@ -2,7 +2,7 @@ package org.typeclassopedia
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
-import org.typeclassopedia.Typeclassopedia._
+import scala.language.implicitConversions
 
 class FunctorSpec extends AnyFlatSpec with Matchers {
 

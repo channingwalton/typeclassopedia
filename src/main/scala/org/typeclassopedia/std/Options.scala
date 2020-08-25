@@ -5,7 +5,7 @@ import scala.{ None, Option, Some, StringContext }
 import scala.Predef.implicitly
 import java.lang.{ IllegalArgumentException, String }
 
-trait Options {
+object Options {
 
   implicit class OptionExtras[T](t: T) {
     def some: Option[T] = Some(t)
@@ -14,11 +14,13 @@ trait Options {
   def none[T]: Option[T] = None
 
   trait OptionFunctor extends Functor[Option] {
-    def map[A, B](m: Option[A], f: A => B): Option[B] = m map f
+    extension [A, B](x: Option[A])
+      override def map(f: A => B): Option[B] = x map f
   }
 
   trait OptionPointed extends Pointed[Option] {
-    def point[A](a: => A): Option[A] = Some(a)
+    extension [A](a: A)
+      override def point: Option[A] = Some(a)
   }
 
   trait OptionCopointed extends Copointed[Option] {
@@ -26,11 +28,12 @@ trait Options {
   }
 
   trait OptionApplicative extends Applicative[Option] {
-    def <*>[A, B](ma: Option[A], f: Option[A => B]): Option[B] =
-      for {
-        m <- ma
-        g <- f
-      } yield g(m)
+    extension [A, B](ma: Option[A])
+      def <*>(f: Option[A => B]): Option[B] = 
+        for {
+          m <- ma
+          g <- f
+        } yield g(m)
   }
 
   trait OptionAlternative extends Alternative[Option] {
@@ -43,7 +46,9 @@ trait Options {
   }
 
   trait OptionMonad extends Monad[Option] with OptionApplicative {
-    def flatMap[A, B](ma: Option[A], f: A => Option[B]): Option[B] = ma flatMap f
+    extension[A, B](ma: Option[A])
+      override def flatMap(f: A => Option[B]): Option[B] =
+        ma flatMap f
   }
 
   trait OptionComonad extends Comonad[Option] {

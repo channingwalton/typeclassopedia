@@ -1,7 +1,5 @@
 package org.typeclassopedia
 
-import scala.Predef.implicitly
-
 trait Kleisli[M[+_]: Monad, -A, +B] {
 
   def runKleisli(a: A): M[B]

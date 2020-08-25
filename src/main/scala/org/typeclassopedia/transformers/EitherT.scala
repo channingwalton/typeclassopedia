@@ -1,9 +1,10 @@
 package org.typeclassopedia.transformers
 
-import scala.{ Either, Left, Right }
-import org.typeclassopedia._
+import org.typeclassopedia.Monad
 
-case class EitherT[M[_], A, B](run: M[Either[A, B]])(implicit monadM: Monad[M]) {
+import scala.{Either, Left, Right}
+
+case class EitherT[M[_]: Monad, A, B](run: M[Either[A, B]]) {
 
   def map[C](f: B => C): EitherT[M, A, C] = {
 
@@ -13,7 +14,7 @@ case class EitherT[M[_], A, B](run: M[Either[A, B]])(implicit monadM: Monad[M]) 
         case Right(b) => Right(f(b))
       }
 
-    val mappedRun: M[Either[A, C]] = monadM.map(run, (e: Either[A, B]) => mapEither(e))
+    val mappedRun: M[Either[A, C]] = run.map((e: Either[A, B]) => mapEither(e))
     EitherT(mappedRun)
   }
 
@@ -21,11 +22,11 @@ case class EitherT[M[_], A, B](run: M[Either[A, B]])(implicit monadM: Monad[M]) 
 
     def mapMyEither(e: Either[A, B]): M[Either[A, C]] =
       e match {
-        case Left(value)  => monadM.point(Left(value))
+        case Left(value)  => Left(value).point
         case Right(value) => f(value).run
       }
 
-    EitherT(monadM.flatMap(run, mapMyEither))
+    EitherT(run.flatMap(mapMyEither))
 
   }
 }

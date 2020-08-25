@@ -1,9 +1,8 @@
 package org.typeclassopedia.transformers
 
-import scala.Predef.implicitly
 import scala.{ Boolean, None, Option, Some }
 
-import org.typeclassopedia._
+import org.typeclassopedia.Monad
 
 /**
   * The type OptionT[M[_], A] is a monad transformer that represents M[Option[A]].
@@ -12,18 +11,16 @@ import org.typeclassopedia._
   */
 case class OptionT[M[_]: Monad, A](run: M[Option[A]]) {
 
-  private val monadM = implicitly[Monad[M]]
-
   /**
     * Apply a function to the Option[A] contained by `run` using the monadM instance
     */
-  private def mapOption[B](f: Option[A] => B): M[B] = monadM.map(run, f)
+  private def mapOption[B](f: Option[A] => B): M[B] = run.map(f)
 
   /**
     * Apply the function, f, to the value contained in the Option in M.
     */
   def map[B](f: A => B): OptionT[M, B] = {
-    val mapRun: M[Option[B]] = monadM.map(run, (option: Option[A]) => option.map(f))
+    val mapRun: M[Option[B]] = run.map((option: Option[A]) => option.map(f))
 
     OptionT(mapRun)
   }
@@ -36,11 +33,11 @@ case class OptionT[M[_]: Monad, A](run: M[Option[A]]) {
       */
     def mapMyOption(o: Option[A]): M[Option[B]] =
       o match {
-        case None        => monadM.pure(Option.empty[B])
+        case None        => Option.empty[B].pure
         case Some(value) => f(value).run
       }
 
-    val flatMapped: M[Option[B]] = monadM.flatMap(run, mapMyOption)
+    val flatMapped: M[Option[B]] = run.flatMap(mapMyOption)
 
     OptionT(flatMapped)
   }
@@ -55,12 +52,4 @@ case class OptionT[M[_]: Monad, A](run: M[Option[A]]) {
   def getOrElse(default: => A): M[A] = mapOption(_.getOrElse(default))
 
   // etc.
-}
-
-trait OptionTs {
-
-  implicit def optionTFunctor[M[_]: Monad, A]: Functor[({ type λ[α] = OptionT[M, α] })#λ] =
-    new Functor[({ type λ[α] = OptionT[M, α] })#λ] {
-      def map[C, B](m: OptionT[M, C], f: C => B): OptionT[M, B] = m.map(f)
-    }
 }
