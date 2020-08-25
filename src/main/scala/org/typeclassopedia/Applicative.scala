@@ -15,8 +15,9 @@ import scala.Predef.implicitly
   * Give an Applicative x: X, x map g == x <*> X.pure(g)
   * </pre>
   */
-trait Applicative[M[_]] extends Pointed[M] {
-  def <*>[A, B](m: M[A], f: M[A => B]): M[B]
+trait Applicative[M[_]] extends Pointed[M] with Functor[M] {
+  extension [A, B](m: M[A])
+    def <*>(f: M[A => B]): M[B]
 }
 
 /**
@@ -26,8 +27,6 @@ trait Applicative[M[_]] extends Pointed[M] {
 trait Applicatives {
 
   implicit class ApplicativeOps[M[_]: Applicative, T](value: M[T]) {
-    final def <*>[B](f: M[T => B]): M[B] = implicitly[Applicative[M]].<*>(value, f)
-
     /**
       * This method simplifies working with applicatives.
       * For example, instead of
@@ -44,15 +43,15 @@ trait Applicatives {
   }
 
   class ApplicativeBuilder[M[_]: Applicative, A, B](a: M[A], b: M[B]) {
-    def apply[C](f: (A, B) => C): M[C] = b <*> implicitly[Functor[M]].map(a, f.curried)
+    def apply[C](f: (A, B) => C): M[C] = b <*> a.map(f.curried)
 
     def ⊛[C](c: M[C]): ApplicativeBuilder3[C] = new ApplicativeBuilder3(c)
 
     class ApplicativeBuilder3[C](c: M[C]) {
-      def apply[D](f: (A, B, C) => D): M[D] = c <*> (b <*> implicitly[Functor[M]].map(a, f.curried))
+      def apply[D](f: (A, B, C) => D): M[D] = c <*> (b <*> a.map(f.curried))
 
       class ApplicativeBuilder4[D](d: M[D]) {
-        def apply[E](f: (A, B, C, D) => E): M[E] = d <*> (c <*> (b <*> implicitly[Functor[M]].map(a, f.curried)))
+        def apply[E](f: (A, B, C, D) => E): M[E] = d <*> (c <*> (b <*> a.map(f.curried)))
       }
 
     }

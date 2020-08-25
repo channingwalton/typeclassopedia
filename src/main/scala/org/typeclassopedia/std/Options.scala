@@ -70,8 +70,7 @@ trait Options {
   trait OptionTraverse extends Traversable[Option] with OptionFunctor with OptionFoldable {
     def traverse[G[_]: Applicative, A, B](fa: Option[A])(f: A => G[B]): G[Option[B]] = {
       val none: Option[B] = None
-      val gapp            = implicitly[Applicative[G]]
-      fa.fold(gapp.pure(none))(v => gapp.map(f(v), (b: B) => Option(b)))
+      fa.fold(none.pure)(v => f(v).map((b: B) => Option(b)))
     }
   }
 
@@ -85,7 +84,7 @@ trait Options {
       }
   }
 
-  implicit object OptionAll
+  trait OptionAll
       extends OptionPointed
       with OptionCopointed
       with OptionTraverse
@@ -94,4 +93,5 @@ trait Options {
       with OptionMonadPlus
       with OptionAlternative
 
+  given optionAll as OptionAll
 }

@@ -59,19 +59,16 @@ trait Lists {
       // a nil of the right type
       val nil: List[B] = Nil
 
-      // an applicative instance for G
-      val gapp = implicitly[Applicative[G]]
-
       // first map fa, a List[A] with g to get a List[G[B]]
       val lGB: List[G[B]] = fa map f
 
       // use the applicative for G to fold the list, List[G[B]], to build a G[List[B]]
       val app = (a: List[B]) => (b: B) => a :+ b
-      lGB.foldLeft(gapp.point(nil))((acc, gb) => gb <*> gapp.map(acc, app))
+      lGB.foldLeft(nil.point)((acc, gb) => gb <*> acc.map(app))
     }
   }
 
-  implicit object ListAll
+  trait ListAll
       extends ListPointed
       with ListCopointed
       with ListComonad
@@ -80,4 +77,5 @@ trait Lists {
       with ListMonadPlus
       with ListAlternative
 
+  given listAll as ListAll
 }
