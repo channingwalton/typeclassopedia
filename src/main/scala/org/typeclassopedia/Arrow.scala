@@ -24,9 +24,6 @@ trait Arrow[~>[_, _]] extends Category[~>] {
 
   def &&&[B, C, C2](fbc: B ~> C, fbc2: B ~> C2): B ~> (C, C2) = split(fbc, fbc2).compose(arr((b: B) => (b, b)))
 
-  /**
-    * Borrowed from scalaz.
-    */
   private def split[A, B, C, D](f: A ~> B, g: C ~> D): ((A, C) ~> (B, D)) = second[C, D, B](g).compose(first[A, B, C](f))
 
 }
