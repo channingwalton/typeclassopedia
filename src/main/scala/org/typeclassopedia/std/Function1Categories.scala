@@ -1,8 +1,8 @@
 package org.typeclassopedia.std
 
-import scala.{ Either, Function1, Left, Right }
+import scala.{Either, Function1, Left, Right}
 import scala.Predef.identity
-import org.typeclassopedia.{ ArrowApply, ArrowChoice, Category }
+import org.typeclassopedia.{Arrow, ArrowApply, ArrowChoice, Category}
 
 /**
   * This contains implementations of [[org.typeclassopedia.Category Category[Function1] ]]
@@ -15,7 +15,7 @@ trait Function1Categories {
     def compose[A, B, C](f: B => C, g: A => B): A => C = f compose g
   }
 
-  trait Function1Arrow extends ArrowChoice[Function1] {
+  trait Function1Arrow extends Arrow[Function1] {
     def arr[B, C](f: B => C): B => C = f
 
     def first[B, C, D](b: B => C): ((B, D)) => (C, D) = (bd: (B, D)) => (b(bd._1), bd._2)
