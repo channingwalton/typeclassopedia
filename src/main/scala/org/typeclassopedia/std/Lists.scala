@@ -55,12 +55,12 @@ object Lists {
   }
 
   trait ListFoldable extends Foldable[List] with Semigroups {
-    extension[A, B: Monoid](value: List[A])
-      override def foldMap(f: A => B): B = 
-        value.foldLeft(implicitly[Monoid[B]].zero)((b, a) => b |+| f(a))
+    extension[A, B](value: List[A])
+      override def foldMap(f: A => B)(using monoid: Monoid[B]): B = 
+        value.foldLeft(monoid.zero)((b, a) => b |+| f(a))
   }
 
-  implicit def listSemigroup[A: Semigroup]: Semigroup[List[A]] =
+  implicit def listSemigroup[A]: Semigroup[List[A]] =
     new Semigroup[List[A]] {
       def append(a: List[A], b: List[A]): List[A] = a ::: b
     }
@@ -87,6 +87,7 @@ object Lists {
       with ListMonad
       with ListMonadPlus
       with ListAlternative
+      with ListFoldable
 
   given listAll as ListAll
 }

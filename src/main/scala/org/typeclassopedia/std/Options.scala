@@ -46,9 +46,9 @@ object Options {
   }
 
   trait OptionFoldable extends Foldable[Option] {
-    extension[A, B: Monoid](value: Option[A])
-      override def foldMap(f: A => B): B =
-        value.fold(implicitly[Monoid[B]].zero)(f)
+    extension[A, B](value: Option[A])
+      override def foldMap(f: A => B)(using monoid: Monoid[B]): B =
+        value.fold(monoid.zero)(f)
   }
 
   trait OptionMonad extends Monad[Option] with OptionApplicative {
