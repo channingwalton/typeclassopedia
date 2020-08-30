@@ -51,18 +51,20 @@ object Lists {
   trait ListMonadPlus extends MonadPlus[List] {
     def mzero[A]: List[A] = Nil
 
-    def mplus[A](a: List[A], b: List[A]): List[A] = a ++ b
+    extension[A](a: List[A])
+      override def mplus(b: List[A]): List[A] = a ++ b
   }
 
-  trait ListFoldable extends Foldable[List] with Semigroups {
+  trait ListFoldable extends Foldable[List] {
     extension[A, B](value: List[A])
       override def foldMap(f: A => B)(using monoid: Monoid[B]): B = 
         value.foldLeft(monoid.zero)((b, a) => b |+| f(a))
   }
 
-  implicit def listSemigroup[A]: Semigroup[List[A]] =
+  given[A] as Semigroup[List[A]] =
     new Semigroup[List[A]] {
-      def append(a: List[A], b: List[A]): List[A] = a ::: b
+      extension(a: List[A])
+        def append(b: List[A]): List[A] = a ::: b
     }
 
   trait ListTraverse extends Traversable[List] with ListFunctor with ListFoldable {

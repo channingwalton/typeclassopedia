@@ -25,7 +25,7 @@ trait Validations {
           case (Success(_), Failure(e))  => Failure[L, B](e)
 
           // This is the sneaky bit, here Failures are appended using a Semigroup instance for the type L, the failure type.
-          case (Failure(e1), Failure(e2)) => Failure[L, B](implicitly[Semigroup[L]].append(e2, e1))
+          case (Failure(e1), Failure(e2)) => Failure[L, B](e2.append(e1))
         }
 
     extension [A, B](m: Validation[L, A])

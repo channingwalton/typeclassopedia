@@ -65,7 +65,8 @@ object Options {
   trait OptionMonadPlus extends MonadPlus[Option] {
     def mzero[A]: Option[A] = None
 
-    def mplus[A](a: Option[A], b: Option[A]): Option[A] = a orElse b
+    extension[A](a: Option[A])
+      override def mplus(b: Option[A]): Option[A] = a orElse b
   }
 
   implicit def optionSemigroup[A: Semigroup]: Semigroup[Option[A]] =

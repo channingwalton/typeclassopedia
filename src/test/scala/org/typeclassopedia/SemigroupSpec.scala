@@ -2,7 +2,8 @@ package org.typeclassopedia
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
-import org.typeclassopedia.Typeclassopedia._
+import org.typeclassopedia.std.Monoids.{given _}
+import org.typeclassopedia.std.Options.{given _, _}
 
 private class SemigroupSpec extends AnyFlatSpec with Matchers {
   "Append" must "append ints" in { (1 |+| 2) mustEqual 3 }

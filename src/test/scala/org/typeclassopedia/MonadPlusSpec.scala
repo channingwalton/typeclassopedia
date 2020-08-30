@@ -2,6 +2,9 @@ package org.typeclassopedia
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
+import scala.language.implicitConversions
+import org.typeclassopedia.std.Lists.{given _, _}
+import org.typeclassopedia.std.Options.{given _, _}
 
 class MonadPlusSpec extends AnyFlatSpec with Matchers {
 
@@ -19,7 +22,7 @@ class MonadPlusSpec extends AnyFlatSpec with Matchers {
 
   it must "obey monad plus laws" in {
     // ListAll has the implementation of MonadPlus for lists
-    val mzero = ListAll.mzero[Int]
+    val mzero = listAll.mzero[Int]
 
     val add = (i: Int) => i :: i :: Nil
 
