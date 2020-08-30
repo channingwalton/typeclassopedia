@@ -17,7 +17,9 @@ object Lists {
   }
 
   trait ListCopointed extends Copointed[List] {
-    def extract[A](f: List[A]): A = f.headOption.getOrElse(throw new IllegalArgumentException("the list cannot be empty"))
+    extension[A](f: List[A])
+      override def extract: A =
+        f.headOption.getOrElse(throw new IllegalArgumentException("the list cannot be empty"))
   }
 
   trait ListApplicative extends Applicative[List] {
@@ -42,7 +44,8 @@ object Lists {
   }
 
   trait ListComonad extends Comonad[List] {
-    def duplicate[A](a: List[A]): List[List[A]] = List(a)
+    extension[A, B](a: List[A])
+      override def duplicate: List[List[A]] = List(a)
   }
 
   trait ListMonadPlus extends MonadPlus[List] {
@@ -52,7 +55,9 @@ object Lists {
   }
 
   trait ListFoldable extends Foldable[List] with Semigroups {
-    def foldMap[A, B: Monoid](fa: List[A])(f: A => B): B = fa.foldLeft(implicitly[Monoid[B]].zero)((b, a) => b |+| f(a))
+    extension[A, B: Monoid](value: List[A])
+      override def foldMap(f: A => B): B = 
+        value.foldLeft(implicitly[Monoid[B]].zero)((b, a) => b |+| f(a))
   }
 
   implicit def listSemigroup[A: Semigroup]: Semigroup[List[A]] =

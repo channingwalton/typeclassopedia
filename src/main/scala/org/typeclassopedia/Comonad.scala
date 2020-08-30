@@ -4,14 +4,8 @@ import scala.Predef.implicitly
 
 trait Comonad[W[_]] extends Copointed[W] {
 
-  def duplicate[A](a: W[A]): W[W[A]]
+  extension[A, B](a: W[A])
+    def duplicate: W[W[A]]
 
-  def extend[A, B](a: W[A])(f: W[A] => B): W[B] = duplicate(a).map(f)
-}
-
-trait Comonads {
-  implicit class ComonadOps[W[_]: Comonad, A](value: W[A]) {
-    def duplicate: W[W[A]]            = implicitly[Comonad[W]].duplicate(value)
-    def extend[B](f: W[A] => B): W[B] = implicitly[Comonad[W]].extend(value)(f)
-  }
+    def extend(f: W[A] => B): W[B] = a.duplicate.map(f)
 }

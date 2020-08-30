@@ -24,7 +24,9 @@ object Options {
   }
 
   trait OptionCopointed extends Copointed[Option] {
-    def extract[A](f: Option[A]): A = f.getOrElse(throw new IllegalArgumentException("Option cannot be None"))
+    extension[A](f: Option[A])
+      override def extract: A =
+        f.getOrElse(throw new IllegalArgumentException("Option cannot be None"))
   }
 
   trait OptionApplicative extends Applicative[Option] {
@@ -44,7 +46,9 @@ object Options {
   }
 
   trait OptionFoldable extends Foldable[Option] {
-    def foldMap[A, B](fa: Option[A])(f: A => B)(implicit F: Monoid[B]): B = fa.fold(F.zero)(f)
+    extension[A, B: Monoid](value: Option[A])
+      override def foldMap(f: A => B): B =
+        value.fold(implicitly[Monoid[B]].zero)(f)
   }
 
   trait OptionMonad extends Monad[Option] with OptionApplicative {
@@ -54,7 +58,8 @@ object Options {
   }
 
   trait OptionComonad extends Comonad[Option] {
-    def duplicate[A](a: Option[A]): Option[Option[A]] = Option(a)
+    extension[A, B](a: Option[A])
+      override def duplicate: Option[Option[A]] = Option(a)
   }
 
   trait OptionMonadPlus extends MonadPlus[Option] {
