@@ -3,6 +3,8 @@ package org.typeclassopedia.extras
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 import org.typeclassopedia.Blub
+import org.typeclassopedia.std.Strings.{given _}
+import scala.language.implicitConversions
 
 class ShowSpec extends AnyFlatSpec with Matchers {
 

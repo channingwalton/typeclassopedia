@@ -8,6 +8,8 @@ import org.scalatest.matchers.must.Matchers
 import scala.{ Int, List }
 import org.typeclassopedia.Blub
 
+import scala.language.implicitConversions
+
 class ListTTest extends AnyFlatSpec with Matchers {
   "ListT" must "map" in {
     ListT(Blub(List("hi", "bye"))).map(_ => 1) mustEqual ListT(Blub(List(1, 1)))

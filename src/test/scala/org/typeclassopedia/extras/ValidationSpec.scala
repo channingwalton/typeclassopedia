@@ -3,6 +3,8 @@ package org.typeclassopedia.extras
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 import org.typeclassopedia.Applicative
+import scala.language.implicitConversions
+
 
 class ValidationSpec extends AnyFlatSpec with Matchers {
 

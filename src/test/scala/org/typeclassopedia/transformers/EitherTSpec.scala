@@ -3,6 +3,7 @@ package org.typeclassopedia.transformers
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 import org.typeclassopedia.Blub
+import scala.language.implicitConversions
 
 class EitherTSpec extends AnyFlatSpec with Matchers {
 

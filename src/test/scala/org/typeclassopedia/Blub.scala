@@ -45,9 +45,9 @@ object Blub {
       f(fa.v).map(Blub[B](_))
   }
 
-  implicit def blubShow[T: Show]: Show[Blub[T]] =
+  given [T: Show] as Show[Blub[T]] =
     new Show[Blub[T]] {
-      def show(b: Blub[T]): String = s"A blub of ${implicitly[Show[T]].show(b.v)}"
+      override def show(b: Blub[T]): String = s"A blub of ${implicitly[Show[T]].show(b.v)}"
     }
 
   given Blubbed as BlubPointed with BlubCopointed with BlubTraversable with BlubMonad with BlubComonad
