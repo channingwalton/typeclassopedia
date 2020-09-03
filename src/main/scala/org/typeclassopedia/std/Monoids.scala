@@ -9,13 +9,15 @@ object Monoids {
   given monoidInt as Monoid[Int] {
     def zero: Int = 0
 
-    def append(a1: Int, a2: Int): Int = a1 + a2
+    extension(a1: Int)
+      override def append(a2: Int): Int = a1 + a2
   }
 
   given monoidString as Monoid[String] {
     def zero: String = ""
 
-    def append(a1: String, a2: String): String = a1 + a2
+    extension(a1: String)
+      override def append(a2: String): String = a1 + a2
   }
 
 }

@@ -69,15 +69,16 @@ object Options {
       override def mplus(b: Option[A]): Option[A] = a orElse b
   }
 
-  implicit def optionSemigroup[A: Semigroup]: Semigroup[Option[A]] =
+  given [A: Semigroup] as Semigroup[Option[A]] =
     new Semigroup[Option[A]] {
-      def append(a: Option[A], b: Option[A]): Option[A] =
-        (a, b) match {
-          case (Some(a1), Some(a2)) => Some(implicitly[Semigroup[A]].append(a1, a2))
-          case (Some(_), None)      => a
-          case (None, Some(_))      => b
-          case (None, None)         => None
-        }
+      extension(a: Option[A])
+        override def append(b: Option[A]): Option[A] =
+          (a, b) match {
+            case (Some(a1), Some(a2)) => Some(a1.append(a2))
+            case (Some(_), None)      => a
+            case (None, Some(_))      => b
+            case (None, None)         => None
+          }
     }
 
   trait OptionTraverse extends Traversable[Option] with OptionFunctor with OptionFoldable {

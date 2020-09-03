@@ -2,7 +2,9 @@ package org.typeclassopedia
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
-import org.typeclassopedia.Typeclassopedia._
+import scala.language.implicitConversions
+import org.typeclassopedia.std.Monoids.{given _}
+import org.typeclassopedia.std.Options.{given _, _}
 
 class TraversableSpec extends AnyFlatSpec with Matchers {
 
