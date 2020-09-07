@@ -5,6 +5,7 @@ import org.scalatest.matchers.must.Matchers
 import scala.language.implicitConversions
 import org.typeclassopedia.std.Monoids.{given _}
 import org.typeclassopedia.std.Options.{given _, _}
+import org.typeclassopedia.std.Lists.{given _, _}
 
 class TraversableSpec extends AnyFlatSpec with Matchers {
 

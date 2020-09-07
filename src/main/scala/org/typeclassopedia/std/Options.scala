@@ -82,10 +82,11 @@ object Options {
     }
 
   trait OptionTraverse extends Traversable[Option] with OptionFunctor with OptionFoldable {
-    def traverse[G[_]: Applicative, A, B](fa: Option[A])(f: A => G[B]): G[Option[B]] = {
-      val none: Option[B] = None
-      fa.fold(none.pure)(v => f(v).map((b: B) => Option(b)))
-    }
+    extension[G[_]: Applicative, A, B](fa: Option[A])
+      override def traverse(f: A => G[B]): G[Option[B]] = {
+        val none: Option[B] = None
+        fa.fold(none.pure)(v => f(v).map((b: B) => Option(b)))
+      }
   }
 
   trait OptionShow {
@@ -100,6 +101,7 @@ object Options {
 
   trait OptionAll
       extends OptionPointed
+      with OptionApplicative
       with OptionCopointed
       with OptionTraverse
       with OptionMonad
