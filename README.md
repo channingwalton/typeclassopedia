@@ -17,10 +17,7 @@ How to Start
 I suggest you start with Functor as it is the simplest class to study, then Applicative, Monad, Semigroup and Monoid.
 Then have a look at Validation which is not part of the Typeclassopedia but it's useful.
 
-Do not start with Category, Arrow or Kleisli unless you've understood the above, your brain with melt and kittens will have their toys taken away.
-Before attempting to grok Category and its subtypes (Arrow), read [Introduction to Category Theory in Scala](http://hseeberger.wordpress.com/2010/11/25/introduction-to-category-theory-in-scala/) by Heiko Seeberger.
-
-But before you do any of that, you need to understand [type classes in scala](http://www.casualmiracles.com/2012/05/03/a-small-example-of-the-typeclass-pattern-in-scala/).
+But before you do any of that, you need to understand [type classes in scala](http://dotty.epfl.ch/docs/reference/contextual/motivation.html).
 
 The tests serve as examples of use.
 
@@ -43,7 +40,6 @@ Further Reading
 * [Haskell Typeclassopedia](http://www.haskell.org/haskellwiki/Typeclassopedia)
 * [Typeclassopedia presentation](http://typeclassopedia.bitbucket.org) (use arrow keys)
 * [Learning Scalaz](http://eed3si9n.com/learning-scalaz-day1) by [Eugene Yokota](https://twitter.com/eed3si9n)
-* [Small (scala) examples](http://www.casualmiracles.com/category/small-examples/) by [me](https://twitter.com/channingwalton)
 * [Applicative Programming with Effects](http://www.soi.city.ac.uk/~ross/papers/Applicative.html) McBride and Paterson’s classic paper
 * [Introduction to Category Theory in Scala](http://hseeberger.wordpress.com/2010/11/25/introduction-to-category-theory-in-scala/) by Heiko Seeberger
 
