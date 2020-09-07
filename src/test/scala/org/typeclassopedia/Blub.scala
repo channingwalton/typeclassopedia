@@ -21,28 +21,33 @@ object Blub {
   }
 
   trait BlubCopointed extends Copointed[Blub] {
-    def extract[A](f: Blub[A]): A = f.v
+    extension[A](f: Blub[A])
+      override def extract: A = f.v
   }
 
   trait BlubApplicative extends Applicative[Blub] {
-    def <*>[A, B](ma: Blub[A], f: Blub[A => B]): Blub[B] = Blub(f.v(ma.v))
+    extension[A, B](ma: Blub[A])
+      override def <*>(f: Blub[A => B]): Blub[B] = Blub(f.v(ma.v))
   }
 
   trait BlubMonad extends Monad[Blub] with BlubApplicative {
-    def flatMap[A, B](ma: Blub[A], f: A => Blub[B]): Blub[B] = f(ma.v)
+    extension[A, B](ma: Blub[A]) 
+      override def flatMap(f: A => Blub[B]): Blub[B] = f(ma.v)
   }
 
   trait BlubComonad extends Comonad[Blub] {
-    def duplicate[A](a: Blub[A]): Blub[Blub[A]] = Blub(a)
+    extension[A, B](a: Blub[A])
+      override def duplicate: Blub[Blub[A]] = Blub(a)
   }
 
   trait BlubFoldable extends Foldable[Blub] {
-    def foldMap[A, B](fa: Blub[A])(f: A => B)(implicit F: Monoid[B]): B = f(fa.v)
+    extension[A, B: Monoid](fa: Blub[A])
+      override def foldMap(f: A => B): B = f(fa.v)
   }
 
-  trait BlubTraversable extends Traversable[Blub] with BlubFunctor with BlubFoldable {
-    def traverse[G[_]: Applicative, A, B](fa: Blub[A])(f: A => G[B]): G[Blub[B]] =
-      f(fa.v).map(Blub[B](_))
+  trait BlubTraversable extends Traversable[Blub] {
+    extension[F[_]: Applicative, A, B](fa: Blub[A])
+      override def traverse(f: A => F[B]): F[Blub[B]] = f(fa.v).map(Blub[B](_))
   }
 
   given [T: Show] as Show[Blub[T]] =
@@ -50,6 +55,6 @@ object Blub {
       override def show(b: Blub[T]): String = s"A blub of ${implicitly[Show[T]].show(b.v)}"
     }
 
-  given Blubbed as BlubPointed with BlubCopointed with BlubTraversable with BlubMonad with BlubComonad
+  given Blubbed as BlubFunctor with BlubApplicative with BlubPointed with BlubCopointed with BlubTraversable with BlubMonad with BlubComonad
 
 }

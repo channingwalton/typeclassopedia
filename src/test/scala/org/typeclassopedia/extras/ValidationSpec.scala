@@ -3,14 +3,13 @@ package org.typeclassopedia.extras
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 import org.typeclassopedia.Applicative
+import org.typeclassopedia.extras.Validations.{given _, _}
+import org.typeclassopedia.std.Monoids.monoidString
 import scala.language.implicitConversions
-
 
 class ValidationSpec extends AnyFlatSpec with Matchers {
 
   type StringValidation[S] = Validation[String, S]
-  val imp = implicitly[Applicative[StringValidation]]
-  // it lives!
 
   val v: StringValidation[Int]        = Success[String, Int](3)
   val e: StringValidation[Int]        = Failure[String, Int]("no.")

@@ -6,6 +6,5 @@ trait Comonad[W[_]] extends Copointed[W] {
 
   extension[A, B](a: W[A])
     def duplicate: W[W[A]]
-
-    def extend(f: W[A] => B): W[B] = a.duplicate.map(f)
+    final def extend(f: W[A] => B): W[B] = a.duplicate.map(f)
 }

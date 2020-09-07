@@ -1,6 +1,6 @@
-package org.typeclassopedia
-package std
+package org.typeclassopedia.std
 
+import org.typeclassopedia._
 import scala.Int
 import java.lang.String
 
