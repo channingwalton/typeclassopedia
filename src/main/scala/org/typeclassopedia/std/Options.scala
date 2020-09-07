@@ -1,13 +1,14 @@
 package org.typeclassopedia
 package std
 
-import scala.{ None, Option, Some, StringContext }
+import scala.{Conversion, None, Option, Some, StringContext}
+import org.typeclassopedia.extras.Show
 import scala.Predef.implicitly
-import java.lang.{ IllegalArgumentException, String }
+import java.lang.{IllegalArgumentException, String}
 
 object Options {
 
-  implicit class OptionExtras[T](t: T) {
+  extension[T](t: T) {
     def some: Option[T] = Some(t)
   }
 
@@ -90,12 +91,10 @@ object Options {
   }
 
   trait OptionShow {
-    import org.typeclassopedia.extras.Show
-    implicit def optionShow[T: Show]: Show[Option[T]] =
+    given [T: Show] as Show[Option[T]] =
       new Show[Option[T]] {
-        def showT(t: T): String = implicitly[Show[T]].show(t)
         def show(option: Option[T]): String =
-          option.fold("None")(v => s"Option(${showT(v)})")
+          option.fold("None")(v => s"Option(${v.show})")
       }
   }
 
@@ -108,6 +107,7 @@ object Options {
       with OptionComonad
       with OptionMonadPlus
       with OptionAlternative
+      with OptionShow
 
   given optionAll as OptionAll
 }

@@ -52,7 +52,7 @@ object Blub {
 
   given [T: Show] as Show[Blub[T]] =
     new Show[Blub[T]] {
-      override def show(b: Blub[T]): String = s"A blub of ${implicitly[Show[T]].show(b.v)}"
+      override def show(b: Blub[T]): String = s"A blub of ${b.v.show}"
     }
 
   given Blubbed as BlubFunctor with BlubApplicative with BlubPointed with BlubCopointed with BlubTraversable with BlubMonad with BlubComonad
