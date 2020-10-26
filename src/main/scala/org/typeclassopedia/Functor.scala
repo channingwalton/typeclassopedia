@@ -18,19 +18,4 @@ import scala.Boolean
 trait Functor[F[_]] {
   extension [A, B](x: F[A])
     def map(f: A => B): F[B]
-
-  /**
-   * These are the laws that a Functor must obey - thanks Scalaz
-   */
-  trait FunctorLaws {
-
-    def identity[A](fa: F[A])(using FA: Equal[F[A]]): Boolean =
-      FA.equal(fa.map(x => x), fa)
-
-    def composite[A, B, C](fa: F[A], f1: A => B, f2: B => C)(using FC: Equal[F[C]]): Boolean =
-      FC.equal(fa.map(f1).map(f2), fa.map(f1 andThen f2))
-  }
-
-  def laws: FunctorLaws = new FunctorLaws {}
-
 }
