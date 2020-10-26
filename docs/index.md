@@ -1,6 +1,8 @@
 The Road to the Typeclassopedia
 ===============================
 
+*These docs are out of date and need to be updated for Scala 3*
+
 People learn in many ways. For computer science and programming, some enjoy starting from the math, the theory, and proofs.
 From there they find their way to practical concerns in everyday development.
 They think in abstract algebra and category theory, encoding their solutions in their chosen language.
