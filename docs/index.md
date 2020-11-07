@@ -9,12 +9,14 @@ They think in abstract algebra and category theory, encoding their solutions in 
 
 That's awesome.
 
-Other people learn differently, by example, with problems solved with patterns and techniques that later they learn have names and ideas rooted in mathematics.
+Other people learn differently, by example, with problems solved with patterns and techniques that later
+they discover have names and ideas rooted in mathematics.
 
 There are a lot of excellent books, papers and blogs that follow the first path, usually because the authors
 tend to be the kind of people that are happy to learn from the math and theory, applying it later.
 
-This book follows the second path, describing a set of ideas collectively called the Typeclassopedia, by starting from a problem and developing a solution.
+This document follows the second path, describing a set of ideas collectively called the Typeclassopedia,
+by starting from a problem and developing a solution.
 
 The Path
 ========
@@ -36,11 +38,13 @@ Here is some code that returns a value:
 
 This is a common pattern, the method returns a Foo instance or null if the method cannot do its job.
 Anyone calling this method needs to know that the result might be null which is extremely error prone and completely insane.
-We can do better than that by returning a value that represents that fact that the method might not be able to return a result, an optional value.
+We can do better than that by returning a value that represents the possibility that the method might not return a result,
+an _optional_ value.
 
-Instead of the insidious null, we can represent this optional value with a type called *Option*. A type that represents a value that may or may not exist.
+Instead of the insidious null, we can represent this optional value with a type called *Option*,
+a type that represents a value that may or may not exist.
 
-Here it is:
+Here is a trivial encoding:
 
 ``` scala
   sealed trait Option[+A]
@@ -52,9 +56,10 @@ Here it is:
   case object None extends Option[Nothing]
 ```
 
-Notice that `None extends Option[Nothing]`, `Nothing` is the bottom type which extends all other types. Because `Option` is covariant, `Option[Nothing]` extends all other `Option` types.
+Notice that `None extends Option[Nothing]` which is the bottom type which extends all other types.
+Because `Option` is covariant, `Option[Nothing]` extends all other `Option` types.
 
-So now Blub looks like:
+Using Option in Blub results in:
 
 ``` scala
   trait Blub {
@@ -67,10 +72,11 @@ Two things have happened:
 1.  the method now returns a type that represents the optional nature of the returned value, no more `null`!
 2.  the comment has gone. It is not needed anymore because the method signature is sufficient.
 
-Now we have another problem, how do we work with the result? We certainly don't want to explicitly detect whether
+We now have another problem: how do we work with an Option? We certainly don't want to explicitly detect whether
 the result is a *Some* or *None* everytime by pattern matching or other means.
 
-Instead, we can add a method to Option that enables a function to be applied to the value. Traditionally, that method is called *map*.
+Instead, we can add a method to Option that enables a function to be applied to the value.
+Traditionally, that method is called *map*.
 
 ``` scala
   trait Option[+A] {
@@ -82,19 +88,20 @@ Instead, we can add a method to Option that enables a function to be applied to 
   }
 ```
 
-If the Option is a Some, then the functon can be applied to the value, and a new Some returned with the result.
+If the Option is a Some, then the function can be applied to the value, and a new Some returned with the result.
 If the Option is a None, then map can only return None since there is no value to apply the function to.
 
-So we can now work with values in options not by pattern matching but by mapping with a function.
+So we can now work with values in options by mapping an Option with a function.
 
 List
 ----
 
 Lists are important data structures and its self-evident why they are needed.
 
-Scala's standard library comes with a List so we won't go into writing one (hint: write one yourself as an exercise) but there are a couple of things to point out.
+Scala's standard library comes with a List so we won't go into writing one
+(challenge: write one yourself as an exercise) but there are a couple of things to point out.
 
-1.  Like Option, List requires a type parameter. eg List\[Int\] for a list of integers
+1.  Like Option, List requires a type parameter, eg. List\[Int\] for a list of integers
 2.  It has a map method like Option
 
 List's map method is roughly like this:
@@ -108,7 +115,8 @@ Like Option, the map method takes a function, f, and returns a new List.
 For comprehensions
 ------------------
 
-In scala, if an object has a `map` method like Option and List do, you can use a *for comprehension*, syntactic sugar that compiles to map:
+In Scala, if an object has a `map` method like Option and List do, it can be used in *for comprehension*,
+syntactic sugar that compiles to map:
 
 ``` scala
   val x: Option[String] = ...
@@ -121,7 +129,7 @@ In scala, if an object has a `map` method like Option and List do, you can use a
   x.map(v => v.length)
 ```
 
-But for comprehensions can do a lot more as we will see later.
+There is more required to really use Options and Lists in for comprehensions which we will see later.
 
 The First Abstraction
 ---------------------
@@ -131,13 +139,14 @@ Looking at Option and List we find that both *map* methods are very similar:
 1.  They both take a function that transforms the element(s) of List and Option
 2.  They both obey some obvious *laws*
     1.  Identity: If the function given is the *identity* function, then the returned Option or List is the same as the original
-    2.  Composition: If map is first passed `f: A => B`, and then `g: B => C`, its the same as passing a composite function: `f andThen g`, or `g compose f`.
+    2.  Composition: If map is first passed `f: A => B`, and then `g: B => C`, the result is equivalent to passing a composite
+        function: `f andThen g`, or `g compose f`.
 
 So the question is, can we come up with something more general, and if we can, how do we express it and use it?
 
 Unsurprisingly the answer is yes because in Scala, and other languages like it, you can *abstract over type constructors*.
 
-Lets look at the map method again but recast it slightly differently:
+Let's look at the map method again but recast it slightly differently:
 
 ``` scala
   def map[A, B](o: Option[A], f: A => B): Option[B]
