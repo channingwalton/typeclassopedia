@@ -1,7 +1,5 @@
-The Road to the Typeclassopedia
+The Road to the Typeclassopedia in Scala 3
 ===============================
-
-*These docs are out of date and need to be updated for Scala 3*
 
 People learn in many ways. For computer science and programming, some enjoy starting from the math, the theory, and proofs.
 From there they find their way to practical concerns in everyday development.
@@ -38,8 +36,8 @@ Here is some code that returns a value:
 
 This is a common pattern, the method returns a Foo instance or null if the method cannot do its job.
 Anyone calling this method needs to know that the result might be null which is extremely error prone and completely insane.
-We can do better than that by returning a value that represents the possibility that the method might not return a result,
-an _optional_ value.
+
+We can do better than that by returning a value that represents the possibility that the method might not return a result, an _optional_ value.
 
 Instead of the insidious null, we can represent this optional value with a type called *Option*,
 a type that represents a value that may or may not exist.
@@ -142,75 +140,52 @@ Looking at Option and List we find that both *map* methods are very similar:
     2.  Composition: If map is first passed `f: A => B`, and then `g: B => C`, the result is equivalent to passing a composite
         function: `f andThen g`, or `g compose f`.
 
-So the question is, can we come up with something more general, and if we can, how do we express it and use it?
+So the question is, can we abstract this concept into something more general?
 
-Unsurprisingly the answer is yes because in Scala, and other languages like it, you can *abstract over type constructors*.
+Unsurprisingly the answer is yes, and abstraction is called a Functor. Here it is:
 
-Let's look at the map method again but recast it slightly differently:
-
-``` scala
-  def map[A, B](o: Option[A], f: A => B): Option[B]
+```scala
+trait Functor[F[_]] {
+  def map[A, B](f: A => B): F[B]
+}
 ```
 
-So instead of a map method on Option, we can put this method *somewhere* and call it. Its more cumbersome but stay with me. Lets do the same for List:
+This trait simply says that a Functor must provide a map method, just as the map methods in Option and List do.
 
-``` scala
-  def map[A, B](o: List[A], f: A => B): List[B]
+However, instead of making types implement this trait, a much more flexible mechanism is to decouple types from their Functor instances, allowing any type with type constructors like Option and List (taking a single type parameter) to have a Functor instance.
+
+To do this we use the power of **typeclasses** in Scala, which looks like this:
+
+```scala
+trait Functor[F[_]] {
+  extension [A, B](x: F[A])
+    def map(f: A => B): F[B]
+}
 ```
 
-These method signatures are practically identical and vary only in the type argument.
-This method can be defined in terms of any type that takes a single parameter, a type constructor, like this:
+Its very similar to the original trait but instead declares *map* as an extension method for any type F[A]. The implementations for List and Option are straight forward:
 
 ``` scala
-  trait MappingThing[M[_]] {
-    def map[A, B](m: M[A], f: A => B): M[B]
+  given Functor[Option] {
+    extension [A, B](m: Option[A])
+      override def map(f: A => B): Option[B] = m map f
+  }
+
+  given Functor[List] {
+    extension [A, B](m: List[A])
+      override def map(f: A => B): List[B] = m map f
   }
 ```
 
-We will come to what its called later, the important point is that the trait has a *map* method for any M that is a type constructor, hence the type parameter is M\[\_\].
-
-The implementations for List and Option are straight forward:
+To use these instances we only need to be imported either directly or implicitly if their declared in companion objects:
 
 ``` scala
-  object ListMappingThing extends MappingThing[List] {
-    def map[A, B](m: List[A], f: A => B): List[B] = ??? // map a list
-  }
+  def launch[A, M[_]: Functor](m: M[A]): Result = {
+    val v: M[B] =  m.map(myFunkyFunction)
 
-  object OptionMappingThing extends MappingThing[Option] {
-    def map[A, B](m: Option[A], f: A => B): Option[B] = ??? // map an option
+    // …
   }
 ```
-
-Note that List and Map do not need their map methods anymore, we can use these two class instead, but how?
-
-It would be very inconvenient to have to call `ListMappingThing.map` or `OptionMappingThing.map` directly,
-and actually totally useless when we've written code that doesn't know if we have a List or Option, code that has abstracted over the type constructor itself.
-
-The solution is to use the *typeclass* pattern. Code that needs a MappingThing can ask the compiler to provide it, but including an implicit parameter list with a `MappingThing[M]`:
-
-``` scala
-  def launch[A, M[_]](m: M[A])(implicit mappingThing: MappingThing[M]): Result = {
-    val v: M[B] =  mappingThing.map(m, myFunkyFunction)
-
-    // do things with v and return a result
-  }
-```
-
-But to make the Option and List MappingThings available for the compiler to find we need to make their instances implicit:
-
-``` scala
-  object AllTheMappingThings {
-    implicit object ListMappingThing extends MappingThing[List] {
-      def map[A, B](m: List[A], f: A => B): List[B] = ??? // map a list
-    }
-
-    implicit object OptionMappingThing extends MappingThing[Option] {
-      def map[A, B](m: Option[A], f: A => B): Option[B] = ??? // map an option
-    }
-  }
-```
-
-I have put the instances inside another object, but the right place for it is in the List and Option companion objects.
 
 ### Summary
 
@@ -222,12 +197,14 @@ We have learnt a new way to decouple behaviour from data types using typeclasses
 3.  Now that we have a typeclass, anyone can write more of them for whatever types they want.
     Suddenly code written in terms of MappingThing can be used in all kinds of different contexts.
 
-### The Name
 
-What we've just invented is some called a *functor*. Mathematically, a functor is a mapping between so-called categories, but we aren't going to go there.
+
+Learn more about Scala 3 typeclasses and all the syntax used above [here](https://dotty.epfl.ch/docs/reference/contextual/motivation.html).
 
 Squash it
 ---------
+
+TODO - migrate to Scala 3
 
 We have a small problem with our map method, it can return anything at all. Why is that a problem?
 
