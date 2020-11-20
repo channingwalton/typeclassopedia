@@ -142,7 +142,7 @@ Looking at Option and List we find that both *map* methods are very similar:
 
 So the question is, can we abstract this concept into something more general?
 
-Unsurprisingly the answer is yes, and abstraction is called a Functor. Here it is:
+Unsurprisingly the answer is yes, and that abstraction is called a **Functor**. Here it is:
 
 ```scala
 trait Functor[F[_]] {
@@ -177,14 +177,15 @@ Its very similar to the original trait but instead declares *map* as an extensio
   }
 ```
 
-To use these instances we only need to be imported either directly or implicitly if their declared in companion objects:
+To use these instances we only need to be imported either directly, or implicitly if declared in companion objects:
 
 ``` scala
-  def launch[A, M[_]: Functor](m: M[A]): Result = {
-    val v: M[B] =  m.map(myFunkyFunction)
+import MyInstance.{given _} // if the instance isn't on the companion
 
-    // …
-  }
+def launch[A, M[_]: Functor](m: M[A]): Result = {
+  val v: M[B] =  m.map(myFunkyFunction)
+  // …
+}
 ```
 
 ### Summary
