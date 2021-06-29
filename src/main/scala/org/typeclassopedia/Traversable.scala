@@ -4,7 +4,7 @@ import scala.Predef.{ identity, implicitly }
 
 trait Traversable[T[_]] {
 
-  extension[F[_]: Applicative, A, B](fa: T[A])
+  extension[F[_] : Applicative, A, B](fa: T[A])
     def traverse(f: A => F[B]): F[T[B]]
 
   extension[F[_]: Applicative, A](fga: T[F[A]])

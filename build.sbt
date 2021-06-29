@@ -1,12 +1,17 @@
-val dottyVersion = "0.26.0-RC1"
+val scala3Version = "3.0.0"
+
+val scalaTestVersion = "3.2.9"
 
 lazy val root = project
   .in(file("."))
   .settings(
     version := "1.0",
     name := "typeclassopedia",
-    scalaVersion := dottyVersion,
+    scalaVersion := scala3Version,
+    
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
-    libraryDependencies += "org.scalatest" % "scalatest_0.26" % "3.2.2" % "test",
-    libraryDependencies += "org.scalatestplus" % "scalacheck-1-14_0.26" % "3.2.2.0" % "test"
+    
+    libraryDependencies += "org.scalactic" %% "scalactic" % scalaTestVersion,
+    libraryDependencies += "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
+    
 )
