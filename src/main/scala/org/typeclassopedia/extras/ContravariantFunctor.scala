@@ -13,9 +13,9 @@ trait ContravariantFunctor[F[_]] {
 
 given ContravariantFunctor[Show] with
   extension[A, B](fa: Show[A])
-    override def contramap(f: B => A): Show[B] =
+    def contramap(f: B => A): Show[B] =
       new Show[B] {
-        override def show(t: B): String =
+        def show(t: B): String =
           fa.show(f(t))
       }
 

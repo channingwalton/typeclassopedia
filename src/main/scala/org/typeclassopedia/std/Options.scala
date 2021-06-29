@@ -93,7 +93,7 @@ object Options {
   }
 
   trait OptionShow {
-    // [T: Show] as
+    // [T: Show] as => 
     given [T : Show](using Option[T]): Show[Option[T]] =
       new Show[Option[T]] {
         def show(option: Option[T]): String =
@@ -112,6 +112,7 @@ object Options {
       with OptionAlternative
       with OptionShow
 
-  given optionAll :  with OptionAll
+  //  TODO 
+  // given optionAll : OptionAll
 
 }
