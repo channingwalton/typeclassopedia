@@ -61,7 +61,7 @@ trait ListFoldable extends Foldable[List] {
       value.foldLeft(monoid.zero)((b, a) => b |+| f(a))
 }
 
-given Semigroup[List[A]] =
+given [A](using List[A]) : Semigroup[List[A]] =
   new Semigroup[List[A]] {
     extension(a: List[A])
       def append(b: List[A]): List[A] = a ::: b
@@ -96,14 +96,14 @@ trait ListAll
 
 
 
-given listAll 
+given listAll :
   with ListPointed
-    with ListApplicative
-    with ListCopointed
-    with ListComonad
-    with ListTraverse
-    with ListMonad
-    with ListMonadPlus
-    with ListAlternative
-    with ListFoldable :
+  with ListApplicative
+  with ListCopointed
+  with ListComonad
+  with ListTraverse
+  with ListMonad
+  with ListMonadPlus
+  with ListAlternative
+  with ListFoldable 
 
