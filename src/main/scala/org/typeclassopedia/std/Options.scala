@@ -70,10 +70,12 @@ object Options {
       override def mplus(b: Option[A]): Option[A] = a orElse b
   }
 
-  given [A: Semigroup] as Semigroup[Option[A]] =
-    new Semigroup[Option[A]] {
-      extension(a: Option[A])
-        override def append(b: Option[A]): Option[A] =
+
+  // [A: Semigroup]
+  given  Semigroup[Option[Semigroup]] =
+    new Semigroup[Option[Semigroup]] {
+      extension(a: Option[Semigroup])
+        override def append(b: Option[Semigroup]): Option[Semigroup] =
           (a, b) match {
             case (Some(a1), Some(a2)) => Some(a1.append(a2))
             case (Some(_), None)      => a
@@ -91,7 +93,8 @@ object Options {
   }
 
   trait OptionShow {
-    given [T: Show] as Show[Option[T]] =
+    // [T: Show] as
+    given  Show[Option[T]] =
       new Show[Option[T]] {
         def show(option: Option[T]): String =
           option.fold("None")(v => s"Option(${v.show})")

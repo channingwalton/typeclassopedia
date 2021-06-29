@@ -39,5 +39,6 @@ object Validations {
       override def point: Validation[L, A] = Success[L, A](a)
   }
 
-  given[L: Semigroup] as ValidationsApplicative[L]
+  // TODO for 3.0 
+  // given [L: Semigroup] as ValidationsApplicative[L]
 }
