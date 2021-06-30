@@ -93,12 +93,9 @@ object Options {
   }
 
   trait OptionShow {
-    // [T: Show] as => 
-    given [T : Show](using Option[T]): Show[Option[T]] =
-      new Show[Option[T]] {
-        def show(option: Option[T]): String =
+    given [T : Show](using Option[T]) : Show[Option[T]] with
+      extension(option : Option[T]) def show : String =
           option.fold("None")(v => s"Option(${v.show})")
-      }
   }
 
   trait OptionAll

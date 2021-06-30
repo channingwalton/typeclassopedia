@@ -3,8 +3,18 @@ package org.typeclassopedia.extras
 import scala.Predef.implicitly
 import java.lang.String
 
-trait Show[T] :
-  def show( t : T) : String
+import scala.annotation.targetName
 
-  extension(t: T) def show: String = show(t) 
+//
+// Originally
+// trait Show[T] {
+//   def show(t: T): String
+//   extension(t: T)
+//     final def show: String = show(t)
+// }
+//
+
+trait Show[T] :
+  extension(t: T) def show : String  
+
 
