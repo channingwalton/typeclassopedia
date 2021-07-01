@@ -10,12 +10,8 @@ trait ContravariantFunctor[F[_]] {
     def contramap(f: B => A): F[B]
 }
 
-
-given ContravariantFunctor[Show] with
-  extension[A, B](fa: Show[A])
-    def contramap(f: B => A): Show[B] =
-      new Show[B] {
-        def show(t: B): String =
-          fa.show(f(t))
-      }
-
+// TODO - advanced challenge :-)
+// given ContravariantFunctor[Show] with
+//   extension[A, B](fa: Show[A])(using t : Show[B])
+//     def contramap(f: B => A): Show[B] = fa.show(f(t))
+      

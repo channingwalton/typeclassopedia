@@ -4,8 +4,8 @@ import org.scalacheck.Arbitrary._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.scalacheck._
-import org.typeclassopedia.std.Options.{given _, _}
-import org.typeclassopedia.std.Lists.{given _, _}
+import org.typeclassopedia.std.Options.{given, *}
+import org.typeclassopedia.std.Lists.{given, *}
 import scala.language.implicitConversions
 
 class AlternativeSpec extends AnyFlatSpec with Matchers with ScalaCheckPropertyChecks {

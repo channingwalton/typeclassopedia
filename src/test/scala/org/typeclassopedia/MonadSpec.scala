@@ -2,7 +2,7 @@ package org.typeclassopedia
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
-import org.typeclassopedia.std.Options.{given _, _}
+import org.typeclassopedia.std.Options.{given , *}
 
 import scala.language.implicitConversions
 

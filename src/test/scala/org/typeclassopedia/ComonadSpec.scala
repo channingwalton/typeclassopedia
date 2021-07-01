@@ -3,8 +3,8 @@ package org.typeclassopedia
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 import scala.language.implicitConversions
-import org.typeclassopedia.std.Options.{given _, _}
-import org.typeclassopedia.std.Lists.{given _, _}
+import org.typeclassopedia.std.Options.{given , *}
+import org.typeclassopedia.std.Lists.{given , *}
 
 class ComonadSpec extends AnyFlatSpec with Matchers {
 

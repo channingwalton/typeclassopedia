@@ -3,7 +3,7 @@ package org.typeclassopedia.extras
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 import org.typeclassopedia.Applicative
-import org.typeclassopedia.extras.Validations.{given _, _}
+import org.typeclassopedia.extras.Validations.{given, *}
 import org.typeclassopedia.std.Monoids.monoidString
 import scala.language.implicitConversions
 
