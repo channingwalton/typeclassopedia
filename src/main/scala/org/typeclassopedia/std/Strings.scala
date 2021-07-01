@@ -4,6 +4,9 @@ import java.lang.String
 
 import org.typeclassopedia.extras.Show
 
-given Show[String] with 
-  extension(s : String) def show : String = s
-  
+object Strings {
+
+  given Show[String] with 
+    extension(s : String) def show : String = s
+    
+}

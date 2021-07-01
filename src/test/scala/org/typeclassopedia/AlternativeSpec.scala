@@ -1,9 +1,13 @@
 package org.typeclassopedia
 
-import org.scalacheck.Arbitrary._
+import org.scalactic.*
+import org.scalactic.Arbitrary.*
+import org.sc
+
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatestplus.scalacheck._
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+
 import org.typeclassopedia.std.Options.{given, *}
 import org.typeclassopedia.std.Lists.{given, *}
 import scala.language.implicitConversions

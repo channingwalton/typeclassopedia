@@ -71,7 +71,7 @@ object Options {
   }
 
 
-  // [A: Semigroup] using replaces 'as' as the given type to insert
+  // [A: Semigroup] using replaces 'as' as the given type to summon
   given [A: Semigroup](using Option[A]) : Semigroup[Option[A]] =
     new Semigroup[Option[A]] {
       extension(a: Option[A])

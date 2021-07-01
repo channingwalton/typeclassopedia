@@ -9,9 +9,10 @@ lazy val root = project
     name := "typeclassopedia",
     scalaVersion := scala3Version,
     
-    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
-    
     libraryDependencies += "org.scalactic" %% "scalactic" % scalaTestVersion,
-    libraryDependencies += "org.scalatest" %% "scalatest" % scalaTestVersion % "test"
+
+    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
+    libraryDependencies += "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
+    libraryDependencies += "org.scalatestplus" %% "scalacheck-1-15" % "3.2.9.0" % "test"
     
 )

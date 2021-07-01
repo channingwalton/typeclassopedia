@@ -41,7 +41,7 @@ object Blub {
   }
 
   trait BlubFoldable extends Foldable[Blub] {
-    extension[A, B: Monoid](fa: Blub[A])
+    extension[A, B : Monoid](fa: Blub[A])
       override def foldMap(f: A => B): B = f(fa.v)
   }
 
@@ -50,11 +50,11 @@ object Blub {
       override def traverse(f: A => F[B]): F[Blub[B]] = f(fa.v).map(Blub[B](_))
   }
 
-  given [T: Show] as Show[Blub[T]] =
-    new Show[Blub[T]] {
-      override def show(b: Blub[T]): String = s"A blub of ${b.v.show}"
-    }
+  given [T: Show] (using Blub[T]) : Show[Blub[T]] with 
+      extension( blub : Blub[T]) def show : String = s"A blub of ${b.v.show}"
+    
 
-  given Blubbed as BlubFunctor with BlubApplicative with BlubPointed with BlubCopointed with BlubTraversable with BlubMonad with BlubComonad
+  // TODO compound givens wihtout 'as'
+  //given Blubbed as BlubFunctor with BlubApplicative with BlubPointed with BlubCopointed with BlubTraversable with BlubMonad with BlubComonad
 
 }
