@@ -1,7 +1,7 @@
 Typeclassopedia
 ===============
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/channingwalton/typeclassopedia?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://api.travis-ci.org/channingwalton/typeclassopedia.png)](https://travis-ci.org/channingwalton/typeclassopedia)  [![codecov](https://codecov.io/gh/channingwalton/typeclassopedia/branch/master/graph/badge.svg)](https://codecov.io/gh/channingwalton/typeclassopedia)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/channingwalton/typeclassopedia?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://api.travis-ci.org/channingwalton/typeclassopedia.png)](https://travis-ci.org/channingwalton/typeclassopedia)
 
 This project aims to be a simple implementation of the Typeclassopedia in Scala.
 (If you find a simpler way to express something then please report it or send a pull request.)
