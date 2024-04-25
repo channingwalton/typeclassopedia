@@ -1,7 +1,7 @@
 Typeclassopedia
 ===============
 
-[![Scala CI](https://github.com/channingwalton/typeclassopedia/actions/workflows/scala.yaml/badge.svg)](https://github.com/channingwalton/typeclassopedia/actions/workflows/scala.yaml)
+[![Scala CI](https://github.com/channingwalton/typeclassopedia/actions/workflows/scala.yml/badge.svg)](https://github.com/channingwalton/typeclassopedia/actions/workflows/scala.yml)
 
 This project aims to be a simple implementation of the Typeclassopedia in Scala.
 (If you find a simpler way to express something then please report it or send a pull request.)
