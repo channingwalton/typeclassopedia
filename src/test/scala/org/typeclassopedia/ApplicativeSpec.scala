@@ -2,9 +2,9 @@ package org.typeclassopedia
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
-import org.typeclassopedia.std.Options.{given _, _}
-import org.typeclassopedia.std.Lists.{given _, _}
-import Blub.{given _, _}
+import org.typeclassopedia.std.Options.{given, *}
+import org.typeclassopedia.std.Lists.{given, *}
+import Blub.{given, _}
 import scala.language.implicitConversions
 
 class ApplicativeSpec extends AnyFlatSpec with Matchers {
@@ -19,5 +19,5 @@ class ApplicativeSpec extends AnyFlatSpec with Matchers {
   it must "<*> with None" in { 1.some <*> (2.some <*> (None map addInts)) mustEqual None }
   it must "support new Applicatives" in { Blub(1) <*> Blub((_: Int) + 1) mustEqual Blub(2) }
   it must "support ⊛" in { (Blub(1) ⊛ Blub(2) ⊛ Blub(3))(_ + _ + _) mustEqual Blub(6) }
-  it must "obey the law relating Applicative to Functor" in { (Blub(2) map X2) mustEqual (Blub(2) <*> Blub(X2)) }
+  it must "obey the law relating Applicative to Functor" in { Blub(2).map(X2) mustEqual (Blub(2) <*> Blub(X2)) }
 }

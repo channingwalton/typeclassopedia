@@ -2,8 +2,8 @@ package org.typeclassopedia
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
-import org.typeclassopedia.std.Monoids.{given _}
-import org.typeclassopedia.std.Options.{given _, _}
+import org.typeclassopedia.std.Monoids.{given}
+import org.typeclassopedia.std.Options.{given, _}
 import scala.language.implicitConversions
 
 private class SemigroupSpec extends AnyFlatSpec with Matchers {

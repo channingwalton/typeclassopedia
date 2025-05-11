@@ -57,11 +57,11 @@ object Lists {
 
   trait ListFoldable extends Foldable[List] {
     extension[A, B](value: List[A])
-      override def foldMap(f: A => B)(using monoid: Monoid[B]): B = 
+      override def foldMap(f: A => B)(using monoid: Monoid[B]): B =
         value.foldLeft(monoid.zero)((b, a) => b |+| f(a))
   }
 
-  given[A] as Semigroup[List[A]] =
+  given listSemi[A]: Semigroup[List[A]] =
     new Semigroup[List[A]] {
       extension(a: List[A])
         def append(b: List[A]): List[A] = a ::: b
@@ -72,10 +72,10 @@ object Lists {
       override def traverse(f: A => G[B]): G[List[B]] = {
         // a nil of the right type
         val nil: List[B] = Nil
-  
+
         // first map fa, a List[A] with g to get a List[G[B]]
         val lGB: List[G[B]] = fa map f
-  
+
         // use the applicative for G to fold the list, List[G[B]], to build a G[List[B]]
         val app = (a: List[B]) => (b: B) => a :+ b
         lGB.foldLeft(nil.point)((acc, gb) => gb <*> acc.map(app))
@@ -93,5 +93,5 @@ object Lists {
       with ListAlternative
       with ListFoldable
 
-  given listAll as ListAll
+  given listAll: ListAll = new ListAll {}
 }

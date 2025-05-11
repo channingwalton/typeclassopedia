@@ -10,6 +10,6 @@ object Strings {
     override def show(s: String): String = s
   }
 
-  given strings as StringShow
+  given strings: StringShow = new StringShow {}
 
 }

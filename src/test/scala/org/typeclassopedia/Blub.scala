@@ -4,6 +4,7 @@ import java.lang.String
 import scala.StringContext
 import scala.Predef.implicitly
 import org.typeclassopedia.extras.Show
+import org.typeclassopedia.extras.Show.show
 
 final case class Blub[T](v: T)
 
@@ -50,11 +51,12 @@ object Blub {
       override def traverse(f: A => F[B]): F[Blub[B]] = f(fa.v).map(Blub[B](_))
   }
 
-  given [T: Show] as Show[Blub[T]] =
+  given blubShow[T: Show]: Show[Blub[T]] =
     new Show[Blub[T]] {
       override def show(b: Blub[T]): String = s"A blub of ${b.v.show}"
     }
 
-  given Blubbed as BlubFunctor with BlubApplicative with BlubPointed with BlubCopointed with BlubTraversable with BlubMonad with BlubComonad
+  given blubbed: BlubFunctor & BlubApplicative & BlubPointed & BlubCopointed & BlubTraversable & BlubMonad & BlubComonad =
+    new BlubFunctor with BlubApplicative with BlubPointed with BlubCopointed with BlubTraversable with BlubMonad with BlubComonad {}
 
 }

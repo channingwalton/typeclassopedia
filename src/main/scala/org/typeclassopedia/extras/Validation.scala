@@ -14,9 +14,9 @@ final case class Success[E, A](a: A) extends Validation[E, A]
 final case class Failure[E, A](e: E) extends Validation[E, A]
 
 object Validations {
-  
-  trait ValidationsApplicative[L: Semigroup] extends Applicative[({ type l[a] = Validation[L, a] })#l] {
-    
+
+  trait ValidationsApplicative[L: Semigroup] extends Applicative[[A] =>> Validation[L, A]] {
+
     extension[A, B](m: Validation[L, A])
       override def <*>(f: Validation[L, A => B]): Validation[L, B] =
         (m, f) match {
@@ -39,5 +39,5 @@ object Validations {
       override def point: Validation[L, A] = Success[L, A](a)
   }
 
-  given[L: Semigroup] as ValidationsApplicative[L]
+  given semigroup[L: Semigroup]: ValidationsApplicative[L] = new ValidationsApplicative[L] {}
 }

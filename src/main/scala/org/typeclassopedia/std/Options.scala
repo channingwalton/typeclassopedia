@@ -32,7 +32,7 @@ object Options {
 
   trait OptionApplicative extends Applicative[Option] {
     extension [A, B](ma: Option[A])
-      def <*>(f: Option[A => B]): Option[B] = 
+      def <*>(f: Option[A => B]): Option[B] =
         for {
           m <- ma
           g <- f
@@ -70,7 +70,7 @@ object Options {
       override def mplus(b: Option[A]): Option[A] = a orElse b
   }
 
-  given [A: Semigroup] as Semigroup[Option[A]] =
+  given semiGroup[A: Semigroup]: Semigroup[Option[A]] =
     new Semigroup[Option[A]] {
       extension(a: Option[A])
         override def append(b: Option[A]): Option[A] =
@@ -91,10 +91,10 @@ object Options {
   }
 
   trait OptionShow {
-    given [T: Show] as Show[Option[T]] =
+    given showT[T](using showForT: Show[T]): Show[Option[T]] =
       new Show[Option[T]] {
-        def show(option: Option[T]): String =
-          option.fold("None")(v => s"Option(${v.show})")
+        override def show(option: Option[T]): String =
+          option.fold("None")(v => s"Option(${showForT.show(v)})")
       }
   }
 
@@ -109,5 +109,5 @@ object Options {
       with OptionAlternative
       with OptionShow
 
-  given optionAll as OptionAll
+  given optionAll: OptionAll = new OptionAll {}
 }
