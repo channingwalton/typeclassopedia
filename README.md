@@ -9,7 +9,7 @@ This project aims to be a simple implementation of the Typeclassopedia in Scala.
 Some people learn better by seeing things in code, with examples, which is why I started doing this.
 The tests are intended to be examples using typical types like Option and List, but also a custom type, Blub, to show that new types can make use of the type classes defined here.
 
-Read [The Road to the Typeclassopedia](http://channingwalton.github.io/typeclassopedia/) which I hope will be a gentle introduction to the ideas from examples rather than from theory.
+Read [The Road to the Typeclassopedia](docs/index.md) which I hope will be a gentle introduction to the ideas from examples rather than from theory.
 
 How to Start
 ------------
@@ -17,7 +17,7 @@ How to Start
 I suggest you start with Functor as it is the simplest class to study, then Applicative, Monad, Semigroup and Monoid.
 Then have a look at Validation which is not part of the Typeclassopedia but it's useful.
 
-But before you do any of that, you need to understand [type classes in scala](http://dotty.epfl.ch/docs/reference/contextual/motivation.html).
+But before you do any of that, you need to understand [type classes in scala](https://docs.scala-lang.org/scala3/book/ca-type-classes.html).
 
 The tests serve as examples of use.
 
