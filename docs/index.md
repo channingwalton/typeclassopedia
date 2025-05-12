@@ -1,17 +1,17 @@
 The Road to the Typeclassopedia in Scala 3
-===============================
+==========================================
 
-People learn in many ways. For computer science and programming, some enjoy starting from the math, the theory, and proofs.
+People learn in many ways. For computer science and programming, some enjoy starting from the maths, the theory, and proofs.
 From there they find their way to practical concerns in everyday development.
 They think in abstract algebra and category theory, encoding their solutions in their chosen language.
 
 That's awesome.
 
-Other people learn differently, by example, with problems solved with patterns and techniques that later
-they discover have names and ideas rooted in mathematics.
+Other people (most) learn differently, by example, with problems solved with patterns and techniques that they later
+discover have names and ideas rooted in mathematics.
 
-There are a lot of excellent books, papers and blogs that follow the first path, usually because the authors
-tend to be the kind of people that are happy to learn from the math and theory, applying it later.
+There are a lot of excellent books, papers and blogs that follow the theoretical path, usually because the authors
+tend to be the kind of people that are happy to learn from the maths and theory, applying it later.
 
 This document follows the second path, describing a set of ideas collectively called the Typeclassopedia,
 by starting from a problem and developing a solution.
@@ -34,15 +34,14 @@ Here is some code that returns a value:
   }
 ```
 
-This is a common pattern, the method returns a Foo instance or null if the method cannot do its job.
-Anyone calling this method needs to know that the result might be null which is extremely error prone and completely insane.
+This is a common pattern, the function returns a Foo instance or `null` if the function cannot do its job.
+Anyone calling this function needs to know that the result might be null which is extremely error prone and completely insane.
+Nulls have a way of migrating around a codebase and blow up code in unexpected ways far away from their origin.
 
-We can do better than that by returning a value that represents the possibility that the method might not return a result, an _optional_ value.
+We can do better by returning a value that represents the possibility that the function might not return a result, an _optional_ value.
+Or use it in a data model to represent an optional field.
 
-Instead of the insidious null, we can represent this optional value with a type called *Option*,
-a type that represents a value that may or may not exist.
-
-Here is a trivial encoding:
+The type is called `Option`, (or `Maybe` or `Optional`), and here is a trivial encoding:
 
 ``` scala
   sealed trait Option[+A]
@@ -57,7 +56,7 @@ Here is a trivial encoding:
 Notice that `None extends Option[Nothing]` which is the bottom type which extends all other types.
 Because `Option` is covariant, `Option[Nothing]` extends all other `Option` types.
 
-Using Option in Blub results in:
+Using `Option` in `Blub` results in:
 
 ``` scala
   trait Blub {
@@ -65,16 +64,16 @@ Using Option in Blub results in:
   }
 ```
 
-Two things have happened:
+Three things have happened:
 
-1.  the method now returns a type that represents the optional nature of the returned value, no more `null`!
-2.  the comment has gone. It is not needed anymore because the method signature is sufficient.
+1.  the function now returns a type that represents the optional nature of the returned value, no more `null`!
+2.  the comment has gone, it is not needed because the function signature is sufficient.
+3.  every caller of the function now knows it may not return a value.
 
-We now have another problem: how do we work with an Option? We certainly don't want to explicitly detect whether
-the result is a *Some* or *None* everytime by pattern matching or other means.
+But how do we work with an `Option`? We can pattern match but that becomes cumbersome pretty quickly.
 
-Instead, we can add a method to Option that enables a function to be applied to the value.
-Traditionally, that method is called *map*.
+Instead, we can add a function to `Option` that applies a given function to the value.
+Traditionally, that function is called `map`.
 
 ``` scala
   trait Option[+A] {
@@ -86,34 +85,32 @@ Traditionally, that method is called *map*.
   }
 ```
 
-If the Option is a Some, then the function can be applied to the value, and a new Some returned with the result.
-If the Option is a None, then map can only return None since there is no value to apply the function to.
+If the `Option` is a `Some`, then the function can be applied to the value, and a new `Some` is returned with the result.
+If the `Option` is a `None`, then map can only return `None` since there is no value to apply the function to.
 
-So we can now work with values in options by mapping an Option with a function.
+So we can now work with values in options by mapping an `Option` with a function.
 
 List
 ----
 
-Lists are important data structures and its self-evident why they are needed.
-
-Scala's standard library comes with a List so we won't go into writing one
+Scala's standard library comes with a `List` so we won't go into writing one
 (challenge: write one yourself as an exercise) but there are a couple of things to point out.
 
-1.  Like Option, List requires a type parameter, eg. List\[Int\] for a list of integers
-2.  It has a map method like Option
+1.  Like `Option`, `List` requires a type parameter, eg. `List\[Int\]` for a list of integers
+2.  It has a map function like `Option`
 
-List's map method is roughly like this:
+List's map function is:
 
 ``` scala
   def map[U](f: T => U): List[U]
 ```
 
-Like Option, the map method takes a function, f, and returns a new List.
+Like `Option`, the `map` function takes a function, f, and returns a new `List`.
 
 For comprehensions
 ------------------
 
-In Scala, if an object has a `map` method like Option and List do, it can be used in *for comprehension*,
+In Scala, if a type has a `map` function like `Option` and `List` do, it can be used in a *for comprehension*,
 syntactic sugar that compiles to map:
 
 ``` scala
@@ -132,11 +129,11 @@ There is more required to really use Options and Lists in for comprehensions whi
 The First Abstraction
 ---------------------
 
-Looking at Option and List we find that both *map* methods are very similar:
+`Option` and `List` *map* functions are very similar:
 
-1.  They both take a function that transforms the element(s) of List and Option
+1.  They both take a function that transforms the element(s) of `List` and Option
 2.  They both obey some obvious *laws*
-    1.  Identity: If the function given is the *identity* function, then the returned Option or List is the same as the original
+    1.  Identity: If the function given is the *identity* function, then the returned `Option` or `List` is the same as the original
     2.  Composition: If map is first passed `f: A => B`, and then `g: B => C`, the result is equivalent to passing a composite
         function: `f andThen g`, or `g compose f`.
 
@@ -150,11 +147,11 @@ trait Functor[F[_]] {
 }
 ```
 
-This trait simply says that a Functor must provide a map method, just as the map methods in Option and List do.
+This trait simply says that a Functor for some [Higher-Kinded](https://www.baeldung.com/scala/higher-kinded-types) type `F[_]` must provide a map function, just as the map functions in `Option` and `List` do.
 
-However, instead of making types implement this trait, a much more flexible mechanism is to decouple types from their Functor instances, allowing any type with type constructors like Option and List (taking a single type parameter) to have a Functor instance.
+However, instead of making types implement this trait, a much more flexible mechanism is to decouple types from their Functor instances, allowing any type with type constructors like `Option` and `List` (taking a single type parameter) to have a Functor instance.
 
-To do this we use the power of **typeclasses** in Scala, which looks like this:
+To do this we use the power of **typeclasses** in Scala, which looks like this in Scala 3:
 
 ```scala
 trait Functor[F[_]] {
@@ -163,41 +160,44 @@ trait Functor[F[_]] {
 }
 ```
 
-Its very similar to the original trait but instead declares *map* as an extension method for any type F[A]. The implementations for List and Option are straight forward:
+Its very similar to the original trait but instead declares *map* as an extension function for any type `F[A]`. The implementations for `List` and `Option` are straight forward:
 
 ``` scala
   given Functor[Option] {
     extension [A, B](m: Option[A])
-      override def map(f: A => B): Option[B] = m map f
+      override def map(f: A => B): Option[B] = m.map(f)
   }
 
   given Functor[List] {
     extension [A, B](m: List[A])
-      override def map(f: A => B): List[B] = m map f
+      override def map(f: A => B): List[B] = m.map(f)
   }
 ```
 
-To use these instances we only need to be imported either directly, or implicitly if declared in companion objects:
+Now we can use them in functions that do not need to know the explicit type they are working with, just that there is a Functor available for it:
 
 ``` scala
-import MyInstance.{given _} // if the instance isn't on the companion
-
-def launch[A, M[_]: Functor](m: M[A]): Result = {
-  val v: M[B] =  m.map(myFunkyFunction)
+def launch[A, M[_]: Functor](m: M[Missile]): Result = {
+  val v: M[B] =  m.map(_.launch)
   // …
 }
+
+// launch everything
+launch(listOfMissiles)
+
+// launch a missile if we have one
+launch(optionOfMissile)
 ```
 
 ### Summary
 
 We have learnt a new way to decouple behaviour from data types using typeclasses that has numerous advantages:
 
-1.  The concept of mapping, the map method, has been extracted to its own type. The operation now has a life of its own independent of the specific types that support it.
-2.  Code can now be written more generally, and therefore be more generally useful, in terms of the MappingThing typeclass, not concrete instances.
-    We don't need to write the *launch* method twice, once for Option and once for List.
+1.  The concept of mapping, the map function, has been extracted to its own type. The operation now has a life of its own independent of the specific types that support it.
+2.  Code can now be written more generically, and therefore be more generally useful and avoiding duplication, in terms of the Functor typeclass, not concrete instances.
+    We don't need to write the *launch* function twice, once for `Option` and once for `List`.
 3.  Now that we have a typeclass, anyone can write more of them for whatever types they want.
-    Suddenly code written in terms of MappingThing can be used in all kinds of different contexts.
-
+    Suddenly code written in terms of Functor can be used in all kinds of different contexts.
 
 
 Learn more about Scala 3 typeclasses and all the syntax used above [here](https://dotty.epfl.ch/docs/reference/contextual/motivation.html).
@@ -207,7 +207,7 @@ Squash it
 
 TODO - migrate to Scala 3
 
-We have a small problem with our map method, it can return anything at all. Why is that a problem?
+We have a small problem with our map function, it can return anything at all. Why is that a problem?
 
 ``` scala
   // a function that returns an option
@@ -220,8 +220,8 @@ We have a small problem with our map method, it can return anything at all. Why 
   val y: Option[Option[Int]] = x.map(v => sqrt(v))
 ```
 
-y has ended up as an Option of an Option of Int which is annoying. So to handle this special case we are going to introduce a new method called *flatMap*.
-In Option it looks like this:
+y has ended up as an `Option` of an `Option` of Int which is annoying. So to handle this special case we are going to introduce a new function called *flatMap*.
+In `Option` it looks like this:
 
 ``` scala
   sealed trait Option[A] {
@@ -235,9 +235,9 @@ In Option it looks like this:
   }
 ```
 
-List has a similar method.
+List has a similar function.
 
-This method turns out to be very useful. Lets assume we have two Options and we want to work with the values of both in some way, flatMap will be useful:
+This function turns out to be very useful. Lets assume we have two Options and we want to work with the values of both in some way, flatMap will be useful:
 
 ``` scala
   val x: Option[Int] = ???
@@ -258,7 +258,7 @@ This doesn't look so nice but fortunately scala's for comprehension deals with t
 
 Much better.
 
-List has a similar method so that we can work with multiple lists like this:
+List has a similar function so that we can work with multiple lists like this:
 
 ``` scala
   val x: List[Int] = ???
@@ -274,7 +274,7 @@ List has a similar method so that we can work with multiple lists like this:
 The Second Abstraction
 ----------------------
 
-Looking at Option and List we find that both *flatMap* methods are very similar, and as with the map method we can recast it a little:
+Looking at `Option` and `List` we find that both *flatMap* functions are very similar, and as with the map function we can recast it a little:
 
 Option:
 
@@ -288,7 +288,7 @@ List:
   def flatMap[A, B](o: List[A], f: A => List[B]): List[B]
 ```
 
-These methods are practically identical, what we can do is define this method in terms of any type that takes a single parameter, a type constructor, like this:
+These functions are practically identical, what we can do is define this function in terms of any type that takes a single parameter, a type constructor, like this:
 
 ``` scala
   trait FlatMappingThing[M[_]] {
@@ -296,7 +296,7 @@ These methods are practically identical, what we can do is define this method in
   }
 ```
 
-The implementations for List and Option are:
+The implementations for `List` and `Option` are:
 
 ``` scala
   object AllTheFlatMappingThings {
@@ -323,22 +323,22 @@ So this is very similar to the functor case.
 
 ### Summary
 
-We have applied the same pattern as the functor above, but this time for the flatMap method.
+We have applied the same pattern as the functor above, but this time for the flatMap function.
 This enables us to cope with multple values of Options, Lists or any other kind of type constructor, or functions that return Options, Lists, etc.
 
 ### The Name
 
 Stand back ... it is a Monad!
 
-There is a little more to a monad than just a flatMap method, it needs to obey some laws too which we will skip,
+There is a little more to a monad than just a flatMap function, it needs to obey some laws too which we will skip,
 but if you're interested search [Google](https://www.google.com/search?q=scala+monad+laws) for Scala Monad Laws.
 
 Syntax
 ------
 
-The abstractions above are great, but because we've moved the map and flatMap methods to typeclasses,
-scala for-comprehensions won't work since the map and flatMap method are no longer on the objects you are working with.
-In the specific case of Option and List they do have those methods because they are part of the Scala library and thats
+The abstractions above are great, but because we've moved the map and flatMap functions to typeclasses,
+scala for-comprehensions won't work since the map and flatMap function are no longer on the objects you are working with.
+In the specific case of `Option` and `List` they do have those functions because they are part of the Scala library and thats
 what the original authors did. But if you had a new type for which you'd defined typeclass instances, then that new type won't have map and flatMap.
 
 The solution is to provide some syntax for any type that has a Functor or Monad typeclass.
@@ -368,8 +368,8 @@ A *variable* has a *type*. For example, `x: Int` means the variable `x` has the 
 A *proper type*, also known as an *inhabitated* type, is a type that can have values. The type Int is a proper type because it has values like 0 and 1.
 `List[Int]` is also an inhabited, or proper type, that is inhabited by values like `1 :: 2 :: Nil`, instances of a list.
 
-A *type constructor* is something that takes a type and produces a type. Examples are anything with type parameters like List or Option.
-Type constructors are not inhabited, it is not possible to have values of List or Option, only List\[X\] or Option\[Y\].
+A *type constructor* is something that takes a type and produces a type. Examples are anything with type parameters like `List` or Option.
+Type constructors are not inhabited, it is not possible to have values of `List` or Option, only List\[X\] or Option\[Y\].
 
 In type theory it is useful to denote different *kinds* of types so that we can talk more generally about types, type constructors, etc.
 
@@ -378,7 +378,7 @@ In type theory it is useful to denote different *kinds* of types so that we can 
 Types are denoted with an asterisk: *Int* is of type \*
 
 A type constructor taking a single type is denoted like this: `*
--> *`, meaning that given a type, denoted by the first \*, it will produce a new proper type, \*. For example, A List given an Int will produce List\[Int\].
+-> *`, meaning that given a type, denoted by the first \*, it will produce a new proper type, \*. For example, A `List` given an Int will produce List\[Int\].
 
 Something like Either\[A, B\], which takes two type parameters, is denoted like this: `*-> * -> *` because it takes two proper types and produces a type.
 `Either[Int, String]` is a proper type contructed with Either and two proper types, Int and String.
@@ -402,7 +402,7 @@ In Scala, the typeclass pattern consists of several parts:
 -   a trait with one or more type parameters that defines some behaviour
 -   an optional companion object of the trait with *implicit* instances of the trait for common types like Strings or Options, and other types present in the standard library.
 
-For example, a trait with a show method to transform a T into a String
+For example, a trait with a show function to transform a T into a String
 
 ``` scala
   trait Show[T] {
@@ -420,7 +420,7 @@ For example, a trait with a show method to transform a T into a String
       def show(t: Int) = t.toString
     }
 
-    // This show requires a Show[T] so its a method
+    // This show requires a Show[T] so its a function
     implicit def listShow[T](implicit tShow: Show[T]):  Show[List[T]]  = new Show[List[T]] {
 
       def show(l: List[T]): String = {
