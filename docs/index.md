@@ -205,22 +205,19 @@ Learn more about Scala 3 typeclasses and all the syntax used above [here](https:
 Squash it
 ---------
 
-TODO - migrate to Scala 3
-
 We have a small problem with our map function, it can return anything at all. Why is that a problem?
 
 ``` scala
   // a function that returns an option
-  def sqrt(x: Double): Option[Double] = if (x >=0) Some(math.sqrt(x)) else None
+  def sqrt(x: Double): Option[Double] = if x >=0  then Some(math.sqrt(x)) else None
 
   // a value in an option
-
   val x: Option[Int] = ???
 
   val y: Option[Option[Int]] = x.map(v => sqrt(v))
 ```
 
-y has ended up as an `Option` of an `Option` of Int which is annoying. So to handle this special case we are going to introduce a new function called *flatMap*.
+`y` has ended up as an `Option` of an `Option` of `Int` which is annoying. So to handle this case we are going to introduce a new function called `flatMap`.
 In `Option` it looks like this:
 
 ``` scala
@@ -235,9 +232,9 @@ In `Option` it looks like this:
   }
 ```
 
-List has a similar function.
+`List` has a similar function.
 
-This function turns out to be very useful. Lets assume we have two Options and we want to work with the values of both in some way, flatMap will be useful:
+This function turns out to be very useful. Lets assume we have two Options and we want to work with the values of both in some way, `flatMap` will be useful:
 
 ``` scala
   val x: Option[Int] = ???
@@ -246,7 +243,7 @@ This function turns out to be very useful. Lets assume we have two Options and w
   val sum: Option[Int] = x.flatMap(xv => y.map(yv => xv + yv))
 ```
 
-This doesn't look so nice but fortunately scala's for comprehension deals with this by offering syntactic sugar for both map and flatMap. The above is identical to:
+This doesn't look so nice but fortunately Scala's for comprehension deals with this by offering syntactic sugar for both `map` and `flatMap`. The above is identical to:
 
 ``` scala
   val sum: Option[Int] =
@@ -274,88 +271,29 @@ List has a similar function so that we can work with multiple lists like this:
 The Second Abstraction
 ----------------------
 
-Looking at `Option` and `List` we find that both *flatMap* functions are very similar, and as with the map function we can recast it a little:
+Looking at `Option` and `List` we see that both `flatMap` functions are very similar, and as with `map` there is a well-known typeclass for `flatMap`:
 
-Option:
+```scala
+trait Monad[F[_]] {
+  def flatMap[A, B](f: A => F[B]): F[B]
+}
 
-``` scala
-  def flatMap[A, B](o: Option[A], f: A => Option[B]): Option[B]
+given Monad[Option] {
+  extension [A, B](m: Option[A])
+    override def flatMap(f: A => Option[B]): Option[B] = m.flatMap(f)
+}
+
+given Monad[List] {
+  extension [A, B](m: List[A])
+    override def flatMap(f: A => List[B]): List[B] = m.flatMap(f)
+}
 ```
-
-List:
-
-``` scala
-  def flatMap[A, B](o: List[A], f: A => List[B]): List[B]
-```
-
-These functions are practically identical, what we can do is define this function in terms of any type that takes a single parameter, a type constructor, like this:
-
-``` scala
-  trait FlatMappingThing[M[_]] {
-    def flatMap[A, B](m: M[A], f: A => M[B]): M[B]
-  }
-```
-
-The implementations for `List` and `Option` are:
-
-``` scala
-  object AllTheFlatMappingThings {
-    implicit object ListFlatMappingThing extends FlatMappingThing[List] {
-      def flatMap[A, B](m: List[A], f: A => List[B]): List[B] = ???
-    }
-
-    implicit object OptionFlatMappingThing extends FlatMappingThing[Option] {
-      def flatMap[A, B](m: Option[A], f: A => Option[B]): Option[B] = ???
-    }
-  }
-```
-
-And using this code with typeclasses:
-
-``` scala
-  def launch[A, M[_]](m: M[A])(implicit flatMappingThing: FlatMappingThing[M]): Result = {
-    val mapped: M[B] =  flatMappingThing.flatMap(m, myFunkyFunction)
-    // return a result
-  }
-```
-
-So this is very similar to the functor case.
 
 ### Summary
 
 We have applied the same pattern as the functor above, but this time for the flatMap function.
 This enables us to cope with multple values of Options, Lists or any other kind of type constructor, or functions that return Options, Lists, etc.
 
-### The Name
-
-Stand back ... it is a Monad!
-
-There is a little more to a monad than just a flatMap function, it needs to obey some laws too which we will skip,
-but if you're interested search [Google](https://www.google.com/search?q=scala+monad+laws) for Scala Monad Laws.
-
-Syntax
-------
-
-The abstractions above are great, but because we've moved the map and flatMap functions to typeclasses,
-scala for-comprehensions won't work since the map and flatMap function are no longer on the objects you are working with.
-In the specific case of `Option` and `List` they do have those functions because they are part of the Scala library and thats
-what the original authors did. But if you had a new type for which you'd defined typeclass instances, then that new type won't have map and flatMap.
-
-The solution is to provide some syntax for any type that has a Functor or Monad typeclass.
-
-``` scala
-  implicit class FunctorSyntax[F[_]: Functor, A](v: F[A]) {
-    def map[B](f: A => B): F[B] = implicitly[Functor[F]].map(v, f)
-  }
-```
-
-``` scala
-  implicit class MonadSyntax[M[_]: Monad, A](v: M[A]) {
-    def flatMap[B](f: A => M[B]): M[B] = implicitly[Monad[F]].flatMap(v, f)
-  }
-```
-
-… to be continued.
 
 Basic Theory
 ============
