@@ -96,7 +96,7 @@ List
 Scala's standard library comes with a `List` so we won't go into writing one
 (challenge: write one yourself as an exercise) but there are a couple of things to point out.
 
-1.  Like `Option`, `List` requires a type parameter, eg. `List\[Int\]` for a list of integers
+1.  Like `Option`, `List` requires a type parameter, eg. `List[Int]` for a list of integers
 2.  It has a map function like `Option`
 
 List's map function is:
