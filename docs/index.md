@@ -1,5 +1,4 @@
-The Road to the Typeclassopedia in Scala 3
-==========================================
+# The Road to the Typeclassopedia in Scala 3
 
 People learn in many ways. For computer science and programming, some enjoy starting from the maths, the theory, and proofs.
 From there they find their way to practical concerns in everyday development.
@@ -16,11 +15,7 @@ tend to be the kind of people that are happy to learn from the maths and theory,
 This document follows the second path, describing a set of ideas collectively called the Typeclassopedia,
 by starting from a problem and developing a solution.
 
-The Path
-========
-
-Option
-------
+## Option
 
 Here is some code that returns a value:
 
@@ -90,8 +85,7 @@ If the `Option` is a `None`, then map can only return `None` since there is no v
 
 So we can now work with values in options by mapping an `Option` with a function.
 
-List
-----
+## List
 
 Scala's standard library comes with a `List` so we won't go into writing one
 (challenge: write one yourself as an exercise) but there are a couple of things to point out.
@@ -107,8 +101,7 @@ List's map function is:
 
 Like `Option`, the `map` function takes a function, f, and returns a new `List`.
 
-For comprehensions
-------------------
+## For comprehensions
 
 In Scala, if a type has a `map` function like `Option` and `List` do, it can be used in a *for comprehension*,
 syntactic sugar that compiles to map:
@@ -126,8 +119,7 @@ syntactic sugar that compiles to map:
 
 There is more required to really use Options and Lists in for comprehensions which we will see later.
 
-The First Abstraction
----------------------
+## The First Abstraction
 
 `Option` and `List` *map* functions are very similar:
 
@@ -189,7 +181,7 @@ launch(listOfMissiles)
 launch(optionOfMissile)
 ```
 
-### Summary
+## Summary
 
 We have learnt a new way to decouple behaviour from data types using typeclasses that has numerous advantages:
 
@@ -202,8 +194,7 @@ We have learnt a new way to decouple behaviour from data types using typeclasses
 
 Learn more about Scala 3 typeclasses and all the syntax used above [here](https://dotty.epfl.ch/docs/reference/contextual/motivation.html).
 
-Squash it
----------
+## Squash it
 
 We have a small problem with our map function, it can return anything at all. Why is that a problem?
 
@@ -268,8 +259,7 @@ List has a similar function so that we can work with multiple lists like this:
     } yield xv + yv
 ```
 
-The Second Abstraction
-----------------------
+## The Second Abstraction
 
 Looking at `Option` and `List` we see that both `flatMap` functions are very similar, and as with `map` there is a well-known typeclass for `flatMap`:
 
@@ -289,17 +279,17 @@ given Monad[List] {
 }
 ```
 
-### Summary
+## Summary
 
 We have applied the same pattern as the functor above, but this time for the flatMap function.
 This enables us to cope with multple values of Options, Lists or any other kind of type constructor, or functions that return Options, Lists, etc.
 
+## The answer to everything … traverse
 
-Basic Theory
-============
 
-Types, Kinds and Type Constructors
-----------------------------------
+## Basic Theory
+
+## Types, Kinds and Type Constructors
 
 A *variable* has a *type*. For example, `x: Int` means the variable `x` has the type `Int`.
 
@@ -326,8 +316,7 @@ Something like Either\[A, B\], which takes two type parameters, is denoted like 
 
 Further reading [Wikipedia](https://en.wikipedia.org/wiki/Kind_(type_theory)) [Types of a Higher Kind](http://blogs.atlassian.com/2013/09/scala-types-of-a-higher-kind/) [Stack Exchange](http://programmers.stackexchange.com/a/255928/18311)
 
-Typeclasses
------------
+## Typeclasses
 
 Typeclasses are an extremely common pattern used extensively in libraries like the [Typelevel](http://typelevel.org/) libraries. Martin Odersky et al describe typeclasses as follows:
 
@@ -381,8 +370,7 @@ For example, a trait with a show function to transform a T into a String
 
 As an exercise, implement Show\[Option\[T\]\] and Show\[Either\[A, B\]\]
 
-Common types and what they represent
-====================================
+## Common types and what they represent
 
 It is not uncommon to read blogs or other articles in which the follow statements are made:
 
@@ -392,8 +380,7 @@ It is not uncommon to read blogs or other articles in which the follow statement
 
 What do they mean?
 
-Option (or Maybe)
------------------
+## Option (or Maybe)
 
 Option represents an optional value, or sometimes, success and failure.
 
@@ -401,8 +388,7 @@ It has two constructors: None and Some\[T\], where Some\[T\] contains a value of
 
 Option is of kind `* -> *`
 
-List
-----
+## List
 
 Lists represent lists of things, but they are often referred to as representing *indeterminism*.
 A function returning a list can return any number of values including nothing (the empty list), hence the list is being used to represent an indeterministic result.
@@ -411,24 +397,20 @@ Lists are *recursive* data structures because they are typically defined in term
 
 List is of kind `* -> *`
 
-Either
-------
+## Either
 
 Either is of kind `* -> * -> *`
 
-Validation
-----------
+## Validation
 
-Identity
---------
+## Identity
 
 Intuitively it simply wraps a value, it does not embody anything meaningful but is useful in some contexts beyond the scope of this document.
 
 Identity is of kind `* -> *`
 
-Further Reading
----------------
+## Further Reading
 
 * [Typeclassopedia](http://www.cs.tufts.edu/comp/150FP/archive/brent-yorgey/tc.pdf)
-* [Modeling Uncertain Data using Monads and an Application to the Sequence Alignment Problem](https://pp.ipd.kit.edu/uploads/publikationen/kuhnle13bachelorarbeit.pdf) 
+* [Modeling Uncertain Data using Monads and an Application to the Sequence Alignment Problem](https://pp.ipd.kit.edu/uploads/publikationen/kuhnle13bachelorarbeit.pdf)
 * [Functors, Applicatives, And Monads In Pictures](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)
