@@ -192,7 +192,7 @@ We have learnt a new way to decouple behaviour from data types using typeclasses
     Suddenly code written in terms of Functor can be used in all kinds of different contexts.
 
 
-Learn more about Scala 3 typeclasses and all the syntax used above [here](https://dotty.epfl.ch/docs/reference/contextual/motivation.html).
+Learn more about Scala 3 typeclasses and all the syntax used above [here](https://docs.scala-lang.org/scala3/book/ca-type-classes.html).
 
 ## The M word
 
@@ -281,8 +281,8 @@ given Monad[List] {
 
 ## Summary
 
-We have applied the same pattern as the functor above, but this time for the flatMap function.
-This enables us to cope with multple values of Options, Lists or any other kind of type constructor, or functions that return Options, Lists, etc.
+We have applied the same pattern as the functor above, but this time for the `flatMap` function.
+This enables us to cope with multiple values of Options, Lists or any other kind of type constructor, or functions that return Options, Lists, etc.
 
 Aside: Monad's are also Functors so:
 
