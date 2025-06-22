@@ -354,6 +354,10 @@ Something like Either\[A, B\], which takes two type parameters, is denoted like 
 
 Further reading [Wikipedia](https://en.wikipedia.org/wiki/Kind_(type_theory)) [Types of a Higher Kind](http://blogs.atlassian.com/2013/09/scala-types-of-a-higher-kind/) [Stack Exchange](http://programmers.stackexchange.com/a/255928/18311)
 
+## What next?
+
+Check out this project, delete everything in `src/main`, make the tests pass by reimplementing everything.
+
 ## Typeclasses
 
 Typeclasses are an extremely common pattern used extensively in libraries like the [Typelevel](http://typelevel.org/) libraries. Martin Odersky et al describe typeclasses as follows:
