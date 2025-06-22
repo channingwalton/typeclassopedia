@@ -187,8 +187,8 @@ We have learnt a new way to decouple behaviour from data types using typeclasses
 
 1.  The concept of mapping, the map function, has been extracted to its own type. The operation now has a life of its own independent of the specific types that support it.
 2.  Code can now be written more generically, and therefore be more generally useful and avoiding duplication, in terms of the Functor typeclass, not concrete instances.
-    We don't need to write the *launch* function twice, once for `Option` and once for `List`.
-3.  Now that we have a typeclass, anyone can write more of them for whatever types they want.
+    We don't need to write the *launch* function twice.
+3.  Now that we have a typeclass, anyone can write more of them for whatever types they want including those from libraries that never considered functors.
     Suddenly code written in terms of Functor can be used in all kinds of different contexts.
 
 
