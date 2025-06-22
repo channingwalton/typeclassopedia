@@ -292,9 +292,40 @@ trait Monad[F[_]] extends Functor[F] {
 }
 ```
 
-## The answer to everything … traverse
+## The answer is always traverse
 
-TBD
+Let's say we have a list of users and we want to fetch details for each one. The `userDetails` function returns an `IO` (kind of like Future but its a Monad):
+
+``` scala
+def userDetails(user: User): IO[UserDetails] = ...
+```
+
+If we try to use `map`, we get a problem:
+
+``` scala
+val result: List[IO[UserDetails]] = users.map(userDetails)
+```
+
+We end up with a `List[IO[UserDetails]]` instead of what we really want: a single IO operation that fetches all user details (`IO[List[UserDetails]]`).
+
+What we need is a function that can "traverse" the list, applying the function to each element, but also "flip" the types so we get `IO[List[UserDetails]]` instead of `List[IO[UserDetails]]`.
+
+This is what `traverse` does:
+
+``` scala
+trait Traverse[T[_]] {
+
+  extension[F[_], A, B](fa: T[A])
+    def traverse(f: A => F[B]): F[T[B]]
+```
+
+Note that this function signature isn't quite right. It turns out that to write this function an [Applicative](../src/main/scala/org/typeclassopedia/Applicative.scala) is required but its kind of an incidental detail, the important point is what `traverse` does.
+
+For our user example:
+
+``` scala
+val result: IO[List[UserDetails]] = users.traverse(userDetails)
+```
 
 ## Basic Theory
 
@@ -302,7 +333,7 @@ TBD
 
 A *variable* has a *type*. For example, `x: Int` means the variable `x` has the type `Int`.
 
-A *proper type*, also known as an *inhabitated* type, is a type that can have values. The type Int is a proper type because it has values like 0 and 1.
+A *proper type*, also known as an *inhabited* type, is a type that can have values. The type Int is a proper type because it has values like 0 and 1.
 `List[Int]` is also an inhabited, or proper type, that is inhabited by values like `1 :: 2 :: Nil`, instances of a list.
 
 A *type constructor* is something that takes a type and produces a type. Examples are anything with type parameters like `List` or Option.
@@ -314,14 +345,12 @@ In type theory it is useful to denote different *kinds* of types so that we can 
 
 Types are denoted with an asterisk: *Int* is of type \*
 
-A type constructor taking a single type is denoted like this: `*
--> *`, meaning that given a type, denoted by the first \*, it will produce a new proper type, \*. For example, A `List` given an Int will produce List\[Int\].
+A type constructor taking a single type is denoted like this: `* -> *`, meaning that given a type, denoted by the first \*, it will produce a new proper type, \*. For example, A `List` given an Int will produce List\[Int\].
 
 Something like Either\[A, B\], which takes two type parameters, is denoted like this: `*-> * -> *` because it takes two proper types and produces a type.
-`Either[Int, String]` is a proper type contructed with Either and two proper types, Int and String.
+`Either[Int, String]` is a proper type constructed with Either and two proper types, Int and String.
 
-*Kinds* are a way of describing similar types at an abstract level. `*`, `* ->
-*`, `* -> * -> *`, are *kinds*. Kinds are useful when working more abstractly with types, both proper and improper (inhabited or uninhabited).
+*Kinds* are a way of describing similar types at an abstract level. `*`, `* -> *`, `* -> * -> *`, are *kinds*. Kinds are useful when working more abstractly with types, both proper and improper (inhabited or uninhabited).
 
 Further reading [Wikipedia](https://en.wikipedia.org/wiki/Kind_(type_theory)) [Types of a Higher Kind](http://blogs.atlassian.com/2013/09/scala-types-of-a-higher-kind/) [Stack Exchange](http://programmers.stackexchange.com/a/255928/18311)
 
