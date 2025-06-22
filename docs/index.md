@@ -284,8 +284,17 @@ given Monad[List] {
 We have applied the same pattern as the functor above, but this time for the flatMap function.
 This enables us to cope with multple values of Options, Lists or any other kind of type constructor, or functions that return Options, Lists, etc.
 
+Aside: Monad's are also Functors so:
+
+```scala
+trait Monad[F[_]] extends Functor[F] {
+  def flatMap[A, B](f: A => F[B]): F[B]
+}
+```
+
 ## The answer to everything … traverse
 
+TBD
 
 ## Basic Theory
 
