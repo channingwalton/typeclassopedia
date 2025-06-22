@@ -194,7 +194,7 @@ We have learnt a new way to decouple behaviour from data types using typeclasses
 
 Learn more about Scala 3 typeclasses and all the syntax used above [here](https://dotty.epfl.ch/docs/reference/contextual/motivation.html).
 
-## Squash it
+## The M word
 
 We have a small problem with our map function, it can return anything at all. Why is that a problem?
 
@@ -259,7 +259,7 @@ List has a similar function so that we can work with multiple lists like this:
     } yield xv + yv
 ```
 
-## The Second Abstraction
+## The Second Abstraction - Monad
 
 Looking at `Option` and `List` we see that both `flatMap` functions are very similar, and as with `map` there is a well-known typeclass for `flatMap`:
 
